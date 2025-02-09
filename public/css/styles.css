@@ -1,0 +1,262 @@
+/* ===== Global Styles ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #F2E5D5;
+}
+
+/* ===== Login Page Specific Styles ===== */
+body.login-page { 
+    background: linear-gradient(110deg, #f2e5d5 50%, #ddad27 50%);
+}
+
+.login-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-box {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+    max-width: 1200px;
+    width: 90%;
+    height: 650px;
+    overflow: hidden;
+}
+
+.login-image {
+    background: url('/images/image.png') no-repeat;
+    background-size: contain;
+    background-position: center center;
+    flex: 1;
+    min-height: 550px;
+    height: 100%;
+}
+
+.login-form {
+    padding: 40px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ===== Login Page Button Styles ===== */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    border-radius: 5px;
+    background-color: #ddad27 !important;
+    border: none;
+    color: white !important;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background-color: #c29522 !important;
+    color: white !important;
+}
+
+.input-group-text {
+    background-color: #ddad27 !important;
+    border: none;
+    color: white !important;
+}
+
+.nav-item:hover .nav-text,
+.btn-primary:focus {
+    color: white !important;
+}
+
+/* ===== Dashboard Common Styles ===== */
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: #DDAD27;
+    padding: 20px;
+    position: fixed;
+    transition: all 0.3s;
+}
+
+.logo {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    color: #ecf0f1;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+}
+
+.nav-item:hover {
+    background: #34495e;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transform: translateX(5px);
+}
+
+.nav-item i {
+    margin-right: 15px;
+    font-size: 20px;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 30px;
+    width: calc(100% - 250px);
+}
+
+.header {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+.profile-section {
+    position: absolute;
+    bottom: 20px;
+    width: calc(100% - 40px);
+}
+
+/* ===== Shared Components ===== */
+.status-indicator {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.status-open {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-closed {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.status-upcoming {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-completed {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.action-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.action-button:hover {
+    background: #2980b9;
+}
+
+/* ===== Dashboard Specific Styles ===== */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-title {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+}
+
+/* ===== Tickets & Appointments Shared Styles ===== */
+.tickets-section, .appointments-section {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.ticket-list, .appointment-list {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.ticket-item, .appointment-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* ===== Media Queries ===== */
+@media (max-width: 768px) {
+    .login-box {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .login-image {
+        min-height: 300px;
+        width: 100%;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .login-box {
+        flex-direction: column;
+        height: 90vh;
+        width: 80%;
+    }
+}

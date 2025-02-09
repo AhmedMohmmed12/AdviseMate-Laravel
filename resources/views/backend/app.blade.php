@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">AdvisorMate</div>
+            
+            <a href="#" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span class="nav-text">Home</span>
+            </a>
+            
+            <a href="ticket.html" class="nav-item">
+                <i class="fas fa-ticket-alt"></i>
+                Tickets
+            </a>
+            
+            <a href="appointment.html" class="nav-item">
+                <i class="fas fa-calendar-check"></i>
+                Appointments
+            </a>
+            
+            <a href="#" class="nav-item">
+                <i class="fas fa-user"></i>
+                Profile
+            </a>
+
+            <div class="profile-section">
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+         @yield("content")
+        <div class="main-content">
+            <h1 class="header">Welcome Back, Student!</h1>
+            <div class="dashboard-grid">
+                <!-- Upcoming Appointments Card -->
+                <div class="dashboard-card">
+                    <h2 class="card-title"><i class="fas fa-calendar-alt"></i> Upcoming Appointments</h2>
+                    <ul class="appointment-list">
+                        <li class="appointment-item">
+                            <strong>Advisor Meeting</strong><br>
+                            <span class="text-muted">Tomorrow 2:00 PM</span>
+                        </li>
+                        <li class="appointment-item">
+                            <strong>Course Selection</strong><br>
+                            <span class="text-muted">Friday 10:30 AM</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Recent Tickets Card -->
+                <div class="dashboard-card">
+                    <h2 class="card-title"><i class="fas fa-ticket-alt"></i> Recent Tickets</h2>
+                    <ul class="appointment-list">
+                        <li class="appointment-item">
+                            <strong>Registration Issue</strong>
+                            <span class="status-indicator status-open">Open</span>
+                        </li>
+                        <li class="appointment-item">
+                            <strong>Course deletion</strong>
+                            <span class="status-indicator status-closed">Closed</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Quick Actions Card -->
+                <div class="dashboard-card">
+                    <h2 class="card-title"><i class="fas fa-bolt"></i> Quick Actions</h2>
+                    <div class="quick-actions">
+                        <button class="action-button">
+                            <i class="fas fa-plus"></i> New Ticket
+                        </button>
+                        <button class="action-button">
+                            <i class="fas fa-calendar-plus"></i> Schedule Meeting
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Calendar Card -->
+                <div class="dashboard-card">
+                    <h2 class="card-title"><i class="fas fa-calendar"></i> Academic Calendar</h2>
+                    <div class="calendar-placeholder">
+                        Interactive Calendar (Coming Soon)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

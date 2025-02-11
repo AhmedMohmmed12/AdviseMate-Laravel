@@ -22,14 +22,31 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::get('/dashboard', function () {
+Route::get('student/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/appointment', function () {
+Route::get('student/appointment', function () {
     return view('appointment');
 })->name('appointment');
 
-Route::get('/ticket', function () {
+Route::get('student/ticket', function () {
     return view('ticket');
 })->name('ticket');
+
+
+Route::get('advisor/dashboard', function(){
+    return view('advisor.advisor-dashboard');
+})->name('advisor.dashboard');
+
+Route::get('advisor/appointment', function(){
+    return view('advisor.advisor-appointment');
+})->name('advisor.appointment');
+
+Route::get('advisor/ticket', function(){
+    return view('advisor.advisor-ticket');
+})->name('advisor.ticket');
+
+Route::get('advisor/student', function(){
+    return view('advisor.advisor-student');
+})->name('advisor.student');

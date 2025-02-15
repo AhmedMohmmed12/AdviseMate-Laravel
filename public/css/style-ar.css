@@ -1,0 +1,88 @@
+*{
+    font-family: 'Cairo' !important;
+    direction: rtl;
+}
+
+/* ===== RTL Overrides ===== */
+html {
+    direction: rtl;
+}
+
+* {
+    font-family: 'Tahoma', sans-serif;
+}
+
+/* ===== Login Page Adjustments ===== */
+.login-box {
+    flex-direction: row-reverse;
+}
+
+/* ===== Dashboard Adjustments ===== */
+.sidebar {
+    right: 0;
+    left: auto;
+}
+
+.main-content {
+    margin-right: 250px;
+    margin-left: 0;
+}
+
+.nav-item i {
+    margin-right: 0;
+    margin-left: 15px;
+}
+
+.nav-item:hover {
+    transform: translateX(-5px);
+}
+
+/* ===== Form Elements ===== */
+.input-group-text {
+    border-radius: 0 5px 5px 0 !important;
+}
+
+.form-control {
+    border-radius: 5px 0 0 5px !important;
+}
+
+/* ===== Students Table ===== */
+.student-info {
+    flex-direction: row-reverse;
+}
+
+/* ===== Tickets & Tables ===== */
+.ticket-header,
+.table-header,
+.table-row {
+    direction: rtl;
+    text-align: right;
+}
+
+/* ===== General RTL Fixes ===== */
+[class^="col-"],
+[class*=" col-"] {
+    float: right;
+}
+
+.profile-section {
+    right: 20px;
+    left: auto;
+}
+
+.status-indicator,
+.priority-high,
+.priority-medium {
+    direction: rtl;
+}
+
+/* ===== Media Queries Adjustments ===== */
+@media (max-width: 768px) {
+    .main-content {
+        margin-right: 0;
+    }
+    
+    .sidebar {
+        right: auto;
+    }
+}

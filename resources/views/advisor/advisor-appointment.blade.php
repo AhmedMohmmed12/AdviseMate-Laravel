@@ -5,7 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Appointment</title>
+    @if (app()->getLocale() == 'en')
     <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
+    @else
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
+    <link rel="stylesheet" href="{{asset('/css/style-ar.css')}}">
+    @endif
 
 </head>
 <body>
@@ -33,7 +41,7 @@
     <div class="appointment-list">
         <h2><i class="fas fa-list"></i> Upcoming</h2>
         <div class="appointment-item">
-            <strong>Jane Smith - Course Selection</strong>
+            <strong>Ali - Course Selection</strong>
             <p>Tomorrow 10:00 AM</p>
             <button class="btn-approve">Approve</button>
             <button class="btn-reschedule">Reschedule</button>

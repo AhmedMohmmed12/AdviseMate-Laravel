@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+
+// use LaravelLocalization
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +14,11 @@ use App\Http\Controllers\StudentController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::group(
+    [
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+    ], function(){ //...
 Route::get('/', function () {
     return view('welcome');
 });
@@ -50,3 +56,4 @@ Route::get('advisor/ticket', function(){
 Route::get('advisor/student', function(){
     return view('advisor.advisor-student');
 })->name('advisor.student');
+});

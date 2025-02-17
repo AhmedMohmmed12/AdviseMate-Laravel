@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\UserController;
 
 // use LaravelLocalization
 /*
@@ -36,24 +37,34 @@ Route::get('student/appointment', function () {
     return view('appointment');
 })->name('appointment');
 
+
+
+
 Route::get('student/ticket', function () {
     return view('ticket');
 })->name('ticket');
 
 
-Route::get('advisor/dashboard', function(){
-    return view('advisor.advisor-dashboard');
-})->name('advisor.dashboard');
+Route::name('advisor.')->prefix('advisor')->group(function(){
 
-Route::get('advisor/appointment', function(){
-    return view('advisor.advisor-appointment');
-})->name('advisor.appointment');
-
-Route::get('advisor/ticket', function(){
-    return view('advisor.advisor-ticket');
-})->name('advisor.ticket');
-
-Route::get('advisor/student', function(){
-    return view('advisor.advisor-student');
-})->name('advisor.student');
+    Route::get('create' , [UserController::class , 'create'])->name('create');
+    Route::post('store' , [UserController::class , 'store'])->name('store');
+    Route::get('dashboard', function(){
+        return view('advisor.advisor-dashboard');
+    })->name('dashboard');
+    
+    Route::get('appointment', function(){
+        return view('advisor.advisor-appointment');
+    })->name('appointment');
+    
+    Route::get('ticket', function(){
+        return view('advisor.advisor-ticket');
+    })->name('ticket');
+    
+    Route::get('student', function(){
+        return view('advisor.advisor-student');
+    })->name('student');
+    });
 });
+
+

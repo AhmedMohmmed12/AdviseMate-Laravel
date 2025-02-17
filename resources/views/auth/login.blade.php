@@ -1,12 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  @if (app()->getLocale() == 'en')
   <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
+  @else
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{asset('/css/styles.css')}}">
+  <link rel="stylesheet" href="{{asset('/css/style-ar.css')}}">
+  @endif
+  
+  @if (app()->getLocale() == 'ar')
+  <style>
+    .input-group-text i {
+      transform: scaleX(-1);
+    }
+    .form-label {
+      text-align: right;
+    }
+    .login-form {
+      text-align: right;
+    }
+    .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+      margin-left: -1px;
+      border-top-left-radius: 0.375rem;
+      border-bottom-left-radius: 0.375rem;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+      border-top-right-radius: 0.375rem;
+      border-bottom-right-radius: 0.375rem;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  </style>
+  @endif
 </head>
 <body class="login-page">
   <div class="login-container">
@@ -16,39 +51,39 @@
       <div class="login-form">
         <div class="text-center mb-4">
           <img src="{{asset('/images/ac.png')}}" alt="Welcome Icon" class="img-fluid" style="width: 170px; height: 170px;">
-          <h2>Welcome <br> to your <span style="color:#ddad27;">AdvisorMate!</span></h2>
+          <h2>{{trans('site.login.welcome')}} <br> {{trans('site.login.to_your')}} <span style="color:#ddad27;">{{trans('site.sidebar.logo')}}</span></h2>
         </div>
 
         <form>
           <div class="mb-2">
-            <label for="role" class="form-label">Select your role</label>
+            <label for="role" class="form-label">{{trans('site.login.select_role')}}</label>
             <select id="role" class="form-select" required>
-              <option value="" disabled selected>Select your role</option>
-              <option value="Student">Student</option>
-              <option value="Advisor">Advisor</option>
+              <option value="" disabled selected>{{trans('site.login.select_role')}}</option>
+              <option value="Student">{{trans('site.login.student')}}</option>
+              <option value="Advisor">{{trans('site.login.advisor')}}</option>
             </select>
           </div>
 
           <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
+            <label for="email" class="form-label">{{trans('site.login.email')}}</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-              <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+              <input type="email" class="form-control" id="email" placeholder="{{trans('site.login.email_placeholder')}}" required>
             </div>
           </div>
 
           <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
+            <label for="password" class="form-label">{{trans('site.login.password')}}</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-lock"></i></span>
-              <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+              <input type="password" class="form-control" id="password" placeholder="{{trans('site.login.password_placeholder')}}" required>
               <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
                 <i class="fas fa-eye"></i>
               </span>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary mt-4">Login</button>
+          <button type="submit" class="btn btn-primary mt-4">{{trans('site.login.login_button')}}</button>
         </form>
       </div>
     </div>

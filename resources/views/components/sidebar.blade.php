@@ -3,32 +3,32 @@
 </head>
 <!-- Sidebar -->
 <nav class="sidebar">
-    <div class="logo">AdvisorMate</div>
+    <div class="logo">{{trans('site.sidebar.logo')}}</div>
     
     <a href="{{ route('dashboard') }}" class="nav-item">
         <i class="fas fa-home"></i>
-        <span class="nav-text">Home</span>
+        <span class="nav-text">{{trans('site.sidebar.home')}}</span>
     </a>
     
     <a href="{{ route('ticket') }}" class="nav-item">
         <i class="fas fa-ticket-alt"></i>
-        Tickets
+        {{trans('site.sidebar.tickets')}}
     </a>
     
     <a href="{{ route('appointment') }}" class="nav-item">
         <i class="fas fa-calendar-check"></i>
-        Appointments
+        {{trans('site.sidebar.appointments')}}
     </a>
     
     <a href="#" class="nav-item">
         <i class="fas fa-user"></i>
-        Profile
+        {{trans('site.sidebar.profile')}}
     </a>
 
     <div class="profile-section">
         <a href="#" class="nav-item">
             <i class="fas fa-cog"></i>
-            Settings
+            {{trans('site.sidebar.settings')}}
         </a>
     </div>
 </nav>

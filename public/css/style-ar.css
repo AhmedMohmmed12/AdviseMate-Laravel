@@ -1,15 +1,20 @@
 *{
-    font-family: 'Cairo' !important;
     direction: rtl;
+    font-family: 'Cairo' !important;
+
+
 }
 
 /* ===== RTL Overrides ===== */
 html {
     direction: rtl;
+
 }
 
-* {
-    font-family: 'Tahoma', sans-serif;
+.fas{
+    font-family: "Font Awesome 6 Free" !important;
+}
+body {
 }
 
 /* ===== Login Page Adjustments ===== */

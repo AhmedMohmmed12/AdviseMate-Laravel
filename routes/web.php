@@ -28,25 +28,24 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::name('student.')->prefix('student')->group(function(){
 
-Route::get('student/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+    
+    Route::get('/appointment', function () {
+        return view('appointment');
+    })->name('appointment');
+    
+    Route::get('/ticket', function () {
+        return view('ticket');
+    })->name('ticket');
+});
 
-Route::get('student/appointment', function () {
-    return view('appointment');
-})->name('appointment');
-
-
-
-
-Route::get('student/ticket', function () {
-    return view('ticket');
-})->name('ticket');
 
 
 Route::name('advisor.')->prefix('advisor')->group(function(){
-
     Route::get('create' , [UserController::class , 'create'])->name('create');
     Route::post('store' , [UserController::class , 'store'])->name('store');
     Route::get('dashboard', function(){

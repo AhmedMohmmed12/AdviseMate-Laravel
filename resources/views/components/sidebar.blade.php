@@ -5,17 +5,17 @@
 <nav class="sidebar">
     <div class="logo">{{trans('site.sidebar.logo')}}</div>
     
-    <a href="{{ route('dashboard') }}" class="nav-item">
+    <a href="{{ route('student.dashboard') }}" class="nav-item">
         <i class="fas fa-home"></i>
         <span class="nav-text">{{trans('site.sidebar.home')}}</span>
     </a>
     
-    <a href="{{ route('ticket') }}" class="nav-item">
+    <a href="{{ route('student.ticket') }}" class="nav-item">
         <i class="fas fa-ticket-alt"></i>
         {{trans('site.sidebar.tickets')}}
     </a>
     
-    <a href="{{ route('appointment') }}" class="nav-item">
+    <a href="{{ route('student.appointment') }}" class="nav-item">
         <i class="fas fa-calendar-check"></i>
         {{trans('site.sidebar.appointments')}}
     </a>

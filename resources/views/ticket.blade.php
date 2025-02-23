@@ -1,6 +1,5 @@
 @extends('layouts.HeadStudent')
 @section('name')
-<body>
     <div class="container">
         <!-- Sidebar -->
         <x-sidebar>
@@ -46,6 +45,4 @@
             </div>
         </div>
     </div>
-</body>
-</html>
 @endsection

@@ -1,5 +1,5 @@
 @extends('layouts.HeadAdvisor')
-@section('head')
+@section('content')
     <div class="container">
         <x-advsidebar />
         

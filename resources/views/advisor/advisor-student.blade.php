@@ -1,5 +1,5 @@
 @extends('layouts.HeadAdvisor')
-@section('head')
+@section('content')
     <x-advsidebar />
     <div class="main-content">
         <h1 class="header">{{trans('site.advisor.students.title')}}</h1>

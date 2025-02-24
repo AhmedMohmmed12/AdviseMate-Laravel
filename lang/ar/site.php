@@ -127,7 +127,12 @@ return [
             ]
         ]
     ],
-];
+    // 'supervisor'[
+    //     'dashboard' =>[
+        
+    //     ]
+    ];
+// ];
 
 
 ?>

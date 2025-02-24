@@ -28,8 +28,23 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::name('student.')->prefix('student')->group(function(){
+Route::prefix('supervisor')->group(function () {
+    Route::get('create' , [UserController::class , 'create'])->name('create');
+    Route::post('store' , [UserController::class , 'store'])->name('store');
+    Route::get('/dashboard', function () {
+        return view('supervisor.dashboard');
+    })->name('supervisor.dashboard');
+    
+    Route::get('users' , [UserController::class , 'index'])->name('index');
 
+    
+    Route::get('/activity-log', function () {
+        return view('supervisor.activitylog');
+    })->name('supervisor.activity-log');
+});
+
+
+Route::name('student.')->prefix('student')->group(function(){
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -46,8 +61,6 @@ Route::name('student.')->prefix('student')->group(function(){
 
 
 Route::name('advisor.')->prefix('advisor')->group(function(){
-    Route::get('create' , [UserController::class , 'create'])->name('create');
-    Route::post('store' , [UserController::class , 'store'])->name('store');
     Route::get('dashboard', function(){
         return view('advisor.advisor-dashboard');
     })->name('dashboard');

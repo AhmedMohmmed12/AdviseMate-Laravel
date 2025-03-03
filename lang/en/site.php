@@ -125,6 +125,51 @@ return [
                 'low' => 'Low'
             ]
         ]
+    ],
+    'supervisor' => [
+        'dashboard' => [
+            'title' => 'Supervisor Dashboard',
+            'total_users' => 'Total Users',
+            'activities_today' => 'Activities Today',
+            'issues' => 'Issues'
+        ],
+        'users' => [
+            'title' => 'Manage Users',
+            'add_user' => 'Add User',
+            'create_new' => 'Create New User',
+            'form' => [
+                'first_name' => 'First Name',
+                'last_name' => 'Last Name',
+                'email' => 'Email',
+                'user_type' => 'User Type',
+                'gender' => 'Gender',
+                'select_gender' => 'Select Gender',
+                'male' => 'Male',
+                'female' => 'Female',
+                'password' => 'Password',
+                'confirm_password' => 'Confirm Password',
+                'cancel' => 'Cancel',
+                'create' => 'Create User'
+            ],
+            'table' => [
+                'name' => 'Name',
+                'email' => 'Email',
+                'gender' => 'Gender',
+                'role' => 'Role',
+                'status' => 'Status',
+                'actions' => 'Actions'
+            ]
+        ],
+        'activity_log' => [
+            'title' => 'Activity Log',
+            'time' => 'Time',
+            'user' => 'User',
+            'activity' => 'Activity',
+            'details' => 'Details',
+            'view_details' => 'View Details',
+            'no_details' => 'No additional details',
+            'system' => 'System'
+        ]
     ]
 ];
 

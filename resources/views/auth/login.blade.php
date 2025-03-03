@@ -54,21 +54,38 @@
           <h2>{{trans('site.login.welcome')}} <br> {{trans('site.login.to_your')}} <span style="color:#ddad27;">{{trans('site.sidebar.logo')}}</span></h2>
         </div>
 
-        <form>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <form method="POST" action="{{ route('login') }}">
+          @csrf
           <div class="mb-2">
             <label for="role" class="form-label">{{trans('site.login.select_role')}}</label>
-            <select id="role" class="form-select" required>
+            <select id="role" name="role" class="form-select @error('role') is-invalid @enderror" required>
               <option value="" disabled selected>{{trans('site.login.select_role')}}</option>
-              <option value="Student">{{trans('site.login.student')}}</option>
-              <option value="Advisor">{{trans('site.login.advisor')}}</option>
+              <option value="student" {{ old('role') == 'student' ? 'selected' : '' }}>{{trans('site.login.student')}}</option>
+              <option value="advisor" {{ old('role') == 'advisor' ? 'selected' : '' }}>{{trans('site.login.advisor')}}</option>
             </select>
+            @error('role')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
           </div>
 
           <div class="mb-3">
             <label for="email" class="form-label">{{trans('site.login.email')}}</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-              <input type="email" class="form-control" id="email" placeholder="{{trans('site.login.email_placeholder')}}" required>
+              <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" value="{{ old('email') }}" placeholder="{{trans('site.login.email_placeholder')}}" required>
+              @error('email')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
           </div>
 
@@ -76,14 +93,22 @@
             <label for="password" class="form-label">{{trans('site.login.password')}}</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-lock"></i></span>
-              <input type="password" class="form-control" id="password" placeholder="{{trans('site.login.password_placeholder')}}" required>
+              <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="{{trans('site.login.password_placeholder')}}" required>
               <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
                 <i class="fas fa-eye"></i>
               </span>
+              @error('password')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary mt-4">{{trans('site.login.login_button')}}</button>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
+            <label class="form-check-label" for="remember">{{trans('site.login.remember_me')}}</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-4 w-100">{{trans('site.login.login_button')}}</button>
         </form>
       </div>
     </div>
@@ -108,3 +133,4 @@
   </script>
 </body>
 </html>
+

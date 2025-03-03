@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ActivityLogController;
 
 // use LaravelLocalization
 /*
@@ -21,14 +22,14 @@ Route::group(
         'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
     ], function(){ //...
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 Route::get("/test/ahmad" , [StudentController::class , "ahmad"]);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::prefix('supervisor')->group(function () {
+Route::prefix('supervisor')->middleware(['auth'])->group(function () {
     Route::get('create' , [UserController::class , 'create'])->name('create');
     Route::post('store' , [UserController::class , 'store'])->name('store');
     Route::get('/dashboard', function () {
@@ -78,5 +79,7 @@ Route::name('advisor.')->prefix('advisor')->group(function(){
     })->name('student');
     });
 });
+
+Route::get('/supervisor/activity-log', [ActivityLogController::class, 'index'])->name('supervisor.activity-log');
 
 

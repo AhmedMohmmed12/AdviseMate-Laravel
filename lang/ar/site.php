@@ -127,12 +127,52 @@ return [
             ]
         ]
     ],
-    // 'supervisor'[
-    //     'dashboard' =>[
-        
-    //     ]
-    ];
-// ];
+    'supervisor' => [
+        'dashboard' => [
+            'title' => 'لوحة تحكم المشرف',
+            'total_users' => 'إجمالي المستخدمين',
+            'activities_today' => 'نشاطات اليوم',
+            'issues' => 'المشكلات'
+        ],
+        'users' => [
+            'title' => 'إدارة المستخدمين',
+            'add_user' => 'إضافة مستخدم',
+            'create_new' => 'إنشاء مستخدم جديد',
+            'form' => [
+                'first_name' => 'الاسم الأول',
+                'last_name' => 'اسم العائلة',
+                'email' => 'البريد الإلكتروني',
+                'user_type' => 'نوع المستخدم',
+                'gender' => 'الجنس',
+                'select_gender' => 'اختر الجنس',
+                'male' => 'ذكر',
+                'female' => 'أنثى',
+                'password' => 'كلمة المرور',
+                'confirm_password' => 'تأكيد كلمة المرور',
+                'cancel' => 'إلغاء',
+                'create' => 'إنشاء مستخدم'
+            ],
+            'table' => [
+                'name' => 'الاسم',
+                'email' => 'البريد الإلكتروني',
+                'gender' => 'الجنس',
+                'role' => 'الدور',
+                'status' => 'الحالة',
+                'actions' => 'الإجراءات'
+            ]
+        ],
+        'activity_log' => [
+            'title' => 'سجل النشاطات',
+            'time' => 'الوقت',
+            'user' => 'المستخدم',
+            'activity' => 'النشاط',
+            'details' => 'التفاصيل',
+            'view_details' => 'عرض التفاصيل',
+            'no_details' => 'لا توجد تفاصيل إضافية',
+            'system' => 'النظام'
+        ]
+    ]
+];
 
 
 ?>

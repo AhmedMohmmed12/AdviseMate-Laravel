@@ -4,72 +4,99 @@
 <div class="users-table">
     <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0"><i class="fa-solid fa-users-gear"></i> Manage Users</h5>
+            <h5 class="mb-0"><i class="fa-solid fa-users-gear"></i> {{ __('site.supervisor.users.title') }}</h5>
             <button class="btn btn-primary btn-sm" onclick="toggleUserForm()">
-                <i class="fa-solid fa-plus"></i> Add User
+                <i class="fa-solid fa-plus"></i> {{ __('site.supervisor.users.add_user') }}
             </button>
         </div>
         
-        
         <div class="card-body border-bottom d-none" id="userForm">
-            <h6 class="mb-4">Create New User</h6>
+            <h6 class="mb-4">{{ __('site.supervisor.users.create_new') }}</h6>
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
             <form action="{{ route('store') }}" method="POST">
-                @method("post")
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label">First Name</label>
-                            <input type="text" name="fName" class="form-control" required>
+                            <label class="form-label">{{ __('site.supervisor.users.form.first_name') }}</label>
+                            <input type="text" name="fName" class="form-control @error('fName') is-invalid @enderror" value="{{ old('fName') }}" required>
+                            @error('fName')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label">Last Name</label>
-                            <input type="text" name="lName" class="form-control" required>
+                            <label class="form-label">{{ __('site.supervisor.users.form.last_name') }}</label>
+                            <input type="text" name="lName" class="form-control @error('lName') is-invalid @enderror" value="{{ old('lName') }}" required>
+                            @error('lName')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" required>
+                            <label class="form-label">{{ __('site.supervisor.users.form.email') }}</label>
+                            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required>
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label">User Type</label>
-                            <select name="role" class="form-select" required>
-                                <option value="student">Student</option>
-                                <option value="advisor">Advisor</option>
+                            <label class="form-label">{{ __('site.supervisor.users.form.user_type') }}</label>
+                            <select name="role" class="form-select @error('role') is-invalid @enderror" required>
+                                <option value="" disabled {{ old('role') ? '' : 'selected' }}>{{ __('site.supervisor.users.form.select_role') }}</option>
+                                <option value="student" {{ old('role') == 'student' ? 'selected' : '' }}>{{ __('site.login.student') }}</option>
+                                <option value="advisor" {{ old('role') == 'advisor' ? 'selected' : '' }}>{{ __('site.login.advisor') }}</option>
                             </select>
+                            @error('role')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label">Gender</label>
-                            <select name="gender" class="form-select" required>
-                                <option value="" disabled selected>Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
+                            <label class="form-label">{{ __('site.supervisor.users.form.gender') }}</label>
+                            <select name="gender" class="form-select @error('gender') is-invalid @enderror" required>
+                                <option value="" disabled {{ old('gender') ? '' : 'selected' }}>{{ __('site.supervisor.users.form.select_gender') }}</option>
+                                <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>{{ __('site.supervisor.users.form.male') }}</option>
+                                <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>{{ __('site.supervisor.users.form.female') }}</option>
                             </select>
+                            @error('gender')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" required>
+                            <label class="form-label">{{ __('site.supervisor.users.form.password') }}</label>
+                            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label">Confirm Password</label>
+                            <label class="form-label">{{ __('site.supervisor.users.form.confirm_password') }}</label>
                             <input type="password" name="password_confirmation" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="d-flex gap-2 justify-content-end">
-                            <button type="button" class="btn btn-secondary" onclick="toggleUserForm()">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Create User</button>
+                            <button type="button" class="btn btn-secondary" onclick="toggleUserForm()">{{ __('site.supervisor.users.form.cancel') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ __('site.supervisor.users.form.create') }}</button>
                         </div>
                     </div>
                 </div>
@@ -81,23 +108,22 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>{{ __('site.supervisor.users.table.name') }}</th>
+                            <th>{{ __('site.supervisor.users.table.email') }}</th>
+                            <th>{{ __('site.supervisor.users.table.gender') }}</th>
+                            <th>{{ __('site.supervisor.users.table.role') }}</th>
+                            <th>{{ __('site.supervisor.users.table.status') }}</th>
+                            <th>{{ __('site.supervisor.users.table.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Sample Data -->
-
-
                         @foreach ($users as $user)
                         <tr>
-                            <td> {{$user->fName}}    {{ $user->lName }}   </td>
+                            <td>{{$user->fName}} {{ $user->lName }}</td>
                             <td>{{$user->email}}</td>
+                            <td>{{ucfirst($user->gender)}}</td>
                             <td><span class="badge bg-primary">Advisor</span></td>
-                            <td><span class="badge bg-success"></span></td>
+                            <td><span class="badge bg-success">{{ucfirst($user->status)}}</span></td>
                             <td>
                                 <button class="btn btn-sm btn-outline-primary">
                                     <i class="fa-solid fa-pen-to-square"></i>

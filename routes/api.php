@@ -22,3 +22,11 @@ use App\Http\Controllers\ApiController;
 Route::name('api.')->group(function(){
     Route::get('/get-user', [ApiController::class , 'getUsers']);
 });
+
+Route::name('api.')->group(function(){
+    Route::get('/get-student', [ApiController::class , 'getStudent']);
+});
+
+Route::name('api.')->group(function(){
+    Route::get('/get-Appoinment', [ApiController::class , 'getAppoinment']);
+});

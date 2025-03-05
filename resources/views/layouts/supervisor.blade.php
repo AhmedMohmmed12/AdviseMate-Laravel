@@ -6,9 +6,38 @@
     <title>{{ __('site.supervisor.dashboard.title') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    @if(app()->getLocale()=='en')
     <link rel="stylesheet" href="{{ asset('css/supervisor.css') }}">
+    @else
+    <link rel="stylesheet" href="{{ asset('css/supervisor.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    @endif
+    
+
+    @if(app()->getLocale()=='ar')
+    <style>
+        .rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+.font-cairo {
+    font-family: 'Cairo', sans-serif;
+}
+
+.rtl .ml-auto {
+    margin-left: unset !important;
+    margin-right: auto !important;
+}
+
+.rtl .mr-auto {
+    margin-right: unset !important;
+    margin-left: auto !important;
+}
+    </style>
+    @endif
 </head>
-<body>
+<body class="{{ app()->getLocale() === 'ar' ? 'rtl font-cairo' : '' }}">
     <nav class="supervisor-navbar">
         <div class="navbar-container">
             <a class="navbar-brand" href="#">

@@ -12,79 +12,51 @@
         
         <div class="card-body border-bottom d-none" id="userForm">
             <h6 class="mb-4">{{ __('site.supervisor.users.create_new') }}</h6>
-            @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
             <form action="{{ route('store') }}" method="POST">
+                @method("post")
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">{{ __('site.supervisor.users.form.first_name') }}</label>
-                            <input type="text" name="fName" class="form-control @error('fName') is-invalid @enderror" value="{{ old('fName') }}" required>
-                            @error('fName')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="text" name="fName" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">{{ __('site.supervisor.users.form.last_name') }}</label>
-                            <input type="text" name="lName" class="form-control @error('lName') is-invalid @enderror" value="{{ old('lName') }}" required>
-                            @error('lName')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="text" name="lName" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">{{ __('site.supervisor.users.form.email') }}</label>
-                            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required>
-                            @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="email" name="email" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">{{ __('site.supervisor.users.form.user_type') }}</label>
-                            <select name="role" class="form-select @error('role') is-invalid @enderror" required>
-                                <option value="" disabled {{ old('role') ? '' : 'selected' }}>{{ __('site.supervisor.users.form.select_role') }}</option>
-                                <option value="student" {{ old('role') == 'student' ? 'selected' : '' }}>{{ __('site.login.student') }}</option>
-                                <option value="advisor" {{ old('role') == 'advisor' ? 'selected' : '' }}>{{ __('site.login.advisor') }}</option>
+                            <select name="role" class="form-select" required>
+                                <option value="student">{{ __('site.login.student') }}</option>
+                                <option value="advisor">{{ __('site.login.advisor') }}</option>
                             </select>
-                            @error('role')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">{{ __('site.supervisor.users.form.gender') }}</label>
-                            <select name="gender" class="form-select @error('gender') is-invalid @enderror" required>
-                                <option value="" disabled {{ old('gender') ? '' : 'selected' }}>{{ __('site.supervisor.users.form.select_gender') }}</option>
-                                <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>{{ __('site.supervisor.users.form.male') }}</option>
-                                <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>{{ __('site.supervisor.users.form.female') }}</option>
+                            <select name="gender" class="form-select" required>
+                                <option value="" disabled selected>{{ __('site.supervisor.users.form.select_gender') }}</option>
+                                <option value="male">{{ __('site.supervisor.users.form.male') }}</option>
+                                <option value="female">{{ __('site.supervisor.users.form.female') }}</option>
                             </select>
-                            @error('gender')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">{{ __('site.supervisor.users.form.password') }}</label>
-                            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
-                            @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="password" name="password" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-md-6">

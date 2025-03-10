@@ -108,6 +108,10 @@
             <label class="form-check-label" for="remember">{{trans('site.login.remember_me')}}</label>
           </div>
 
+          <div>
+            <a href="{{ app()->getLocale()  == 'ar' ? '/en' :  '/ar'}}"> {{ app()->getLocale() == 'ar' ? 'English' : 'العربية' }} </a>
+          </div>
+
           <button type="submit" class="btn btn-primary mt-4 w-100">{{trans('site.login.login_button')}}</button>
         </form>
       </div>

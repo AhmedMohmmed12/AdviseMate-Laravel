@@ -38,7 +38,7 @@
                         <div class="form-group">
                             <label class="form-label">{{ __('site.supervisor.users.form.user_type') }}</label>
                             <select name="role" class="form-select" required>
-                                <option value="student">{{ __('site.login.student') }}</option>
+                                <option value="super_admin">{{ __('site.login.student') }}</option>
                                 <option value="advisor">{{ __('site.login.advisor') }}</option>
                             </select>
                         </div>

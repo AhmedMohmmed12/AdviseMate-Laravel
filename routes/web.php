@@ -4,7 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActivityLogController;
-
+use App\Http\Controllers\StudentDashboardController;
+use App\Http\Controllers\StudentAppointmentController;
+use App\Http\Controllers\StudentTicketController;
+use App\Http\Controllers\AdvisorDashboardController;
+use App\Http\Controllers\AdvisorAppointmentController;
+use App\Http\Controllers\AdvisorTicketController;
+use App\Http\Controllers\AdvisorStudentsController;
+use App\Http\Controllers\SupervisorController;
 // use LaravelLocalization
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +31,6 @@ Route::group(
 Route::get('/', function () {
     return view('auth.login');
 });
-Route::get("/test/ahmad" , [StudentController::class , "ahmad"]);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -32,54 +38,28 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::prefix('supervisor')->middleware(['auth'])->group(function () {
     Route::get('create' , [UserController::class , 'create'])->name('create');
     Route::post('store' , [UserController::class , 'store'])->name('store');
-    Route::get('/dashboard', function () {
-        return view('supervisor.dashboard');
-    })->name('supervisor.dashboard');
-    
+    Route::get('/dashboard', function () {return view('supervisor.dashboard');})->name('supervisor.dashboard');
     Route::get('users' , [UserController::class , 'index'])->name('index');
-
-    
-    Route::get('/activity-log', function () {
-        return view('supervisor.activitylog');
-    })->name('supervisor.activity-log');
+    Route::get('activity-log', [ActivityLogController::class, 'activityLog'])->name('activity-log');
+    Route::get('/supervisor/activity-log', [ActivityLogController::class, 'activityLog'])->name('supervisor.activity-log');
+    Route::get('permission', [SupervisorController::class, 'permission'])->name('permission');
 });
 
 
 Route::name('student.')->prefix('student')->group(function(){
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-    
-    Route::get('/appointment', function () {
-        return view('appointment');
-    })->name('appointment');
-    
-    Route::get('/ticket', function () {
-        return view('ticket');
-    })->name('ticket');
+    Route::get('dashboard',[StudentDashboardController::class, 'stDashboard'])->name('dashboard'); 
+    Route::get('appointment', [StudentAppointmentController::class,'stAppointment'])->name('appointment');
+    Route::get('ticket', [StudentTicketController::class,'stTicket'])->name('ticket');
 });
-
 
 
 Route::name('advisor.')->prefix('advisor')->group(function(){
-    Route::get('dashboard', function(){
-        return view('advisor.advisor-dashboard');
-    })->name('dashboard');
-    
-    Route::get('appointment', function(){
-        return view('advisor.advisor-appointment');
-    })->name('appointment');
-    
-    Route::get('ticket', function(){
-        return view('advisor.advisor-ticket');
-    })->name('ticket');
-    
-    Route::get('student', function(){
-        return view('advisor.advisor-student');
-    })->name('student');
+    Route::get('dashboard', [AdvisorDashboardController::class,'adDashboard'])->name('dashboard');
+    Route::get('appointment', [AdvisorAppointmentController::class,'adAppointment'])->name('appointment');
+    Route::get('ticket', [AdvisorTicketController::class,'adTicket'])->name('ticket');
+    Route::get('student', [AdvisorStudentsController::class,'adStudents'])->name('student');
     });
 });
 
-Route::get('/supervisor/activity-log', [ActivityLogController::class, 'index'])->name('supervisor.activity-log');
 
 

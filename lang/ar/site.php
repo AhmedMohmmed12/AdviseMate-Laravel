@@ -52,7 +52,8 @@ return [
         'email_placeholder' => 'أدخل بريدك الإلكتروني',
         'password' => 'كلمة المرور',
         'password_placeholder' => 'أدخل كلمة المرور',
-        'login_button' => 'تسجيل الدخول'
+        'login_button' => 'تسجيل الدخول',
+        'remember_me' => 'تذكرني'
     ],
     'advisor' => [
         'dashboard' => [
@@ -136,6 +137,8 @@ return [
         ],
         'users' => [
             'title' => 'إدارة المستخدمين',
+            'manage_users' => 'إدارة المستخدمين',
+            'manage_permissions' => 'إدارة الصلاحيات',
             'add_user' => 'إضافة مستخدم',
             'create_new' => 'إنشاء مستخدم جديد',
             'form' => [

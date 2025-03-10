@@ -51,7 +51,8 @@ return [
         'email_placeholder' => 'Enter your email',
         'password' => 'Password',
         'password_placeholder' => 'Enter your password',
-        'login_button' => 'Login'
+        'login_button' => 'Login',
+        'remember_me' => 'Remember Me'
     ],
     'advisor' => [
         'dashboard' => [
@@ -134,7 +135,9 @@ return [
             'issues' => 'Issues'
         ],
         'users' => [
-            'title' => 'Manage Users',
+            'title' => 'User Management',
+            'manage_users' => 'Manage Users',
+            'manage_permissions' => 'Manage Permissions',
             'add_user' => 'Add User',
             'create_new' => 'Create New User',
             'form' => [

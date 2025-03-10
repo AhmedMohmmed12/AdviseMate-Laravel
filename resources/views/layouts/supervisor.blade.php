@@ -22,7 +22,7 @@
 }
 
 .font-cairo {
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Cairo';
 }
 
 .rtl .ml-auto {
@@ -44,13 +44,27 @@
                 <i class="fa-solid fa-user-shield"></i> {{ __('site.supervisor.dashboard.title') }}
             </a>
             <div class="nav-links">
-                <a href="{{ route('supervisor.dashboard') }}" class="nav-item {{ Request::is('supervisor/dashboard') ? 'active' : '' }}">
+                @if (auth()->user()->hasRole('super_admin'))
+                <a href="{{ route('supervisor.dashboard') }}" class="nav-item>">
                     <i class="fa-solid fa-gauge"></i> {{ __('site.sidebar.home') }}
                 </a>
-                <a href="{{ route('index') }}" class="nav-item">
-                    <i class="fa-solid fa-users"></i> {{ __('site.supervisor.users.title') }}
-                </a>
-                <a href="{{ route('supervisor.activity-log') }}" class="nav-item {{ Request::is('supervisor/activity-log') ? 'active' : '' }}">
+                @endif
+               
+                
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" id="usersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-users"></i> {{ __('site.supervisor.users.title') }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('index') }}">
+                            <i class="fa-solid fa-user-group"></i> {{ __('site.supervisor.users.manage_users') }}
+                        </a></li>
+                        <li><a class="dropdown-item" href="{{ route('permission') }}">
+                            <i class="fa-solid fa-key"></i> {{ __('site.supervisor.users.manage_permissions') }}
+                        </a></li>
+                    </ul>
+                </div>
+                <a href="{{ route('supervisor.activity-log') }}" class="nav-item">
                     <i class="fa-solid fa-clock-rotate-left"></i> {{ __('site.supervisor.activity_log.title') }}
                 </a>
             </div>

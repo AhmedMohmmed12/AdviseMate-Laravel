@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 class SupervisorController extends Controller
 {
-    public function dashboard()
+    public function permission()
     {
-        return view('supervisor.dashboard');
+        return view('supervisor.permission');
     }
 } 

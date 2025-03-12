@@ -37,9 +37,8 @@ class SupervisorLoginController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::guard('supervisor')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('supervisor.login');
+       
+        auth()->logout(); 
+        return redirect()->route('login');
     }
 } 

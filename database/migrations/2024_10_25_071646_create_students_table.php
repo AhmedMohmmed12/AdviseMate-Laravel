@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('password');
             $table->unsignedBigInteger("ticket_type_detail_id");
             $table->unsignedBigInteger("user_id");
-
+            
             $table->rememberToken();
             $table->timestamps();
 

@@ -68,6 +68,7 @@
                     <i class="fa-solid fa-clock-rotate-left"></i> {{ __('site.supervisor.activity_log.title') }}
                 </a>
             </div>
+            <div> {{ auth()->user()->fName }}  {{ auth()->user()->lName }}</div>
             <div class="user-dropdown">
                 <button class="dropdown-toggle">
                     <i class="fa-solid fa-circle-user"></i>
@@ -80,6 +81,7 @@
                             <i class="fa-solid fa-right-from-bracket"></i> {{ __('site.sidebar.logout') }}
                         </button>
                     </form>
+                    div
                 </div>
             </div>
         </div>

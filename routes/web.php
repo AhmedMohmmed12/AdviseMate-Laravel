@@ -42,7 +42,7 @@ Route::name('supervisor.')->prefix('supervisor')->group(function () {
     Route::post('login', [SupervisorLoginController::class, 'login']);
     
     // Protected routes - require supervisor authentication
-    Route::middleware('supervisor')->group(function () {
+    Route::middleware(['auth'])->group(function () {
         Route::get('create', [UserController::class, 'create'])->name('create');
         Route::post('store', [UserController::class, 'store'])->name('store');
         Route::get('dashboard', function () { return view('supervisor.dashboard'); })->name('dashboard');
@@ -53,15 +53,15 @@ Route::name('supervisor.')->prefix('supervisor')->group(function () {
     });
 });
 
-// middleware(['auth', 'role:student'])->
-Route::name('student.')->prefix('student')->group(function(){
+
+Route::name('student.')->middleware(['auth'])->prefix('student')->group(function(){
     Route::get('dashboard',[StudentDashboardController::class, 'stDashboard'])->name('dashboard'); 
     Route::get('appointment', [StudentAppointmentController::class,'stAppointment'])->name('appointment');
     Route::get('ticket', [StudentTicketController::class,'stTicket'])->name('ticket');
 });
 
 
-Route::name('advisor.')->prefix('advisor')->middleware(['auth', 'role:advisor'])->group(function(){
+Route::name('advisor.')->prefix('advisor')->middleware(['auth'])->group(function(){
     Route::get('dashboard', [AdvisorDashboardController::class,'adDashboard'])->name('dashboard');
     Route::get('appointment', [AdvisorAppointmentController::class,'adAppointment'])->name('appointment');
     Route::get('ticket', [AdvisorTicketController::class,'adTicket'])->name('ticket');

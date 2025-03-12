@@ -39,6 +39,7 @@ return [
         'tickets' => 'Tickets',
         'appointments' => 'Appointments',
         'profile' => 'Profile',
+        'logout' => 'Logout',
         'settings' => 'Settings'
     ],
     'login' => [
@@ -140,6 +141,7 @@ return [
             'manage_permissions' => 'Manage Permissions',
             'add_user' => 'Add User',
             'create_new' => 'Create New User',
+            'added_successfully' => 'User added successfully',
             'form' => [
                 'first_name' => 'First Name',
                 'last_name' => 'Last Name',
@@ -172,6 +174,14 @@ return [
             'view_details' => 'View Details',
             'no_details' => 'No additional details',
             'system' => 'System'
+        ],
+        'login' => [
+            'title' => 'Supervisor Login',
+            'email' => 'Email',
+            'password' => 'Password',
+            'remember_me' => 'Remember Me',
+            'submit' => 'Login',
+            'failed' => 'Invalid email or password.'
         ]
     ]
 ];

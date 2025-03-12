@@ -21,5 +21,9 @@ class RoleSeeder extends Seeder
         Role::create([
             'name' => 'advisor',
         ]);
+
+        Role::create([
+            'name' => 'student',
+        ]);
     }
 }

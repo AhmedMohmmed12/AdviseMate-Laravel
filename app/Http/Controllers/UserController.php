@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -12,9 +13,7 @@ class UserController extends Controller
     }
 
     public function index(){
-
         $users = User::all();
-        // dd($users);
         return view('supervisor.users' , compact('users'));
     }
 
@@ -24,20 +23,18 @@ class UserController extends Controller
         $this->validate($request , [
             'fName' => 'required|min:3',
             'email' => 'email|unique:users',
-            'password' => 'confirmed'
+            'password' => 'required'
         ]);
-            // dd($request->role);
+
         User::create([
             'fName' => $request->fName , 
             'lName' => $request->lName , 
             'email' => $request->email ,
             'gender' => $request->gender ,
-            "password" => sha1($request->password) 
+            "password" => Hash::make($request->password)
         ])->assignRole($request->role);
 
-        
-        session()->flash('success' , trans('site.added_successfully'));
-        // return back();
+        session()->flash('success' , trans('site.supervisor.users.added_successfully'));
         return view('supervisor.users');
     }
 }

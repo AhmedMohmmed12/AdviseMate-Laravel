@@ -51,9 +51,9 @@ class User extends Authenticatable
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'email', 'status']) // modify these fields based on what you want to track
-            ->logOnlyDirty() // only log changed attributes
+            ->logOnly(['name', 'email', 'status']) 
+            ->logOnlyDirty() 
             ->setDescriptionForEvent(fn(string $eventName) => "User has been {$eventName}")
-            ->useLogName('user'); // this helps categorize different types of logs
+            ->useLogName('user');
     }
 }

@@ -44,22 +44,22 @@
                 <i class="fa-solid fa-user-shield"></i> {{ __('site.supervisor.dashboard.title') }}
             </a>
             <div class="nav-links">
-                @if (auth()->user()->hasRole('super_admin'))
+                {{-- @if (auth()->user()->hasRole('super_admin')) --}}
                 <a href="{{ route('supervisor.dashboard') }}" class="nav-item>">
                     <i class="fa-solid fa-gauge"></i> {{ __('site.sidebar.home') }}
                 </a>
-                @endif
-               
+                {{-- @endif --}}
+                
                 
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" id="usersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-solid fa-users"></i> {{ __('site.supervisor.users.title') }}
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ route('index') }}">
+                        <li><a class="dropdown-item" href="{{ route('supervisor.index') }}">
                             <i class="fa-solid fa-user-group"></i> {{ __('site.supervisor.users.manage_users') }}
                         </a></li>
-                        <li><a class="dropdown-item" href="{{ route('permission') }}">
+                        <li><a class="dropdown-item" href="{{ route('supervisor.permission') }}">
                             <i class="fa-solid fa-key"></i> {{ __('site.supervisor.users.manage_permissions') }}
                         </a></li>
                     </ul>
@@ -74,7 +74,12 @@
                 </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#"><i class="fa-solid fa-gear"></i> {{ __('site.sidebar.profile') }}</a>
-                    <a class="dropdown-item" href="#"><i class="fa-solid fa-right-from-bracket"></i> {{ __('site.login.login_button') }}</a>
+                    <form action="{{ route('supervisor.logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="dropdown-item">
+                            <i class="fa-solid fa-right-from-bracket"></i> {{ __('site.sidebar.logout') }}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

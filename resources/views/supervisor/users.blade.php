@@ -12,7 +12,7 @@
         
         <div class="card-body border-bottom d-none" id="userForm">
             <h6 class="mb-4">{{ __('site.supervisor.users.create_new') }}</h6>
-            <form action="{{ route('store') }}" method="POST">
+            <form action="{{ route('supervisor.store') }}" method="POST">
                 @method("post")
                 @csrf
                 <div class="row g-3">

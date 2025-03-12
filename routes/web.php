@@ -12,6 +12,7 @@ use App\Http\Controllers\AdvisorAppointmentController;
 use App\Http\Controllers\AdvisorTicketController;
 use App\Http\Controllers\AdvisorStudentsController;
 use App\Http\Controllers\SupervisorController;
+use App\Http\Controllers\Auth\SupervisorLoginController;
 // use LaravelLocalization
 /*
 |--------------------------------------------------------------------------
@@ -35,17 +36,24 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::prefix('supervisor')->middleware(['auth'])->group(function () {
-    Route::get('create' , [UserController::class , 'create'])->name('create');
-    Route::post('store' , [UserController::class , 'store'])->name('store');
-    Route::get('/dashboard', function () {return view('supervisor.dashboard');})->name('supervisor.dashboard');
-    Route::get('users' , [UserController::class , 'index'])->name('index');
-    Route::get('activity-log', [ActivityLogController::class, 'activityLog'])->name('activity-log');
-    Route::get('/supervisor/activity-log', [ActivityLogController::class, 'activityLog'])->name('supervisor.activity-log');
-    Route::get('permission', [SupervisorController::class, 'permission'])->name('permission');
+Route::name('supervisor.')->prefix('supervisor')->group(function () {
+    // Public routes (login)
+    Route::get('login', [SupervisorLoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [SupervisorLoginController::class, 'login']);
+    
+    // Protected routes - require supervisor authentication
+    Route::middleware('supervisor')->group(function () {
+        Route::get('create', [UserController::class, 'create'])->name('create');
+        Route::post('store', [UserController::class, 'store'])->name('store');
+        Route::get('dashboard', function () { return view('supervisor.dashboard'); })->name('dashboard');
+        Route::get('users', [UserController::class, 'index'])->name('index');
+        Route::get('activity-log', [ActivityLogController::class, 'activityLog'])->name('activity-log');
+        Route::get('permission', [SupervisorController::class, 'permission'])->name('permission');
+        Route::post('logout', [SupervisorLoginController::class, 'logout'])->name('logout');
+    });
 });
 
-
+// middleware(['auth', 'role:student'])->
 Route::name('student.')->prefix('student')->group(function(){
     Route::get('dashboard',[StudentDashboardController::class, 'stDashboard'])->name('dashboard'); 
     Route::get('appointment', [StudentAppointmentController::class,'stAppointment'])->name('appointment');
@@ -53,12 +61,12 @@ Route::name('student.')->prefix('student')->group(function(){
 });
 
 
-Route::name('advisor.')->prefix('advisor')->group(function(){
+Route::name('advisor.')->prefix('advisor')->middleware(['auth', 'role:advisor'])->group(function(){
     Route::get('dashboard', [AdvisorDashboardController::class,'adDashboard'])->name('dashboard');
     Route::get('appointment', [AdvisorAppointmentController::class,'adAppointment'])->name('appointment');
     Route::get('ticket', [AdvisorTicketController::class,'adTicket'])->name('ticket');
     Route::get('student', [AdvisorStudentsController::class,'adStudents'])->name('student');
-    });
+});
 });
 
 

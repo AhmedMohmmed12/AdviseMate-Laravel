@@ -54,23 +54,16 @@ class LoginController extends Controller
 
         if ($this->attemptLogin($request)) {
             $user = Auth::user();
-            
-            // Check if user has the selected role
-            if (!$user->hasRole($request->role)) {
-                Auth::logout();
-                return back()->withErrors([
-                    'role' => 'You do not have access to login with this role.'
-                ]);
-            }
 
-            // Redirect based on role
-            if ($user->hasRole('student')) {
-                return redirect()->route('student.dashboard');
-            } elseif ($user->hasRole('advisor')) {
-                return redirect()->route('advisor.dashboard');
-            } elseif ($user->hasRole('super_admin')) {
-                return redirect()->route('supervisor.dashboard');
-            }
+
+            // // Redirect based on role
+            // if ($user->hasRole('student')) {
+            //     return redirect()->route('student.dashboard');
+            // } elseif ($user->hasRole('advisor')) {
+            //     return redirect()->route('advisor.dashboard');
+            // } elseif ($user->hasRole('super_admin')) {
+            //     return redirect()->route('supervisor.dashboard');
+            // }
         }
 
         return $this->sendFailedLoginResponse($request);

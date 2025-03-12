@@ -13,7 +13,8 @@ class UserController extends Controller
     }
 
     public function index(){
-        $users = User::all();
+        $users = User::where('id' , '!=' , auth()->id())->where('id','!=',1)->get();
+
         return view('supervisor.users' , compact('users'));
     }
 

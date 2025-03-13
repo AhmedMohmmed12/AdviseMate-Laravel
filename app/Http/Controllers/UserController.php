@@ -24,6 +24,7 @@ class UserController extends Controller
         $this->validate($request , [
             'fName' => 'required|min:3',
             'email' => 'email|unique:users',
+            'mobileNumber' => 'required|unique:users|min:10|max:13',
             'password' => 'required'
         ]);
 
@@ -31,6 +32,7 @@ class UserController extends Controller
             'fName' => $request->fName , 
             'lName' => $request->lName , 
             'email' => $request->email ,
+            'mobileNumber' => $request->mobileNumber ,
             'gender' => $request->gender ,
             "password" => Hash::make($request->password),
             "status" => $request->status

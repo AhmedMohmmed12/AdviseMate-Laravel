@@ -36,6 +36,12 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label class="form-label">{{ __('site.supervisor.users.form.mobileNumber') }}</label>
+                            <input type="number" name="mobileNumber" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label class="form-label">{{ __('site.supervisor.users.form.user_type') }}</label>
                             <select name="role" class="form-select" required>
                                 <option value="super_admin">{{ __('site.login.student') }}</option>
@@ -96,6 +102,7 @@
                         <tr>
                             <th>{{ __('site.supervisor.users.table.name') }}</th>
                             <th>{{ __('site.supervisor.users.table.email') }}</th>
+                            <th>{{ __('site.supervisor.users.table.mobileNumber') }}</th>
                             <th>{{ __('site.supervisor.users.table.gender') }}</th>
                             <th>{{ __('site.supervisor.users.table.role') }}</th>
                             <th>{{ __('site.supervisor.users.table.status') }}</th>
@@ -107,6 +114,7 @@
                         <tr>
                             <td>{{$user->fName}} {{ $user->lName }}</td>
                             <td>{{$user->email}}</td>
+                            <td>{{$user->mobileNumber}}</td>
                             <td>{{ucfirst($user->gender)}}</td>
                             <td><span class="badge bg-primary">Advisor</span></td>
                             <td><span class="badge bg-success">{{ucfirst($user->status)}}</span></td>

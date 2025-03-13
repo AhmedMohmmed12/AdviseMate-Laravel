@@ -149,6 +149,7 @@ return [
                 'first_name' => 'الاسم الأول',
                 'last_name' => 'اسم العائلة',
                 'email' => 'البريد الإلكتروني',
+                'mobileNumber' => 'رقم الجوال',
                 'user_type' => 'نوع المستخدم',
                 'gender' => 'الجنس',
                 'select_gender' => 'اختر الجنس',
@@ -166,6 +167,7 @@ return [
             'table' => [
                 'name' => 'الاسم',
                 'email' => 'البريد الإلكتروني',
+                'mobileNumber' => 'رقم الجوال',
                 'gender' => 'الجنس',
                 'role' => 'الدور',
                 'status' => 'الحالة',

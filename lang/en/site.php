@@ -148,6 +148,7 @@ return [
                 'first_name' => 'First Name',
                 'last_name' => 'Last Name',
                 'email' => 'Email',
+                'mobileNumber' => 'Mobile Number',
                 'user_type' => 'User Type',
                 'gender' => 'Gender',
                 'select_gender' => 'Select Gender',
@@ -165,6 +166,7 @@ return [
             'table' => [
                 'name' => 'Name',
                 'email' => 'Email',
+                'mobileNumber' => 'Mobile Number',
                 'gender' => 'Gender',
                 'role' => 'Role',
                 'status' => 'Status',

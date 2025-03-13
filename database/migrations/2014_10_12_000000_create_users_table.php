@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('gender' , ['male' , 'female']);
             $table->enum('status' , ['active' , 'inactive']);
             $table->string('email')->unique();
+            $table->string('mobileNumber')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

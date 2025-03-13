@@ -19,6 +19,7 @@ class UserSeeser extends Seeder
             'lName'  => "test" ,
             'email' => "superadmin@advisemate.com",
             'gender' => 'male',
+            'mobileNumber' => '0553201234',
             'password' => bcrypt(123123)    
         ])->assignRole('super_admin');
     }

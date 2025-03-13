@@ -34,7 +34,7 @@ Route::get('/', function () {
 });
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::name('supervisor.')->middleware(['auth'])->prefix('supervisor')->group(function () {
     // Public routes (login)
@@ -44,10 +44,13 @@ Route::name('supervisor.')->middleware(['auth'])->prefix('supervisor')->group(fu
     // Protected routes - require supervisor authentication
         Route::get('create', [UserController::class, 'create'])->name('create');
         Route::post('store', [UserController::class, 'store'])->name('store');
+        Route::post('delete/{id}', [UserController::class, 'delete'])->name('delete');
+        Route::put('edit/{id}', [UserController::class, 'edit'])->name('edit');
         Route::get('dashboard', function () { return view('supervisor.dashboard'); })->name('dashboard');
         Route::get('users', [UserController::class, 'index'])->name('index');
         Route::get('activity-log', [ActivityLogController::class, 'activityLog'])->name('activity-log');
         Route::get('permission', [SupervisorController::class, 'permission'])->name('permission');
+        Route::get('profile', [SupervisorController::class, 'profile'])->name('profile');
         Route::post('logout', [SupervisorLoginController::class, 'logout'])->name('logout');
 });
 

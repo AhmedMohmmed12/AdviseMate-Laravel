@@ -40,17 +40,13 @@
 <body class="{{ app()->getLocale() === 'ar' ? 'rtl font-cairo' : '' }}">
     <nav class="supervisor-navbar">
         <div class="navbar-container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ route('supervisor.dashboard') }}">
                 <i class="fa-solid fa-user-shield"></i> {{ __('site.supervisor.dashboard.title') }}
             </a>
             <div class="nav-links">
-                {{-- @if (auth()->user()->hasRole('super_admin')) --}}
-                <a href="{{ route('supervisor.dashboard') }}" class="nav-item>">
+                <a href="{{ route('supervisor.dashboard') }}" class="nav-item {{ request()->routeIs('supervisor.dashboard') ? 'active' : '' }}">
                     <i class="fa-solid fa-gauge"></i> {{ __('site.sidebar.home') }}
                 </a>
-                {{-- @endif --}}
-                
-                
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" id="usersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-solid fa-users"></i> {{ __('site.supervisor.users.title') }}
@@ -64,24 +60,23 @@
                         </a></li>
                     </ul>
                 </div>
-                <a href="{{ route('supervisor.activity-log') }}" class="nav-item">
+                <a href="{{ route('supervisor.activity-log') }}" class="nav-item {{ request()->routeIs('supervisor.activity-log') ? 'active' : '' }}">
                     <i class="fa-solid fa-clock-rotate-left"></i> {{ __('site.supervisor.activity_log.title') }}
                 </a>
             </div>
-            <div> {{ auth()->user()->fName }}  {{ auth()->user()->lName }}</div>
             <div class="user-dropdown">
                 <button class="dropdown-toggle">
                     <i class="fa-solid fa-circle-user"></i>
+                    <span class="user-display">{{ ucfirst(auth()->user()->fName) }}</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"><i class="fa-solid fa-gear"></i> {{ __('site.sidebar.profile') }}</a>
+                    <a class="dropdown-item" href="{{ route('supervisor.profile') }}"><i class="fa-solid fa-gear"></i> {{ __('site.sidebar.profile') }}</a>
                     <form action="{{ route('supervisor.logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="dropdown-item">
                             <i class="fa-solid fa-right-from-bracket"></i> {{ __('site.sidebar.logout') }}
                         </button>
                     </form>
-                    div
                 </div>
             </div>
         </div>

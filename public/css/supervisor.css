@@ -36,8 +36,13 @@
     transition: color 0.3s ease;
 }
 
-.nav-item:hover, .nav-item.active {
+.nav-item:hover{
     color: #3498db;
+}
+
+.user-display {
+    color: white;
+    margin-right: 0.5rem;
 }
 
 .user-dropdown {
@@ -47,7 +52,7 @@
 .dropdown-toggle {
     background: none;
     border: none;
-    color: white;
+    color: #bdc3c7;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -58,7 +63,7 @@
     display: none;
     position: absolute;
     right: 0;
-    background: white;
+
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     border-radius: 5px;
     padding: 0.5rem;
@@ -76,11 +81,12 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .dropdown-item:hover {
     background: #f8f9fa;
+    color: #3498db; /* Brighter color for hover state */
 }
 
 .main-content {
@@ -107,6 +113,28 @@
 .btn-primary {
     background-color: #3498db;
     border-color: #3498db;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+.form-group1 {
+    margin-bottom: 1.5rem;
+}
+
+.form-control1 {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+.form-control1:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
 }
 
 .btn-primary:hover {

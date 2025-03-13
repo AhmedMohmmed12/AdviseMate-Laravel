@@ -32,10 +32,30 @@ class UserController extends Controller
             'lName' => $request->lName , 
             'email' => $request->email ,
             'gender' => $request->gender ,
-            "password" => Hash::make($request->password)
+            "password" => Hash::make($request->password),
+            "status" => $request->status
         ])->assignRole($request->role);
-
-        session()->flash('success' , trans('site.supervisor.users.added_successfully'));
-        return view('supervisor.users');
+        return redirect()->route('supervisor.index')->with('success' , trans('site.supervisor.users.added_successfully'));
     }
+
+    public function delete($id){
+        User::destroy($id);
+        return redirect()->route('supervisor.index')->with('success',trans('site.supervisor.users.deleted_successfully'));
+    }
+    
+    public function edit($id, Request $request){
+        $user = User::findOrFail($id);
+
+    // Only take fields that are provided and remove null values
+    $data = array_filter($request->only(['fName', 'lName', 'email', 'status']), function ($value) {
+        return $value !== null;
+    });
+
+    // Only update if there is any data provided
+    if (!empty($data)) {
+        $user->update($data);
+    }
+        return redirect()->route('supervisor.index')->with('success', trans('site.supervisor.users.updated_successfully'));
+    }
+    
 }

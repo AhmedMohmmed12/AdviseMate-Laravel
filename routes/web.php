@@ -13,6 +13,7 @@ use App\Http\Controllers\AdvisorTicketController;
 use App\Http\Controllers\AdvisorStudentsController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\Auth\SupervisorLoginController;
+use Illuminate\Http\Request;
 // use LaravelLocalization
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,8 @@ Route::name('supervisor.')->middleware(['auth'])->prefix('supervisor')->group(fu
         Route::get('activity-log', [ActivityLogController::class, 'activityLog'])->name('activity-log');
         Route::get('permission', [SupervisorController::class, 'permission'])->name('permission');
         Route::get('profile', [SupervisorController::class, 'profile'])->name('profile');
+        Route::put('profile/{id}', [SupervisorController::class, 'profileEdit'])->name('profile.edit');
+        Route::post('profile/password', [SupervisorController::class, 'changePassword'])->name('profile.password');
         Route::post('logout', [SupervisorLoginController::class, 'logout'])->name('logout');
 });
 

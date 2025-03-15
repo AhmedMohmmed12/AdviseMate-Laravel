@@ -184,6 +184,20 @@ return [
             'no_details' => 'لا توجد تفاصيل إضافية',
             'system' => 'النظام'
         ],
+        'profile' => [
+            'personal_info' => 'المعلومات الشخصية',
+            'fname' => 'الاسم الأول',
+            'lname' => 'اسم العائلة',
+            'email' => 'البريد الإلكتروني',
+            'mobile' => 'رقم الجوال',
+            'update_profile' => 'تحديث البيانات',
+            'change_password' => 'تغيير كلمة المرور',
+            'current_password' => 'كلمة المرور الحالية',
+            'new_password' => 'كلمة المرور الجديدة',
+            'confirm_password' => 'تأكيد كلمة المرور',
+            'password_updated' => 'تم تحديث كلمة المرور بنجاح',
+            'current_password_incorrect' => 'كلمة المرور الحالية غير صحيحة',
+        ],
         'login' => [
             'title' => 'تسجيل دخول المشرف',
             'email' => 'البريد الإلكتروني',

@@ -183,6 +183,21 @@ return [
             'no_details' => 'No additional details',
             'system' => 'System'
         ],
+        'profile' => [
+            'personal_info' => 'Personal Information',
+            'fname' => 'First Name',
+            'lname' => 'Last Name',
+            'email' => 'Email',
+            'mobile' => 'Mobile Number',
+            'update_profile' => 'Update Profile',
+            'change_password' => 'Change Password',
+            'current_password' => 'Current Password',
+            'new_password' => 'New Password',
+            'confirm_password' => 'Confirm Password',
+            'password_updated' => 'Password updated successfully',
+            'current_password_incorrect' => 'Current password is incorrect'
+            
+        ],
         'login' => [
             'title' => 'Supervisor Login',
             'email' => 'Email',

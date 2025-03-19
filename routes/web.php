@@ -13,6 +13,7 @@ use App\Http\Controllers\AdvisorTicketController;
 use App\Http\Controllers\AdvisorStudentsController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\Auth\SupervisorLoginController;
+use App\Http\Controllers\AdvisorAvailabilityController;
 use Illuminate\Http\Request;
 // use LaravelLocalization
 /*
@@ -67,9 +68,17 @@ Route::name('student.')->middleware(['auth'])->prefix('student')->group(function
 
 Route::name('advisor.')->prefix('advisor')->middleware(['auth'])->group(function(){
     Route::get('dashboard', [AdvisorDashboardController::class,'adDashboard'])->name('dashboard');
-    Route::get('appointment', [AdvisorAppointmentController::class,'adAppointment'])->name('appointment');
+    Route::get('appointment', [AdvisorAvailabilityController::class,'index'])->name('appointment');
     Route::get('ticket', [AdvisorTicketController::class,'adTicket'])->name('ticket');
     Route::get('student', [AdvisorStudentsController::class,'adStudents'])->name('student');
+    
+    // Availability Routes
+    Route::prefix('availability')->middleware(['auth'])->group(function() {
+        Route::post('/', [AdvisorAvailabilityController::class, 'store'])->name('availability.store');
+        Route::put('/{availability}', [AdvisorAvailabilityController::class, 'update'])->name('availability.update');
+        Route::post('/{availability}', [AdvisorAvailabilityController::class, 'delete'])->name('availability.delete');
+        Route::get('/fetch', [AdvisorAvailabilityController::class, 'fetch'])->name('availability.fetch');
+});
 });
 });
 

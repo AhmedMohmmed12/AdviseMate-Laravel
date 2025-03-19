@@ -117,7 +117,7 @@
                             <td>{{$user->mobileNumber}}</td>
                             <td>{{ucfirst($user->gender)}}</td>
                             <td><span class="badge bg-primary">Advisor</span></td>
-                            <td><span class="badge bg-success">{{ucfirst($user->status)}}</span></td>
+                            <td><span class="badge bg-{{ $user->status == 'active'?'success':'danger'}}">{{ucfirst($user->status)}}</span></td>
                             <td>
                                 <!-- Buttons Container -->
                                 <div class="d-flex gap-2 align-items-center">

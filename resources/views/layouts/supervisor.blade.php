@@ -34,6 +34,15 @@
     margin-right: unset !important;
     margin-left: auto !important;
 }
+.sidebar {
+            text-align: right;
+        }
+        .nav-item i {
+            transform: scaleX(-1);
+            margin-left: 8px;
+            margin-right: 0;
+        }
+    </style>
     </style>
     @endif
 </head>

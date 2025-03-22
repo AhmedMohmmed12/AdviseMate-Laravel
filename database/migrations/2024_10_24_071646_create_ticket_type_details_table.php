@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger("student_id");
             $table->unsignedBigInteger("user_id");
             $table->enum("ticket_status" , ["pending" , "completed" , "rejected"]); 
+            $table->string("ticket_description");
             $table->timestamps();
             //$table->foreign('student_id')->references('id')->on('students'); 
             //$table->foreign('user_id')->references('id')->on('users'); 

@@ -135,7 +135,7 @@
                     axios.post(`/advisor/availability/${info.event.id}`)
                         .then(() => {
                             info.event.remove();
-                            toastr.success('Availability slot has been deleted');
+                            toastr.warning('Availability slot has been deleted');
                         })
                         .catch(error => {
                             toastr.error(error.response?.data?.message || 'Failed to delete availability slot');

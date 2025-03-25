@@ -59,7 +59,7 @@ Route::name('supervisor.')->middleware(['auth'])->prefix('supervisor')->group(fu
 });
 
 
-Route::name('student.')->middleware(['auth'])->prefix('student')->group(function(){
+Route::name('student.')->prefix('student')->group(function(){
     Route::get('dashboard',[StudentDashboardController::class, 'stDashboard'])->name('dashboard'); 
     Route::get('appointment', [StudentAppointmentController::class,'stAppointment'])->name('appointment');
     Route::get('ticket', [StudentTicketController::class,'stTicket'])->name('ticket');
@@ -80,8 +80,8 @@ Route::name('advisor.')->prefix('advisor')->middleware(['auth'])->group(function
         Route::get('/fetch', [AdvisorAvailabilityController::class, 'fetch'])->name('availability.fetch');
 });
 });
-
-Route::get('types', [StudentTicketController::class, 'ticketType']);
+Route::get('/ticket', [StudentTicketController::class, 'stTicket']);
+Route::get('/get-ticket-types', [StudentTicketController::class, 'getAllTicketTypes']);
 });
 
 

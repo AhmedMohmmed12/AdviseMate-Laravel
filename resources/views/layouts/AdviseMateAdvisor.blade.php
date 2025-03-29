@@ -5,6 +5,9 @@
     <title>@yield('title')</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/advisor.css') }}">
 </head>
 <body>
@@ -19,6 +22,22 @@
     </div>
     <nav class="col-md-3 col-lg-2 sidebar" id="sidebar">
         <h2>{{ trans('site.sidebar.logo') }}</h2>
+        @if(auth()->user()->hasRole('advisor'))
+        <a href="{{ route('advisor.dashboard') }}" class="{{ request()->routeIs('advisor.dashboard') ? 'active' : '' }}">
+            <i class="fas fa-home mr-2"></i>Home
+        </a>
+        <a href="{{ route('advisor.ticket') }}" class="{{ request()->routeIs('advisor.ticket') ? 'active' : '' }}">
+            <i class="fas fa-ticket-alt mr-2"></i>Tickets
+        </a>
+        <a href="{{ route('advisor.appointment') }}" class="{{ request()->routeIs('advisor.appointment') ? 'active' : '' }}">
+            <i class="fas fa-calendar-alt mr-2"></i>Appointments
+        </a>
+        <a href="{{ route('advisor.student') }}" class="{{ request()->routeIs('advisor.student') ? 'active' : '' }}">
+            <i class="fas fa-user-graduate mr-2"></i>Manage Students
+        </a>
+        @endif
+
+        @if(auth()->user()->hasRole('super_admin'))
         <a href="{{ route('supervisor.dashboard') }}" class="{{ request()->routeIs('supervisor.dashboard') ? 'active' : '' }}">
             <i class="fas fa-home mr-2"></i>{{ trans('site.sidebar.home') }}</a>
         
@@ -32,7 +51,7 @@
             <a href="{{ route('supervisor.index') }}" class="submenu-item {{ request()->routeIs('supervisor.index') ? 'active' : '' }}">
                 <i class="fas fa-users mr-2"></i>{{ trans('site.supervisor.users.manage_users') }}</a>
             <a href="{{ route('supervisor.permission') }}" class="submenu-item {{ request()->routeIs('supervisor.permission') ? 'active' : '' }}">
-                <i class="fas fa-key mr-2"></i>Manage Permissions</a>
+                <i class="fas fa-key mr-2"></i>{{ trans('site.supervisor.users.manage_permissions') }}</a>
         </div>
         
         <a href="{{ route('supervisor.activity-log') }}" class="{{ request()->routeIs('supervisor.activity-log') ? 'active' : '' }}">
@@ -55,6 +74,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </nav>
     
     

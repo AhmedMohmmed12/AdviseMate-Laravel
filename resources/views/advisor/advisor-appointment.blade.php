@@ -1,10 +1,9 @@
-@extends('layouts.HeadAdvisor')
+@extends('layouts.AdviseMateAdvisor')
+@section('title','Appointment')
 @section('content')
-    <x-advsidebar />
+
     
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
     
     <div class="main-content">
         <h1 class="header">{{trans('site.advisor.appointments.title')}}</h1>

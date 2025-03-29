@@ -1,80 +1,82 @@
-@extends('layouts.supervisor')
-
+@extends('layouts.AdviseMateAdvisor')
+@section('title','Profile')
 @section('content')
-<div class="profile-container">
-    <div class="row g-4">
-        <!-- Personal Information Section -->
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">{{ __('site.supervisor.profile.personal_info') }}</h4>
-
-                    <button id="editButton" type="button" class="btn btn-secondary mb-3">{{ __('Edit') }}</button>
-                    <form id="profileForm" method="POST" action="{{ route('supervisor.profile.edit', Auth::id()) }}">
-                        @csrf
-                        @method('PUT')
-                        <div class="mb-3">
-                            <label class="form-label">{{ __('site.supervisor.profile.fname') }}</label>
-                            <input type="text" class="form-control" value="{{ Auth::user()->fName }}" name="fName" disabled>
-                        </div>
+<div class="container-fluid p-0">
+    <div class="row no-gutters">
+        <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4 content">
+            <div class="mt-4 mb-4">
+                <h2>{{ __('site.supervisor.profile.personal_info') }}</h2>
+            </div>
+            <div class="row">
+                <!-- Personal Information Section -->
+                <div class="col-md-6">
+                    <div class="profile-card">
+                        <h3>{{ __('site.supervisor.profile.personal_info') }}</h3>
+                        <button id="editButton" type="button" class="btn btn-sm btn-secondary mb-3">{{ __('Edit') }}</button>
                         
-                        <div class="mb-3">
-                            <label class="form-label">{{ __('site.supervisor.profile.lname') }}</label>
-                            <input type="text" class="form-control" value="{{ Auth::user()->lName }}" name="lName" disabled>
-                        </div>
+                        <form id="profileForm" method="POST" action="{{ route('supervisor.profile.edit', Auth::id()) }}">
+                            @csrf
+                            @method('PUT')
+                            <div class="form-group">
+                                <label>{{ __('site.supervisor.profile.fname') }}</label>
+                                <input type="text" class="form-control" value="{{ Auth::user()->fName }}" name="fName" disabled>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>{{ __('site.supervisor.profile.lname') }}</label>
+                                <input type="text" class="form-control" value="{{ Auth::user()->lName }}" name="lName" disabled>
+                            </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">{{ __('site.supervisor.profile.email') }}</label>
-                            <input type="email" class="form-control" value="{{ Auth::user()->email }}" name="email" disabled>
-                        </div>
+                            <div class="form-group">
+                                <label>{{ __('site.supervisor.profile.email') }}</label>
+                                <input type="email" class="form-control" value="{{ Auth::user()->email }}" name="email" disabled>
+                            </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">{{ __('site.supervisor.profile.mobile') }}</label>
-                            <input type="tel" class="form-control" value="{{ Auth::user()->mobileNumber }}" name="mobileNumber" disabled>
-                        </div>
+                            <div class="form-group">
+                                <label>{{ __('site.supervisor.profile.mobile') }}</label>
+                                <input type="tel" class="form-control" value="{{ Auth::user()->mobileNumber }}" name="mobileNumber" disabled>
+                            </div>
 
-                        <button id="cancelButton" type="button" class="btn btn-danger mb-3 d-none">{{ __('Cancel') }}</button>
+                            <button id="cancelButton" type="button" class="btn btn-danger mb-3 d-none">{{ __('Cancel') }}</button>
+                            <button type="submit" class="btn btn-primary btn-block" disabled id="saveButton">
+                                {{ __('site.supervisor.profile.update_profile') }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
 
+                <!-- Change Password Section -->
+                <div class="col-md-6">
+                    <div class="profile-card">
+                        <h3>{{ __('site.supervisor.profile.change_password') }}</h3>
+                        <form method="POST" action="{{ route('supervisor.profile.password') }}">
+                            @csrf
+                            <div class="form-group">
+                                <label>{{ __('site.supervisor.profile.current_password') }}</label>
+                                <input type="password" class="form-control" name="current_password" required>
+                            </div>
 
-                        <button type="submit" class="btn btn-primary w-100" disabled id="saveButton">
-                            {{ __('site.supervisor.profile.update_profile') }}
-                        </button>
-                    </form>
+                            <div class="form-group">
+                                <label>{{ __('site.supervisor.profile.new_password') }}</label>
+                                <input type="password" class="form-control" name="new_password" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>{{ __('site.supervisor.profile.confirm_password') }}</label>
+                                <input type="password" class="form-control" name="new_password_confirmation" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-warning btn-block">
+                                {{ __('site.supervisor.profile.change_password') }}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Change Password Section -->
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">{{ __('site.supervisor.profile.change_password') }}</h4>
-                    <form method="POST" action="{{ route('supervisor.profile.password') }}">
-                        @csrf
-                        <div class="mb-3">
-                            <label class="form-label">{{ __('site.supervisor.profile.current_password') }}</label>
-                            <input type="password" class="form-control" name="current_password" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">{{ __('site.supervisor.profile.new_password') }}</label>
-                            <input type="password" class="form-control" name="new_password" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">{{ __('site.supervisor.profile.confirm_password') }}</label>
-                            <input type="password" class="form-control" name="new_password_confirmation" required>
-                        </div>
-
-                        <button type="submit" class="btn btn-warning w-100">
-                            {{ __('site.supervisor.profile.change_password') }}
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
+        </main>
     </div>
 </div>
+
 <script>
     document.getElementById('editButton').addEventListener('click', function () {
         let inputs = document.querySelectorAll('#profileForm input');
@@ -102,16 +104,3 @@
 </script>
 
 @endsection
-
-<style>
-.profile-container .card-title {
-    border-bottom: 2px solid #eee;
-    padding-bottom: 0.75rem;
-    margin-bottom: 1.5rem;
-}
-
-.profile-container .form-label {
-    font-weight: 500;
-    color: #666;
-}
-</style>

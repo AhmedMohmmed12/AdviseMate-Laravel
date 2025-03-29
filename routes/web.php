@@ -80,8 +80,8 @@ Route::name('advisor.')->prefix('advisor')->middleware(['auth'])->group(function
         Route::get('/fetch', [AdvisorAvailabilityController::class, 'fetch'])->name('availability.fetch');
 });
 });
-Route::get('/ticket', [StudentTicketController::class, 'stTicket']);
-Route::get('/get-ticket-types', [StudentTicketController::class, 'getAllTicketTypes']);
+// Route::get('/ticket', [StudentTicketController::class, 'stTicket']);
+// Route::get('/get-ticket-types', [StudentTicketController::class, 'getAllTicketTypes']);
 });
 
 

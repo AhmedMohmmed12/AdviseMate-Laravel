@@ -8,7 +8,7 @@ use App\Models\TicketType;
 class StudentTicketController extends Controller
 {
     public function stTicket(){
-        return view('test');
+        return view('ticket');
     }
 
     // public function ticketTypess(){

@@ -1,0 +1,739 @@
+body {
+    background-color: #f2e5d5;
+    overflow-x: hidden;
+}
+.sidebar {
+    background-color: #ddad27;
+    height: 100vh;
+    padding-top: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    overflow: hidden;
+    width: 175px;
+}
+
+.sidebar h2 {
+    color: white;
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
+.sidebar a {
+    color: #fff;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.sidebar a i {
+    min-width: 30px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.sidebar a.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+.sidebar a:hover {
+    background-color: #f2e5d5;
+    border-radius: 5px;
+    color: #ddad27;
+}
+.content {
+    margin-left: 175px;
+    padding: 20px;
+}
+
+.mobile-nav {
+    display: none;
+    background-color: #ddad27;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1001;
+    align-items: center;
+}
+
+.mobile-nav h2 {
+    color: white;
+    margin: 0 0 0 10px;
+    font-size: 1.2rem;
+}
+
+.menu-toggle {
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+/* Advisor Dashboard */
+
+.stat-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.stat-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.stat-card .number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.stat-icon {
+    color: #ddad27;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.activity-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.activity-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #ddad27;
+    padding-bottom: 10px;
+}
+
+.activity-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.badge-urgent {
+    background-color: #dc3545;
+    color: white;
+}
+
+.badge-review {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-action {
+    background-color: #ddad27;
+    color: white;
+    border: none;
+}
+
+.btn-action:hover {
+    background-color: #c69c23;
+    color: white;
+}
+
+/* Advisor Tickets */
+
+.ticket-table {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.ticket-table th {
+    background-color: #f8f9fa;
+    border-top: none;
+}
+
+.ticket-filter {
+    margin-bottom: 20px;
+}
+
+.priority-high {
+    background-color: #ffebee;
+    color: #d32f2f;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.priority-medium {
+    background-color: #fff8e1;
+    color: #ff8f00;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.priority-low {
+    background-color: #e8f5e9;
+    color: #388e3c;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.action-icons a {
+    color: #6c757d;
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.action-icons a:hover {
+    opacity: 0.8;
+}
+
+.action-icons a.text-success {
+    color: #28a745;
+}
+
+.action-icons a.text-danger {
+    color: #dc3545;
+}
+.action-icons a {
+    color: #ddad27;
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.action-icons a:hover {
+    opacity: 0.8;
+}
+
+.action-icons a[title="Accept"]:hover {
+    color: #28a745;
+}
+
+.action-icons a[title="Reject"]:hover {
+    color: #dc3545;
+}
+.action-icons a.text-success {
+    color: #28a745;
+}
+
+.action-icons a.text-danger {
+    color: #dc3545;
+}
+.action-icons a {
+    color: #ddad27;
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.action-icons a:hover {
+    opacity: 0.8;
+}
+
+/* Manage Student */
+
+.student-table {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.student-table th {
+    background-color: #f8f9fa;
+    border-top: none;
+}
+
+.student-filter {
+    margin-bottom: 20px;
+}
+
+.status-active {
+    background-color: #e8f5e9;
+    color: #388e3c;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.status-probation {
+    background-color: #fff8e1;
+    color: #ff8f00;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.action-icons a {
+    color: #ddad27;
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.action-icons a:hover {
+    opacity: 0.8;
+}
+
+.student-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ddad27;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.student-info {
+    display: flex;
+    align-items: center;
+}
+
+.submenu {
+    margin-left: 15px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.submenu-item {
+    padding: 8px 15px !important;
+    font-size: 0.9rem;
+    background-color: rgba(0,0,0,0.1);
+}
+
+.submenu-icon {
+    font-size: 0.8rem;
+    transition: transform 0.3s;
+    margin-left: auto;
+}
+
+.submenu-icon.active {
+    transform: rotate(180deg);
+}
+
+/* Supervisor Design */
+
+/* Supervisor Dashboard */
+
+.dashboard-stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0;
+}
+
+.stat-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    flex: 1;
+    margin: 0 10px;
+    text-align: center;
+}
+
+.stat-card h3 {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-card h3 i {
+    margin-right: 8px;
+    color: #3498db;
+}
+
+.stat-card h3 i.text-danger {
+    color: #e74c3c;
+}
+
+.stat-card h3 i.text-success {
+    color: #2ecc71;
+}
+
+.stat-card .stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+
+/* Dropdown */
+
+.dropdown-toggle {
+    color: #fff;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.dropdown-menu {
+    background-color: rgba(0,0,0,0.1);
+    margin-left: 15px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.dropdown-item {
+    color: #fff;
+    padding: 8px 15px !important;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background-color: #f2e5d5;
+    border-radius: 5px;
+    color: #ddad27;
+}
+
+.profile-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.profile-card h3 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.form-control {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+}
+
+.form-control:disabled {
+    background-color: #e9ecef;
+}
+
+.btn-primary {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-warning {
+    background-color: #ffb74d;
+    border-color: #ffb74d;
+    color: white;
+}
+
+
+/* User Management */
+
+.user-management-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+
+.user-management-header {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-management-header h5 {
+    margin: 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.user-management-header h5 i {
+    margin-right: 10px;
+    color: #6c757d;
+}
+
+.add-user-btn {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.add-user-btn i {
+    margin-right: 5px;
+}
+
+.user-table {
+    width: 100%;
+}
+
+.user-table th {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    font-weight: 600;
+    color: #495057;
+    border-top: none;
+}
+
+.user-table td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-top: 1px solid #eee;
+}
+
+.action-btn {
+    color: #6c757d;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.action-btn:hover {
+    color: #ddad27;
+}
+
+/* Supverisor ActivityLog */
+
+.activity-log-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+
+.activity-log-header {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+
+.activity-log-header i {
+    margin-right: 10px;
+    color: #6c757d;
+}
+
+.activity-log-header h5 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.activity-log-table {
+    width: 100%;
+}
+
+.activity-log-table th {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    font-weight: 600;
+    color: #495057;
+    border-top: none;
+}
+
+.activity-log-table td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-top: 1px solid #eee;
+}
+
+.view-details-btn {
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.view-details-btn:hover {
+    color: #ddad27;
+}
+
+/* Permissions */
+.permissions-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.permissions-header {
+    margin-bottom: 20px;
+}
+
+.permissions-header h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.add-permission-btn {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.add-permission-btn:hover {
+    background-color: #138496;
+}
+
+.permissions-table {
+    width: 100%;
+}
+
+.permissions-table th {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.permissions-table td {
+    padding: 12px 15px;
+    vertical-align: middle;
+}
+
+.permissions-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.edit-btn {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        height: 100%;
+        width: 220px;
+    }
+    .sidebar h2 {
+        font-size: 1.2rem;
+    }
+    .sidebar.active {
+        transform: translateX(0);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+    .mobile-nav {
+        display: flex;
+    }
+    .content {
+        margin-left: 0;
+        width: 100%;
+        margin-top: 60px;
+    }
+
+    /* Supervisor responsive design */
+
+    .dashboard-stats {
+        flex-direction: column;
+    }
+    
+    .stat-card {
+        margin: 10px 0;
+    }
+
+    .user-table {
+        font-size: 0.9rem;
+    }
+    
+    .user-management-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .add-user-btn {
+        margin-top: 10px;
+    }
+    
+    .activity-log-table {
+        font-size: 0.9rem;
+    }
+
+    .permissions-table {
+        font-size: 0.9rem;
+    }
+
+    /* Advisor responsive design */
+    .student-table {
+        font-size: 0.9rem;
+    }
+    .action-icons {
+        display: flex;
+        justify-content: center;
+    }
+    .status-active, .status-probation {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+    /* Add spacing between filter elements on small screens */
+    .student-filter .row > div {
+        margin-bottom: 15px;
+    }
+    /* Add more space between table rows */
+    .student-table tr {
+        padding: 10px 0;
+    }
+    .student-table td {
+        padding: 15px 10px;
+    }
+    /* Improve spacing for student info */
+    .student-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .student-avatar {
+        margin-bottom: 8px;
+    }
+
+    .ticket-table {
+        font-size: 0.9rem;
+    }
+    .action-icons {
+        display: flex;
+        justify-content: center;
+    }
+    .priority-high, .priority-medium, .priority-low {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+}

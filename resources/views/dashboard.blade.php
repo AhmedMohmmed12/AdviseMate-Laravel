@@ -1,9 +1,7 @@
-@extends('layouts.HeadStudent')
-@section('name')
+@extends('layouts.AdviseMate')
+@section('title', 'Dashboard')
+@section('content')
     <div class="container">
-        <x-sidebar>
-            
-        </x-sidebar>
 
         <!-- Main Content -->
         <div class="main-content">

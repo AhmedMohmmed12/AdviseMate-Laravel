@@ -30,9 +30,9 @@
         <a href="#" class="{{ request()->routeIs('student.profile') ? 'active' : '' }}">
             <i class="fas fa-user mr-2"></i>{{ trans('site.sidebar.profile') }}
         </a>
-        <a href="#" class="{{ request()->routeIs('student.settings') ? 'active' : '' }}">
+        {{-- <a href="#" class="{{ request()->routeIs('student.settings') ? 'active' : '' }}">
             <i class="fas fa-cog mr-2"></i>{{ trans('site.sidebar.settings') }}
-        </a>
+        </a> --}}
     </nav>
     </div>
 </div>

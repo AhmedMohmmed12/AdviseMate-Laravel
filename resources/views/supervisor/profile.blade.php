@@ -1,8 +1,6 @@
 @extends('layouts.AdviseMateAdvisor')
 @section('title','Profile')
 @section('content')
-<div class="container-fluid p-0">
-    <div class="row no-gutters">
         <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4 content">
             <div class="mt-4 mb-4">
                 <h2>{{ __('site.supervisor.profile.personal_info') }}</h2>
@@ -51,10 +49,6 @@
                         <h3>{{ __('site.supervisor.profile.change_password') }}</h3>
                         <form method="POST" action="{{ route('supervisor.profile.password') }}">
                             @csrf
-                            <div class="form-group">
-                                <label>{{ __('site.supervisor.profile.current_password') }}</label>
-                                <input type="password" class="form-control" name="current_password" required>
-                            </div>
 
                             <div class="form-group">
                                 <label>{{ __('site.supervisor.profile.new_password') }}</label>
@@ -74,8 +68,6 @@
                 </div>
             </div>
         </main>
-    </div>
-</div>
 
 <script>
     document.getElementById('editButton').addEventListener('click', function () {

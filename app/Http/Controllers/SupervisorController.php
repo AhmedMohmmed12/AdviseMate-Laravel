@@ -38,14 +38,6 @@ public function changePassword(Request $request)
 {
     
     $request->validate([
-        'current_password' => [
-            'required',
-            function ($attribute, $value, $fail) {
-                if (!Hash::check($value, Auth::user()->password)) {
-                    $fail(__('site.supervisor.profile.current_password_incorrect'));
-                }
-            },
-        ],
         'new_password' => [
             'required', 
             'confirmed',

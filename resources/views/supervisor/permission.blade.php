@@ -1,8 +1,7 @@
 @extends('layouts.AdviseMateAdvisor')
 @section('title','Manage Permissions')
 @section('content')
-<div class="container-fluid p-0">
-    <div class="row no-gutters">
+
         <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4 content">
             <div class="mt-4 mb-4">
                 <h2>User Management</h2>
@@ -43,8 +42,7 @@
                 </div>
             </div>
         </main>
-    </div>
-</div>
+
 
 <!-- Add Permission Modal -->
 <div class="modal fade" id="addPermissionModal" tabindex="-1" role="dialog" aria-labelledby="addPermissionModalLabel" aria-hidden="true">

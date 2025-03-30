@@ -59,14 +59,14 @@ Route::name('supervisor.')->middleware(['auth'])->prefix('supervisor')->group(fu
 });
 
 
-Route::name('student.')->prefix('student')->group(function(){
+Route::name('student.')->middleware(['auth'])->prefix('student')->group(function(){
     Route::get('dashboard',[StudentDashboardController::class, 'stDashboard'])->name('dashboard'); 
     Route::get('appointment', [StudentAppointmentController::class,'stAppointment'])->name('appointment');
     Route::get('ticket', [StudentTicketController::class,'stTicket'])->name('ticket');
 });
 
 
-Route::name('advisor.')->prefix('advisor')->middleware(['auth'])->group(function(){
+Route::name('advisor.')->middleware(['auth'])->prefix('advisor')->group(function(){
     Route::get('dashboard', [AdvisorDashboardController::class,'adDashboard'])->name('dashboard');
     Route::get('appointment', [AdvisorAvailabilityController::class,'index'])->name('appointment');
     Route::get('ticket', [AdvisorTicketController::class,'adTicket'])->name('ticket');

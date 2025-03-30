@@ -2,8 +2,6 @@
 @extends('layouts.AdviseMateAdvisor')
 @section('title','ActivityLog')
 @section('content')
-<div class="container-fluid p-0">
-    <div class="row no-gutters">
         <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4 content">
             <div class="mt-4 mb-4">
                 <h2>{{ __('site.supervisor.activity_log.title') }}</h2>
@@ -50,6 +48,4 @@
                 </div>
             </div>
         </main>
-    </div>
-</div>
 @endsection

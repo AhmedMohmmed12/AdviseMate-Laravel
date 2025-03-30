@@ -4,10 +4,10 @@
 
     
 
-    
-    <div class="main-content">
+<main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4 content">
+    <div class="mt-4 mb-4">
         <h1 class="header">{{trans('site.advisor.appointments.title')}}</h1>
-        
+    </div>
         <div class="appointment-controls">
             <button class="action-button" id="addAvailability">
                 <i class="fas fa-plus"></i> 
@@ -44,7 +44,7 @@
                 </button>
             </div>
         </div>
-    </div>
+</main>
 
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>

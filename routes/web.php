@@ -59,12 +59,16 @@ Route::name('supervisor.')->middleware(['auth'])->prefix('supervisor')->group(fu
 });
 
 
-Route::name('student.')->middleware(['auth'])->prefix('student')->group(function(){
+Route::name('student.')->prefix('student')->group(function(){
     Route::get('dashboard',[StudentDashboardController::class, 'stDashboard'])->name('dashboard'); 
     Route::get('appointment', [StudentAppointmentController::class,'stAppointment'])->name('appointment');
     Route::get('ticket', [StudentTicketController::class,'stTicket'])->name('ticket');
+    // Route::get('/ticket', [StudentTicketController::class, 'stTicket']);
+    Route::get('get-ticket-types', [StudentTicketController::class, 'getAllTicketTypes'])->name('get-ticket-types');
 });
 
+// Student registration route
+Route::post('student/store', [StudentController::class, 'store'])->name('student.store');
 
 Route::name('advisor.')->middleware(['auth'])->prefix('advisor')->group(function(){
     Route::get('dashboard', [AdvisorDashboardController::class,'adDashboard'])->name('dashboard');
@@ -80,8 +84,7 @@ Route::name('advisor.')->middleware(['auth'])->prefix('advisor')->group(function
         Route::get('/fetch', [AdvisorAvailabilityController::class, 'fetch'])->name('availability.fetch');
 });
 });
-// Route::get('/ticket', [StudentTicketController::class, 'stTicket']);
-// Route::get('/get-ticket-types', [StudentTicketController::class, 'getAllTicketTypes']);
+
 });
 
 

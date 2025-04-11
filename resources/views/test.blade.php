@@ -115,7 +115,7 @@
         $(document).ready(function () {
             $('#ticket-type').select2({
                 ajax: {
-                    url: '/get-ticket-types',
+                    url: '/student/get-ticket-types',
                     dataType: 'json',
                     processResults: function (data) {
                         return {

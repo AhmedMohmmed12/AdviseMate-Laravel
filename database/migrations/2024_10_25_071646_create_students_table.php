@@ -17,14 +17,14 @@ return new class extends Migration
             $table->id();
             $table->string('Fname');
             $table->string('LName');
-            $table->string('phoneNumber');
-            // $table->enum('gender' ,['male' , 'female']);
-            $table->boolean("gender")->default(1);
+            $table->string('phoneNumber')->unique();
+            $table->enum('gender' ,['male' , 'female']);
+            $table->enum('status' , ['active' , 'inactive']);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger("ticket_type_detail_id");
-            $table->unsignedBigInteger("user_id");
+            $table->unsignedBigInteger("ticket_type_detail_id")->nullable();
+            $table->unsignedBigInteger("user_id")->nullable();
             
             $table->rememberToken();
             $table->timestamps();

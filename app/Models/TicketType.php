@@ -14,4 +14,9 @@ class TicketType extends Model
         'updated_at',
         'created_at',
     ];
+
+    public function ticketTypeDetails()
+    {
+        return $this->hasMany(TicketTypeDetails::class, 'ticket_type_id');
+    }
 }

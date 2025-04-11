@@ -19,7 +19,7 @@
 
                     <div class="card-body border-bottom d-none" id="userForm">
                         <h6 class="mb-4">{{ __('site.supervisor.users.create_new') }}</h6>
-                        <form action="{{ route('supervisor.store') }}" method="POST">
+                        <form action="{{ route('supervisor.store') }}" method="POST" id="userCreateForm">
                             @method("post")
                             @csrf
                             <div class="row g-3">
@@ -50,8 +50,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">{{ __('site.supervisor.users.form.user_type') }}</label>
-                                        <select name="role" class="form-select" required>
-                                            <option value="super_admin">{{ __('site.login.student') }}</option>
+                                        <select name="role" class="form-select custom-select" id="roleSelect" required>
+                                            <option value="student">{{ __('site.login.student') }}</option>
                                             <option value="advisor">{{ __('site.login.advisor') }}</option>
                                         </select>
                                     </div>
@@ -59,7 +59,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">{{ __('site.supervisor.users.form.gender') }}</label>
-                                        <select name="gender" class="form-select" required>
+                                        <select name="gender" class="form-control custom-select" required>
                                             <option value="" disabled selected>{{ __('site.supervisor.users.form.select_gender') }}
                                             </option>
                                             <option value="male">{{ __('site.supervisor.users.form.male') }}</option>
@@ -82,7 +82,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">{{ __('site.supervisor.users.form.status') }}</label>
-                                        <select name="status" class="form-select" required>
+                                        <select name="status" class="form-control custom-select" required>
                                             <option value="" disabled selected>{{ __('site.supervisor.users.form.select_status') }}
                                             </option>
                                             <option value="active">{{ __('site.supervisor.users.form.active') }}</option>
@@ -123,14 +123,14 @@
                                         <td>{{$user->email}}</td>
                                         <td>{{$user->mobileNumber}}</td>
                                         <td>{{ucfirst($user->gender)}}</td>
-                                        <td><span class="badge bg-primary">Advisor</span></td>
+                                        <td><span class="badge bg-primary">{{ucfirst($user->getRoleNames()->first())}}</span></td>
                                         <td><span class="badge bg-{{ $user->status == 'active'?'success':'danger'}}">{{ucfirst($user->status)}}</span></td>
                                         <td>
                                             <!-- Buttons Container -->
                                             <div class="d-flex gap-2 align-items-center">
                                                 <!-- Added flex container -->
                                                 <!-- Edit Button -->
-                                                <button class="btn btn-sm btn-outline-primary" onclick="toggleEditForm()">
+                                                <button class="btn btn-sm btn-outline-primary" onclick="toggleEditForm()" data-toggle="modal" data-target="#editUserModal">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </button>
 
@@ -143,55 +143,92 @@
                                                     </button>
                                                 </form>
                                             </div>
+                                            <!-- Edit User Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow-lg rounded-lg">
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: #ddad27;">
+                <h5 class="modal-title font-weight-bold text-white" id="editUserModalLabel">
+                    <i class="fas fa-user-edit"></i> Edit User
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-                                            <!-- Edit Form -->
-                                            <div class="card-body border-bottom d-none" id="editForm" >
-                                                <form method="POST" action="{{ route('supervisor.edit', $user->id) }}">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="col-md-6">
-                                                        <div class="row g-3">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">{{
-                                                                        __('site.supervisor.users.form.first_name') }}</label>
-                                                                    <input type="text" name="fName" class="form-control" >
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">{{
-                                                                        __('site.supervisor.users.form.last_name') }}</label>
-                                                                    <input type="text" name="lName" class="form-control" >
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">{{
-                                                                        __('site.supervisor.users.form.email') }}</label>
-                                                                    <input type="email" name="email" class="form-control" >
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="form-label">{{ __('site.supervisor.users.form.status')
-                                                                    }}</label>
-                                                                <select name="status" class="form-select" >
-                                                                    <option value="" disabled selected>{{
-                                                                        __('site.supervisor.users.form.select_status') }}</option>
-                                                                    <option value="active">{{
-                                                                        __('site.supervisor.users.form.active') }}</option>
-                                                                    <option value="inactive">{{
-                                                                        __('site.supervisor.users.form.inactive') }}</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="d-flex gap-2 justify-content-end">
-                                                                <button type="submit" class="btn btn-primary">Edit User</button>
-                                                                <button type="button" class="btn btn-secondary" onclick="toggleEditForm()">Cancel</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
+            <!-- Modal Body -->
+            <div class="modal-body" style="background-color: #fff;">
+                <form method="POST" action="{{ route('supervisor.edit', $user->id) }}">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="row">
+                        <!-- First Name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold" style="color: #2c3e50;">
+                                    <i class="fas fa-user" style="color: #ddad27;"></i> {{ __('site.supervisor.users.form.first_name') }}
+                                </label>
+                                <input type="text" name="fName" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter first name">
+                            </div>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold" style="color: #2c3e50;">
+                                    <i class="fas fa-user" style="color: #ddad27;"></i> {{ __('site.supervisor.users.form.last_name') }}
+                                </label>
+                                <input type="text" name="lName" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter last name">
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold" style="color: #2c3e50;">
+                                    <i class="fas fa-envelope" style="color: #ddad27;"></i> {{ __('site.supervisor.users.form.email') }}
+                                </label>
+                                <input type="email" name="email" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter email">
+                            </div>
+                        </div>
+
+                        <!-- Status Dropdown -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold" style="color: #2c3e50;">
+                                    <i class="fas fa-toggle-on" style="color: #ddad27;"></i> {{ __('site.supervisor.users.form.status') }}
+                                </label>
+                                <select name="status" class="form-control custom-select rounded" style="border-color: #ddad27;">
+                                    <option value="" disabled selected>
+                                        {{ __('site.supervisor.users.form.select_status') }}
+                                    </option>
+                                    <option value="active">
+                                        {{ __('site.supervisor.users.form.active') }}
+                                    </option>
+                                    <option value="inactive">
+                                        {{ __('site.supervisor.users.form.inactive') }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn px-4 py-2 shadow-sm rounded" style="background-color: #ddad27; color: white;">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <button type="button" class="btn btn-secondary px-4 py-2 shadow-sm rounded ml-2" data-dismiss="modal">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -215,5 +252,28 @@
         form.classList.toggle('d-none');
     }
 
+    // Add event listener to change form action based on role selection
+    document.addEventListener('DOMContentLoaded', function() {
+        const roleSelect = document.getElementById('roleSelect');
+        const userForm = document.getElementById('userCreateForm');
+        
+        if (roleSelect && userForm) {
+            // Set initial form action based on default selected role
+            updateFormAction(roleSelect.value);
+            
+            // Update form action when role selection changes
+            roleSelect.addEventListener('change', function() {
+                updateFormAction(this.value);
+            });
+        }
+        
+        function updateFormAction(role) {
+            if (role === 'student') {
+                userForm.action = "{{ route('student.store') }}";
+            } else {
+                userForm.action = "{{ route('supervisor.store') }}";
+            }
+        }
+    });
 </script>
 @endsection

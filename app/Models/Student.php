@@ -3,16 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
-class Student extends Model
+class Student extends Authenticatable
 {
+    use HasApiTokens, HasFactory, Notifiable, LogsActivity, HasRoles;
+
     protected $fillable = [
         'Fname',
         'LName', 
         'email',
+        'phoneNumber',
         'gender',
         'password',
+        'status'
     ];
 
     /**
@@ -24,5 +33,26 @@ class Student extends Model
         'password',
         'remember_token',
     ];
+    
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['Fname', 'LName', 'email', 'status']) 
+            ->logOnlyDirty() 
+            ->setDescriptionForEvent(fn(string $eventName) => "Student has been {$eventName}")
+            ->useLogName('student');
+    }
+
+    /**
+     * Get the ticket type detail associated with the student.
+     */
+    public function ticketTypeDetail()
+    {
+        return $this->belongsTo(\App\Models\TicketTypeDetail::class);
+    }
 }

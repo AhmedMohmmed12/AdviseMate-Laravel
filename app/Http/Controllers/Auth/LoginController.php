@@ -57,13 +57,13 @@ class LoginController extends Controller
 
 
             // // Redirect based on role
-            // if ($user->hasRole('student')) {
-            //     return redirect()->route('student.dashboard');
-            // } elseif ($user->hasRole('advisor')) {
-            //     return redirect()->route('advisor.dashboard');
-            // } elseif ($user->hasRole('super_admin')) {
-            //     return redirect()->route('supervisor.dashboard');
-            // }
+            if ($user->hasRole('student')) {
+                return redirect()->route('student.dashboard');
+            } elseif ($user->hasRole('advisor')) {
+                return redirect()->route('advisor.dashboard');
+            } elseif ($user->hasRole('super_admin')) {
+                return redirect()->route('supervisor.dashboard');
+            }
         }
 
         return $this->sendFailedLoginResponse($request);

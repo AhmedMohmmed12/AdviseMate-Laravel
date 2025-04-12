@@ -126,7 +126,20 @@ return [
                 'medium' => 'Medium',
                 'low' => 'Low'
             ]
-        ]
+        ],
+        'profile' => [
+            'personal_info' => 'Personal Information',
+            'fname' => 'First Name',
+            'lname' => 'Last Name',
+            'email' => 'Email',
+            'mobile' => 'Mobile Number',
+            'change_password' => 'Change Password',
+            'new_password' => 'New Password',
+            'confirm_password' => 'Confirm Password',
+            'update_profile' => 'Update Profile',
+            'updated_successfully' => 'Profile updated successfully',
+            'password_updated' => 'Password updated successfully',
+        ],
     ],
     'supervisor' => [
         'dashboard' => [
@@ -206,6 +219,23 @@ return [
             'submit' => 'Login',
             'failed' => 'Invalid email or password.'
         ]
+    ],
+    'student' => [
+        'profile' => [
+            'personal_info' => 'Personal Information',
+            'fname' => 'First Name',
+            'lname' => 'Last Name',
+            'email' => 'Email',
+            'phone' => 'Phone Number',
+            'change_password' => 'Change Password',
+            'new_password' => 'New Password',
+            'confirm_password' => 'Confirm Password',
+            'update_profile' => 'Update Profile',
+            'updated_successfully' => 'Profile updated successfully',
+            'password_updated' => 'Password updated successfully',
+            'edit' => 'Edit',
+            'cancel' => 'Cancel'
+        ],
     ]
 ];
 

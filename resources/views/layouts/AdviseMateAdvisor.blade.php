@@ -61,16 +61,22 @@
             </a>
         @endif
         
-        <div class="mt-auto" style="position: absolute; bottom: 20px; width: 100%;">
+        <div class="mt-auto" style="position: absolute; bottom: 20px; width: calc(100% - 30px);">
             <div class="dropdown">
                 <a href="javascript:void(0)" onclick="toggleSuperadminMenu()">
                     <i class="fas fa-user-shield mr-2"></i>{{ ucfirst(auth()->user()->fName) }}
                     <i class="fas fa-chevron-down submenu-icon ml-auto" id="superadminIcon"></i>
                 </a>
                 <div class="submenu" id="superadminSubmenu">
-                    <a href="{{ route('supervisor.profile') }}" class="submenu-item">
-                        <i class="fas fa-user-circle mr-2"></i>{{ __('site.sidebar.profile') }}
-                    </a>
+                    @if(auth()->user()->hasRole('advisor'))
+                        <a href="{{ route('advisor.profile') }}" class="submenu-item">
+                            <i class="fas fa-user-circle mr-2"></i>{{ __('site.sidebar.profile') }}
+                        </a>
+                    @elseif(auth()->user()->hasRole('super_admin'))
+                        <a href="{{ route('supervisor.profile') }}" class="submenu-item">
+                            <i class="fas fa-user-circle mr-2"></i>{{ __('site.sidebar.profile') }}
+                        </a>
+                    @endif
                     <form action="{{ route('supervisor.logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="submenu-item btn btn-link w-100 text-left">

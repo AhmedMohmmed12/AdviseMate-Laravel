@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Student;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -14,8 +15,12 @@ class UserController extends Controller
 
     public function index(){
         $users = User::where('id' , '!=' , auth()->id())->where('id','!=',1)->get();
-
-        return view('supervisor.users' , compact('users'));
+        
+        // Get all students
+        $students = Student::all();
+        
+        // Pass both collections to the view
+        return view('supervisor.users', compact('users', 'students'));
     }
 
 
@@ -49,7 +54,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
     // Only take fields that are provided and remove null values
-    $data = array_filter($request->only(['fName', 'lName', 'email', 'status']), function ($value) {
+    $data = array_filter($request->only(['fName', 'lName', 'email','mobileNumber', 'status']), function ($value) {
         return $value !== null;
     });
 

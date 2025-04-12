@@ -52,11 +52,13 @@ class LoginController extends Controller
     {
         $this->validateLogin($request);
 
-        if ($this->attemptLogin($request)) {
-            $user = Auth::user();
+        // Determine which guard to use based on role
+        $guard = $request->role === 'student' ? 'student' : 'web';
 
+        if (Auth::guard($guard)->attempt($this->credentials($request))) {
+            $user = Auth::guard($guard)->user();
 
-            // // Redirect based on role
+            // Redirect based on role
             if ($user->hasRole('student')) {
                 return redirect()->route('student.dashboard');
             } elseif ($user->hasRole('advisor')) {

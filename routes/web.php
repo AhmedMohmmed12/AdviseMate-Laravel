@@ -14,6 +14,9 @@ use App\Http\Controllers\AdvisorStudentsController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\Auth\SupervisorLoginController;
 use App\Http\Controllers\AdvisorAvailabilityController;
+use App\Http\Controllers\AdvisorProfileController;
+use App\Http\Controllers\StudentProfileController;
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Http\Request;
 // use LaravelLocalization
 /*
@@ -63,18 +66,28 @@ Route::name('student.')->prefix('student')->group(function(){
     Route::get('dashboard',[StudentDashboardController::class, 'stDashboard'])->name('dashboard'); 
     Route::get('appointment', [StudentAppointmentController::class,'stAppointment'])->name('appointment');
     Route::get('ticket', [StudentTicketController::class,'stTicket'])->name('ticket');
-    // Route::get('/ticket', [StudentTicketController::class, 'stTicket']);
     Route::get('get-ticket-types', [StudentTicketController::class, 'getAllTicketTypes'])->name('get-ticket-types');
+    
+    // Add profile routes
+    Route::get('profile', [StudentProfileController::class, 'profile'])->name('profile');
+    Route::put('profile/{id}', [StudentProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('profile/password', [StudentProfileController::class, 'changePassword'])->name('profile.password');
+    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 });
 
 // Student registration route
 Route::post('student/store', [StudentController::class, 'store'])->name('student.store');
+Route::put('student/edit/{id}', [StudentController::class, 'edit'])->name('student.edit');
+Route::post('student/delete/{id}', [StudentController::class, 'delete'])->name('student.delete');
 
 Route::name('advisor.')->middleware(['auth'])->prefix('advisor')->group(function(){
     Route::get('dashboard', [AdvisorDashboardController::class,'adDashboard'])->name('dashboard');
     Route::get('appointment', [AdvisorAvailabilityController::class,'index'])->name('appointment');
     Route::get('ticket', [AdvisorTicketController::class,'adTicket'])->name('ticket');
     Route::get('student', [AdvisorStudentsController::class,'adStudents'])->name('student');
+    Route::get('profile', [AdvisorProfileController::class, 'profile'])->name('profile');
+    Route::put('profile/{id}', [AdvisorProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('profile/password', [AdvisorProfileController::class, 'changePassword'])->name('profile.password');
     
     // Availability Routes
     Route::prefix('availability')->middleware(['auth'])->group(function() {
@@ -82,7 +95,7 @@ Route::name('advisor.')->middleware(['auth'])->prefix('advisor')->group(function
         Route::put('/{availability}', [AdvisorAvailabilityController::class, 'update'])->name('availability.update');
         Route::post('/{availability}', [AdvisorAvailabilityController::class, 'delete'])->name('availability.delete');
         Route::get('/fetch', [AdvisorAvailabilityController::class, 'fetch'])->name('availability.fetch');
-});
+    });
 });
 
 });

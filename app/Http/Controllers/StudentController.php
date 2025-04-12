@@ -51,22 +51,42 @@ class StudentController extends Controller
             'status' => $request->status
         ]);
         
-        // Check if the student role for student guard exists, if not create it
-        if (class_exists(Role::class)) {
-            $studentRole = Role::where('name', 'student')->where('guard_name', 'student')->first();
-            
-            if (!$studentRole) {
-                // Create the role with the proper guard name
-                $studentRole = Role::create([
-                    'name' => 'student',
-                    'guard_name' => 'student'
-                ]);
-            }
-            // Assign the role to the student
-            $student->assignRole($studentRole);
-        }
+        // Assign the student role
+        $student->assignRole('student');
         
         return redirect()->route('supervisor.index')
             ->with('success', trans('site.supervisor.users.added_successfully'));
+    }
+
+    /**
+     * Edit an existing student
+     */
+    public function edit($id, Request $request)
+    {
+        $student = Student::findOrFail($id);
+        
+        // Only take fields that are provided and remove null values
+        $data = array_filter($request->only(['Fname', 'LName', 'email', 'phoneNumber', 'status']), function ($value) {
+            return $value !== null;
+        });
+
+        // Only update if there is any data provided
+        if (!empty($data)) {
+            $student->update($data);
+        }
+
+        return redirect()->route('supervisor.index')
+            ->with('success', trans('site.supervisor.users.updated_successfully'));
+    }
+    
+    /**
+     * Delete a student
+     */
+    public function delete($id)
+    {
+        Student::destroy($id);
+        
+        return redirect()->route('supervisor.index')
+            ->with('success', trans('site.supervisor.users.deleted_successfully'));
     }
 }

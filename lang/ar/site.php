@@ -25,7 +25,10 @@ return [
     'tickets' => [
         'title' => 'التذاكر',
         'create_new' => 'إنشاء تذكرة جديدة',
-        'financial_aid' => 'سؤال عن المساعدة المالية'
+        'financial_aid' => 'سؤال عن المساعدة المالية',
+        'new_ticket' => 'تذكرة جديدة',
+        'submit' => 'إرسال التذكرة',
+        'cancel' => 'إلغاء'
     ],
     'appointments' => [
         'title' => 'المواعيد',
@@ -127,6 +130,19 @@ return [
                 'medium' => 'متوسطة',
                 'low' => 'منخفضة'
             ]
+        ],
+        'profile' => [
+            'personal_info' => 'المعلومات الشخصية',
+            'fname' => 'الاسم الأول',
+            'lname' => 'اسم العائلة',
+            'email' => 'البريد الإلكتروني',
+            'mobile' => 'رقم الجوال',
+            'change_password' => 'تغيير كلمة المرور',
+            'new_password' => 'كلمة المرور الجديدة',
+            'confirm_password' => 'تأكيد كلمة المرور',
+            'update_profile' => 'تحديث الملف الشخصي',
+            'updated_successfully' => 'تم تحديث الملف الشخصي بنجاح',
+            'password_updated' => 'تم تحديث كلمة المرور بنجاح',
         ]
     ],
     'supervisor' => [
@@ -197,6 +213,8 @@ return [
             'confirm_password' => 'تأكيد كلمة المرور',
             'password_updated' => 'تم تحديث كلمة المرور بنجاح',
             'current_password_incorrect' => 'كلمة المرور الحالية غير صحيحة',
+            'edit' => 'تعديل',
+            'cancel' => 'إلغاء'
         ],
         'login' => [
             'title' => 'تسجيل دخول المشرف',
@@ -205,7 +223,30 @@ return [
             'remember_me' => 'تذكرني',
             'submit' => 'تسجيل الدخول',
             'failed' => 'البريد الإلكتروني أو كلمة المرور غير صحيحة'
+        ],
+        'permission' => [
+            'add_new' => 'إضافة صلاحية جديدة',
+            'edit' => 'تعديل',
+            'delete' => 'حذف',
+            'save' => 'حفظ الصلاحية'
         ]
+    ],
+    'student' => [
+        'profile' => [
+            'personal_info' => 'المعلومات الشخصية',
+            'fname' => 'الاسم الأول',
+            'lname' => 'اسم العائلة',
+            'email' => 'البريد الإلكتروني',
+            'phone' => 'رقم الهاتف',
+            'change_password' => 'تغيير كلمة المرور',
+            'new_password' => 'كلمة المرور الجديدة',
+            'confirm_password' => 'تأكيد كلمة المرور',
+            'update_profile' => 'تحديث الملف الشخصي',
+            'updated_successfully' => 'تم تحديث الملف الشخصي بنجاح',
+            'password_updated' => 'تم تحديث كلمة المرور بنجاح',
+            'edit' => 'تعديل',
+            'cancel' => 'إلغاء'
+        ],
     ]
 ];
 

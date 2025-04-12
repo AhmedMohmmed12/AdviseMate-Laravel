@@ -159,9 +159,10 @@
 
             <!-- Modal Body -->
             <div class="modal-body" style="background-color: #fff;">
-                <form method="POST" action="{{ route('supervisor.edit', $user->id) }}">
+                <form method="POST" action="{{ route('supervisor.edit', $user->id) }}" id="editUserForm">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="user_id" id="edit_user_id">
 
                     <div class="row">
                         <!-- First Name -->
@@ -170,7 +171,7 @@
                                 <label class="form-label font-weight-bold" style="color: #2c3e50;">
                                     <i class="fas fa-user" style="color: #ddad27;"></i> {{ __('site.supervisor.users.form.first_name') }}
                                 </label>
-                                <input type="text" name="fName" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter first name">
+                                <input type="text" name="fName" id="edit_fName" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter first name">
                             </div>
                         </div>
 
@@ -180,7 +181,7 @@
                                 <label class="form-label font-weight-bold" style="color: #2c3e50;">
                                     <i class="fas fa-user" style="color: #ddad27;"></i> {{ __('site.supervisor.users.form.last_name') }}
                                 </label>
-                                <input type="text" name="lName" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter last name">
+                                <input type="text" name="lName" id="edit_lName" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter last name">
                             </div>
                         </div>
 
@@ -190,7 +191,17 @@
                                 <label class="form-label font-weight-bold" style="color: #2c3e50;">
                                     <i class="fas fa-envelope" style="color: #ddad27;"></i> {{ __('site.supervisor.users.form.email') }}
                                 </label>
-                                <input type="email" name="email" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter email">
+                                <input type="email" name="email" id="edit_email" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter email">
+                            </div>
+                        </div>
+
+                        <!-- Mobile Number -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold" style="color: #2c3e50;">
+                                    <i class="fas fa-phone" style="color: #ddad27;"></i> {{ __('site.supervisor.users.form.mobileNumber') }}
+                                </label>
+                                <input type="number" name="mobileNumber" id="edit_mobileNumber" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter mobile number">
                             </div>
                         </div>
 
@@ -200,7 +211,7 @@
                                 <label class="form-label font-weight-bold" style="color: #2c3e50;">
                                     <i class="fas fa-toggle-on" style="color: #ddad27;"></i> {{ __('site.supervisor.users.form.status') }}
                                 </label>
-                                <select name="status" class="form-control custom-select rounded" style="border-color: #ddad27;">
+                                <select name="status" id="edit_status" class="form-control custom-select rounded" style="border-color: #ddad27;">
                                     <option value="" disabled selected>
                                         {{ __('site.supervisor.users.form.select_status') }}
                                     </option>
@@ -232,6 +243,38 @@
                                         </td>
                                     </tr>
                                     @endforeach
+                                    
+                                    <!-- Students from students table -->
+                                    @isset($students)
+                                    @foreach ($students as $student)
+                                    <tr>
+                                        <td>{{ucfirst($student->Fname)}} {{ ucfirst($student->LName) }}</td>
+                                        <td>{{$student->email}}</td>
+                                        <td>{{$student->phoneNumber}}</td>
+                                        <td>{{$student->gender ? 'Male' : 'Female'}}</td>
+                                        <td><span class="badge bg-success">Student</span></td>
+                                        <td><span class="badge bg-{{ $student->status == 'active'?'success':'danger'}}">{{ucfirst($student->status ?? 'active')}}</span></td>
+                                        <td>
+                                            <!-- Buttons Container -->
+                                            <div class="d-flex gap-2 align-items-center">
+                                                <!-- Edit Button -->
+                                                <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#editStudentModal">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
+
+                                                <!-- Delete Form - We'll need to create a student delete route -->
+                                                <form method="POST" action="{{ route('student.delete', $student->id) }}">
+                                                    @csrf
+                                                    @method('POST')
+                                                    <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?')">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    @endisset
                                 </tbody>
                             </table>
                         </div>
@@ -239,6 +282,98 @@
                 </div>
             </div>
         </main>
+
+<!-- Edit Student Modal -->
+<div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow-lg rounded-lg">
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: #ddad27;">
+                <h5 class="modal-title font-weight-bold text-white" id="editStudentModalLabel">
+                    <i class="fas fa-user-graduate"></i> Edit Student
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body" style="background-color: #fff;">
+                <form method="POST" action="{{ route('student.edit', $student->id) }}" id="editStudentForm">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="student_id" id="edit_student_id">
+
+                    <div class="row">
+                        <!-- First Name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold" style="color: #2c3e50;">
+                                    <i class="fas fa-user" style="color: #ddad27;"></i> First Name
+                                </label>
+                                <input type="text" name="Fname" id="edit_student_fname" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter first name">
+                            </div>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold" style="color: #2c3e50;">
+                                    <i class="fas fa-user" style="color: #ddad27;"></i> Last Name
+                                </label>
+                                <input type="text" name="LName" id="edit_student_lname" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter last name">
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold" style="color: #2c3e50;">
+                                    <i class="fas fa-envelope" style="color: #ddad27;"></i> Email
+                                </label>
+                                <input type="email" name="email" id="edit_student_email" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter email">
+                            </div>
+                        </div>
+                        
+                        <!-- Phone -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold" style="color: #2c3e50;">
+                                    <i class="fas fa-phone" style="color: #ddad27;"></i> Phone Number
+                                </label>
+                                <input type="text" name="phoneNumber" id="edit_student_phone" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter phone number">
+                            </div>
+                        </div>
+
+                        <!-- Status Dropdown -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold" style="color: #2c3e50;">
+                                    <i class="fas fa-toggle-on" style="color: #ddad27;"></i> Status
+                                </label>
+                                <select name="status" id="edit_student_status" class="form-control custom-select rounded" style="border-color: #ddad27;">
+                                    <option value="" disabled selected>Select Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn px-4 py-2 shadow-sm rounded" style="background-color: #ddad27; color: white;">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <button type="button" class="btn btn-secondary px-4 py-2 shadow-sm rounded ml-2" data-dismiss="modal">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script>

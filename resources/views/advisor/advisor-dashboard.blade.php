@@ -15,7 +15,7 @@
                                 <i class="fas fa-user-graduate"></i>
                             </div>
                             <h3>{{trans('site.advisor.dashboard.stats.total_students')}}</h3>
-                            <div class="number">45</div>
+                            <div class="number">{{ $totalStudents }}</div>
                         </div>
                     </div>
                     <div class="col-md-4">

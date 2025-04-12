@@ -9,7 +9,6 @@
                 <!-- Personal Information Section -->
                 <div class="col-md-6">
                     <div class="profile-card">
-                        <h3>{{ __('site.student.profile.personal_info') }}</h3>
                         <button id="editButton" type="button" class="btn btn-sm btn-secondary mb-3">{{ __('Edit') }}</button>
                         
                         <form id="profileForm" method="POST" action="{{ route('student.profile.edit', Auth::guard('student')->id()) }}">

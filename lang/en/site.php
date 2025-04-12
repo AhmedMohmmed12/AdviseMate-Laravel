@@ -94,6 +94,7 @@ return [
                 'engineering' => 'Engineering',
                 'all_statuses' => 'All Statuses',
                 'active' => 'Active',
+                'inactive'=>'Inactive',
                 'probation' => 'Probation',
                 'graduated' => 'Graduated'
             ],

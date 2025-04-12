@@ -21,7 +21,8 @@ class Student extends Authenticatable
         'phoneNumber',
         'gender',
         'password',
-        'status'
+        'status',
+        'user_id'
     ];
 
     /**
@@ -54,5 +55,13 @@ class Student extends Authenticatable
     public function ticketTypeDetail()
     {
         return $this->belongsTo(\App\Models\TicketTypeDetail::class);
+    }
+
+    /**
+     * Get the advisor associated with the student.
+     */
+    public function advisor()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 }

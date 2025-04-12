@@ -58,6 +58,25 @@ class LoginController extends Controller
         if (Auth::guard($guard)->attempt($this->credentials($request))) {
             $user = Auth::guard($guard)->user();
 
+            // Check if student is active
+            if ($user->hasRole('student') && $user->status !== 'active') {
+                Auth::guard($guard)->logout();
+                return redirect()->back()
+                    ->withInput($request->only('email', 'remember'))
+                    ->withErrors([
+                        'email' => 'Your account is inactive. Please contact the supervisor for assistance.',
+                    ]);
+            }
+
+            if ($user->hasRole('advisor') && $user->status !== 'active') {
+                Auth::guard($guard)->logout();
+                return redirect()->back()
+                    ->withInput($request->only('email', 'remember'))
+                    ->withErrors([
+                        'email' => 'Your account is inactive. Please contact the supervisor for assistance.',
+                    ]);
+            }
+
             // Redirect based on role
             if ($user->hasRole('student')) {
                 return redirect()->route('student.dashboard');

@@ -119,6 +119,9 @@ return [
             'table' => [
                 'student' => 'Student',
                 'issue' => 'Issue',
+                'description' => 'Description',
+                'status'=>'Status',
+                'date' => 'Date',
                 'priority' => 'Priority',
                 'actions' => 'Actions'
             ],

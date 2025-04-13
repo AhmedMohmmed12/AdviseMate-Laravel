@@ -5,12 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TicketType;
 use App\Models\Student;
+use App\Models\TicketTypeDetails;
+use Illuminate\Support\Facades\Auth;
 
 class StudentTicketController extends Controller
 {
     public function stTicket(){
-        //  dd(public_path());
-        return view('ticket');
+        // Get the authenticated student
+        $student = Auth::guard('student')->user();
+        
+        // Get all tickets for this student with their types
+        $studentTickets = TicketTypeDetails::with('ticketType')
+            ->where('student_id', $student->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        return view('ticket', compact('studentTickets'));
     }
 
     // public function ticketTypess(){
@@ -25,7 +35,7 @@ class StudentTicketController extends Controller
         $data = $request->except(['file']);
         if($request->hasFile('file')) {
             $file = $request->file('file');
-            $studentID = auth()-user('student')->id;
+            $studentID = auth()->user('student')->id;
             $filename = time() .  $studentID . rand(1 , 9999)  . $file->getClientOriginalExtension();
             $file->move(public_path('uploads'), $filename);
             $data['file'] = $filename;
@@ -38,6 +48,51 @@ class StudentTicketController extends Controller
         $ticketTypes = TicketType::select('id', 'ticket_type')->get();
         return response()->json($ticketTypes);
     }
-
     
+    public function createTicket(Request $request)
+    {
+        $request->validate([
+            'ticket_type_id' => 'required|exists:ticket_type,id',
+            'ticket_description' => 'required|string',
+            'file' => 'nullable|file|mimes:pdf|max:2048',
+        ]);
+        
+        $data = $request->except(['file']);
+        
+        // Get the authenticated student
+        $student = Auth::guard('student')->user();
+        
+        if (!$student) {
+            return response()->json(['success' => false, 'message' => 'Student not authenticated.'], 401);
+        }
+        
+        // Get advisor ID from student's user_id field
+        $advisorId = $student->user_id;
+        
+        if (!$advisorId) {
+            return response()->json(['success' => false, 'message' => 'No advisor linked to this student.'], 400);
+        }
+        
+        if($request->hasFile('file')) {
+            $file = $request->file('file');
+            $studentID = $student->id;
+            $filename = time() . '_' . $studentID . '_' . rand(1, 9999) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $data['file'] = $filename;
+        }
+        
+        // Create the ticket and link it to the student and advisor
+        $ticket = new TicketTypeDetails([
+            'ticket_type_id' => $request->ticket_type_id,
+            'student_id' => $student->id,
+            'user_id' => $advisorId,
+            'ticket_status' => 'pending',
+            'ticket_description' => $request->ticket_description,
+            'file' => $data['file'] ?? null,
+        ]);
+        
+        $ticket->save();
+        
+        return response()->json(['success' => true, 'message' => 'Ticket created successfully.']);
+    }
 }

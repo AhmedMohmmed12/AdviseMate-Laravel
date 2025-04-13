@@ -67,6 +67,7 @@ Route::name('student.')->prefix('student')->group(function(){
     Route::get('appointment', [StudentAppointmentController::class,'stAppointment'])->name('appointment');
     Route::get('ticket', [StudentTicketController::class,'stTicket'])->name('ticket');
     Route::get('get-ticket-types', [StudentTicketController::class, 'getAllTicketTypes'])->name('get-ticket-types');
+    Route::post('ticket/create', [StudentTicketController::class, 'createTicket'])->name('ticket.create');
     
     // Add profile routes
     Route::get('profile', [StudentProfileController::class, 'profile'])->name('profile');
@@ -88,6 +89,7 @@ Route::name('advisor.')->middleware(['auth'])->prefix('advisor')->group(function
     Route::get('profile', [AdvisorProfileController::class, 'profile'])->name('profile');
     Route::put('profile/{id}', [AdvisorProfileController::class, 'edit'])->name('profile.edit');
     Route::post('profile/password', [AdvisorProfileController::class, 'changePassword'])->name('profile.password');
+    Route::post('ticket/update-status/{id}', [AdvisorTicketController::class, 'updateTicketStatus'])->name('ticket.update-status');
     
     // Availability Routes
     Route::prefix('availability')->middleware(['auth'])->group(function() {

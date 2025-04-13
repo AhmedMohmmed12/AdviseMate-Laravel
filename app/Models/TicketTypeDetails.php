@@ -22,4 +22,14 @@ class TicketTypeDetails extends Model
     {
         return $this->belongsTo(TicketType::class, 'ticket_type_id');
     }
+    
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id');
+    }
+    
+    public function advisor()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

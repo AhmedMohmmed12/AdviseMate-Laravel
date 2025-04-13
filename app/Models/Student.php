@@ -64,4 +64,9 @@ class Student extends Authenticatable
     {
         return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(TicketTypeDetails::class, 'student_id');
+    }
 }

@@ -2,32 +2,71 @@
 @section('title', 'Tickets')
 @section('content')
 
-    
-
             <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4">
                 <div class="mt-4 mb-3">
-                    <h2>{{trans('site.tickets.title')}}</h2>
+                    <h2>Tickets</h2>
                 </div>
-                <div class="card shadow-sm rounded">
+                <div class="card shadow-sm rounded mb-4">
                     <div class="card-body">
                         <select id="ticket-type" class="form-control select2">
                             <option value="" disabled selected>Select Ticket Type</option>
-                            <i class="fas fa-plus mr-2"></i> {{trans('site.tickets.create_new')}}
                         </select>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{trans('site.dashboard.registration_issue')}}
-                                <span class="badge badge-open">{{trans('site.status.open')}}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{trans('site.dashboard.course_deletion')}}
-                                <span class="badge badge-closed">{{trans('site.status.closed')}}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{trans('site.tickets.financial_aid')}}
-                                <span class="badge badge-open">{{trans('site.status.open')}}</span>
-                            </li>
-                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Student's Tickets Section -->
+                <div class="card shadow-sm rounded">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">My Tickets</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(isset($studentTickets) && count($studentTickets) > 0)
+                                        @foreach($studentTickets as $ticket)
+                                            <tr>
+                                                <td>
+                                                    @if($ticket->ticketType)
+                                                        {{ $ticket->ticketType->ticket_type }}
+                                                    @else
+                                                        Unknown Type
+                                                    @endif
+                                                </td>
+                                                <td>{{ Str::limit($ticket->ticket_description, 50) }}</td>
+                                                <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
+                                                <td>
+                                                    <span class="badge 
+                                                        @if($ticket->ticket_status == 'pending') badge-warning
+                                                        @elseif($ticket->ticket_status == 'completed') badge-success
+                                                        @else badge-danger @endif">
+                                                        @if($ticket->ticket_status == 'pending')
+                                                            Open
+                                                        @elseif($ticket->ticket_status == 'completed')
+                                                            Closed
+                                                        @else
+                                                            Rejected
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="4" class="text-center">No tickets found</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -144,6 +183,50 @@
                 $('#ticket-type').val(null).trigger('change');
                 $('#ticket-form')[0].reset();
                 $('.custom-file-label').html('Choose file');
+            });
+            
+            // Form submission with Axios
+            $('#ticket-form').on('submit', function(e) {
+                e.preventDefault();
+                
+                var formData = new FormData();
+                formData.append('ticket_type_id', $('#ticket-type').val());
+                formData.append('ticket_description', $('#description').val());
+                
+                if ($('#extra-field').is(':visible') && $('#extra-input')[0].files[0]) {
+                    formData.append('file', $('#extra-input')[0].files[0]);
+                }
+                
+                axios.post('{{ route("student.ticket.create") }}', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(function(response) {
+                    $('#ticket-modal').modal('hide');
+                    // Show success message
+                    alert(response.data.message);
+                    // Reload the page to show the new ticket
+                    location.reload();
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                    let errorMsg = 'An error occurred';
+                    
+                    if (error.response && error.response.data && error.response.data.errors) {
+                        errorMsg = '';
+                        const errors = error.response.data.errors;
+                        
+                        for (const key in errors) {
+                            errorMsg += errors[key][0] + '\n';
+                        }
+                    } else if (error.response && error.response.data && error.response.data.message) {
+                        errorMsg = error.response.data.message;
+                    }
+                    
+                    alert('Error: ' + errorMsg);
+                });
             });
         });
     </script>

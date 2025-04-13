@@ -24,7 +24,7 @@
                                 <i class="fas fa-ticket-alt"></i>
                             </div>
                             <h3>{{trans('site.advisor.dashboard.stats.pending_tickets')}}</h3>
-                            <div class="number">12</div>
+                            <div class="number">{{ $pendingTickets }}</div>
                         </div>
                     </div>
                     <div class="col-md-4">

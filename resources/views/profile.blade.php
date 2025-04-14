@@ -16,12 +16,12 @@
                             @method('PUT')
                             <div class="form-group">
                                 <label>{{ __('site.student.profile.fname') }}</label>
-                                <input type="text" class="form-control" value="{{ Auth::guard('student')->user()->Fname }}" name="Fname" disabled>
+                                <input type="text" class="form-control" value="{{ ucfirst(Auth::guard('student')->user()->Fname) }}" name="Fname" disabled>
                             </div>
                             
                             <div class="form-group">
                                 <label>{{ __('site.student.profile.lname') }}</label>
-                                <input type="text" class="form-control" value="{{ Auth::guard('student')->user()->LName }}" name="LName" disabled>
+                                <input type="text" class="form-control" value="{{ ucfirst(Auth::guard('student')->user()->LName) }}" name="LName" disabled>
                             </div>
 
                             <div class="form-group">

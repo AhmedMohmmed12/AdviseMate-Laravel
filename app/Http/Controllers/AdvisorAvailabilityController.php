@@ -93,6 +93,7 @@ class AdvisorAvailabilityController extends Controller
         try {
             $availabilities = Availability::where('user_id', auth()->id())
                 ->where('is_booked', false)
+                ->orderBy('start_time', 'asc')
                 ->get();
 
             return response()->json(
@@ -102,11 +103,14 @@ class AdvisorAvailabilityController extends Controller
                         'title' => 'Available',
                         'start' => $slot->start_time->timezone(config('app.timezone'))->format('Y-m-d\TH:i:s'),
                         'end' => $slot->end_time->timezone(config('app.timezone'))->format('Y-m-d\TH:i:s'),
-                        'allDay' => false
+                        'allDay' => false,
+                        'backgroundColor' => '#4CAF50',
+                        'borderColor' => '#4CAF50'
                     ];
                 })
             );
         } catch (\Exception $e) {
+            \Log::error('Failed to fetch availability slots: ' . $e->getMessage());
             return response()->json([
                 'error' => 'Failed to fetch slots',
                 'details' => $e->getMessage()

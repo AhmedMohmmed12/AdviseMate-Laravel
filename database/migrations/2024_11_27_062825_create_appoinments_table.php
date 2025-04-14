@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("student_id"); 
             $table->unsignedBigInteger("user_id"); 
-            $table->date("app_date"); 
+            $table->datetime("app_date"); 
             $table->enum("status" , ["pending" , "accepted" , "rejected"])->default("pending");
             $table->foreign('student_id')->references('id')->on('students'); 
             $table->foreign('user_id')->references('id')->on('users'); 

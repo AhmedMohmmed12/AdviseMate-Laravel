@@ -13,4 +13,28 @@ class Appoinment extends Model
 
 
     protected $dates = [ "app_date" ];
+    
+    /**
+     * Get the student associated with the appointment
+     */
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id');
+    }
+    
+    /**
+     * Get the advisor associated with the appointment
+     */
+    public function advisor()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
+    /**
+     * Get the availability slot for this appointment
+     */
+    public function availability()
+    {
+        return $this->belongsTo(Availability::class);
+    }
 }

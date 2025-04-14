@@ -29,6 +29,6 @@ class Availability extends Model
 
     public function appointment()
     {
-        return $this->hasOne(Appointment::class);
+        return $this->hasOne(Appoinment::class);
     }
 }

@@ -22,18 +22,58 @@
             <i class="fas fa-list"></i> 
             {{trans('site.advisor.appointments.upcoming')}}
         </h2>
-        <div class="appointment-item">
-            <strong>Ali - {{trans('site.advisor.appointments.course_selection')}}</strong>
-            <p>Tomorrow 10:00 AM</p>
-            <button class="btn-approve">
-                <i class="fas fa-check"></i>
-                {{trans('site.advisor.appointments.approve')}}
-            </button>
-            <button class="btn-reschedule">
-                <i class="fas fa-clock"></i>
-                {{trans('site.advisor.appointments.reschedule')}}
-            </button>
-        </div>
+        
+        @if(isset($pendingAppointments) && count($pendingAppointments) > 0)
+            <h4 class="mt-4 mb-3">Pending Requests</h4>
+            @foreach($pendingAppointments as $appointment)
+                <div class="appointment-item pending">
+                    <div class="appointment-status">
+                        <span class="badge badge-warning">Pending</span>
+                    </div>
+                    <div class="appointment-info">
+                        <strong>{{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</strong>
+                        <p>{{ $appointment->app_date->format('F j, Y - g:i A') }}</p>
+                    </div>
+                    <div class="appointment-actions">
+                        <button class="btn-approve" data-id="{{ $appointment->id }}">
+                            <i class="fas fa-check"></i>
+                            {{trans('site.advisor.appointments.approve')}}
+                        </button>
+                        <button class="btn-reject" data-id="{{ $appointment->id }}">
+                            <i class="fas fa-times"></i>
+                            {{trans('site.advisor.appointments.reject')}}
+                        </button>
+                    </div>
+                </div>
+            @endforeach
+        @endif
+        
+        @if(isset($upcomingAppointments) && count($upcomingAppointments) > 0)
+            <h4 class="mt-4 mb-3">Upcoming Appointments</h4>
+            @foreach($upcomingAppointments as $appointment)
+                <div class="appointment-item accepted">
+                    <div class="appointment-status">
+                        <span class="badge badge-success">Accepted</span>
+                    </div>
+                    <div class="appointment-info">
+                        <strong>{{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</strong>
+                        <p>{{ $appointment->app_date->format('F j, Y - g:i A') }}</p>
+                    </div>
+                    <div class="appointment-actions">
+                        <button class="btn-contact" onclick="window.location.href='mailto:{{ $appointment->student->email }}'">
+                            <i class="fas fa-envelope"></i>
+                            Contact
+                        </button>
+                    </div>
+                </div>
+            @endforeach
+        @endif
+        
+        @if((!isset($pendingAppointments) || count($pendingAppointments) == 0) && (!isset($upcomingAppointments) || count($upcomingAppointments) == 0))
+            <div class="no-appointments">
+                <p>You don't have any upcoming appointments.</p>
+            </div>
+        @endif
     </div>
 </main>
 
@@ -158,6 +198,54 @@
         window.addEventListener('resize', function() {
             calendar.updateSize();
         });
+
+        // Add event listeners for approve buttons
+        document.querySelectorAll('.btn-approve').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const appointmentId = this.getAttribute('data-id');
+                updateAppointmentStatus(appointmentId, 'accepted');
+            });
+        });
+        
+        // Add event listeners for reject buttons
+        document.querySelectorAll('.btn-reject').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const appointmentId = this.getAttribute('data-id');
+                if (confirm('Are you sure you want to reject this appointment?')) {
+                    updateAppointmentStatus(appointmentId, 'rejected');
+                }
+            });
+        });
+        
+        // Function to update appointment status
+        function updateAppointmentStatus(appointmentId, status) {
+            axios.post(`/advisor/appointment-status/${appointmentId}`, {
+                status: status,
+                _token: '{{ csrf_token() }}'
+            })
+            .then(function(response) {
+                if (typeof toastr !== 'undefined') {
+                    toastr.success(`Appointment ${status === 'accepted' ? 'approved' : 'rejected'} successfully`);
+                } else {
+                    alert(`Appointment ${status === 'accepted' ? 'approved' : 'rejected'} successfully`);
+                }
+                
+                // Reload the page to show updated data
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1000);
+            })
+            .catch(function(error) {
+                const errorMessage = error.response?.data?.error || 'Failed to update appointment status';
+                
+                if (typeof toastr !== 'undefined') {
+                    toastr.error(errorMessage);
+                } else {
+                    alert(errorMessage);
+                }
+                console.error('Error:', error);
+            });
+        }
     });
 </script>
 
@@ -279,7 +367,7 @@
         transition: all 0.2s ease;
     }
 
-    .btn-approve, .btn-reschedule {
+    .btn-approve, .btn-reject, .btn-contact {
         padding: 0.5rem 1rem;
         border-radius: 6px;
         border: none;
@@ -293,14 +381,120 @@
         color: white;
     }
 
-    .btn-reschedule {
-        background-color: #3498db;
+    .btn-reject {
+        background-color: #F44336;
         color: white;
     }
 
-    .btn-approve:hover, .btn-reschedule:hover {
+    .btn-contact {
+        background-color: #2196F3;
+        color: white;
+    }
+
+    .btn-approve:hover, .btn-reject:hover, .btn-contact:hover {
         transform: translateY(-1px);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .appointment-list {
+        margin-bottom: 30px;
+    }
+    
+    .appointment-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: white;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+    }
+    
+    .appointment-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .appointment-item.pending {
+        border-left: 4px solid #FFC107;
+    }
+    
+    .appointment-item.accepted {
+        border-left: 4px solid #4CAF50;
+    }
+    
+    .appointment-info {
+        flex: 1;
+    }
+    
+    .appointment-info strong {
+        display: block;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 4px;
+    }
+    
+    .appointment-info p {
+        color: #666;
+        margin: 0;
+    }
+    
+    .appointment-status {
+        margin-right: 15px;
+    }
+    
+    .badge {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 30px;
+        font-weight: 500;
+        font-size: 12px;
+    }
+    
+    .badge-warning {
+        background-color: #FFC107;
+        color: #212529;
+    }
+    
+    .badge-success {
+        background-color: #4CAF50;
+        color: white;
+    }
+    
+    .appointment-actions {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .btn-approve i, .btn-reject i, .btn-contact i {
+        margin-right: 6px;
+    }
+    
+    .no-appointments {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        color: #6c757d;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .appointment-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .appointment-status, .appointment-info, .appointment-actions {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .appointment-actions {
+            justify-content: flex-start;
+        }
     }
 </style>
 @endsection

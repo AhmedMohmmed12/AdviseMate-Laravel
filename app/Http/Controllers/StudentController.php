@@ -50,6 +50,8 @@ class StudentController extends Controller
             'password' => Hash::make($request->password),
             'status' => $request->status
         ]);
+
+        
         
         // Assign the student role
         $student->assignRole('student');
@@ -88,5 +90,35 @@ class StudentController extends Controller
         
         return redirect()->route('supervisor.index')
             ->with('success', trans('site.supervisor.users.deleted_successfully'));
+    }
+
+  
+    public function test(Request $request)
+    {
+        $this->validate($request, [
+            'fName' => 'required|min:3',
+            'email' => 'email|unique:students',
+            'mobileNumber' => 'required|unique:students,phoneNumber|min:10|max:13',
+            'password' => 'required|min:6|confirmed'
+        ]);
+        
+        $student = Student::create([
+            'Fname' => $request->fName,
+            'LName' => $request->lName,
+            'phoneNumber' => $request->mobileNumber,
+            'gender' => $request->gender,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'status' => $request->status
+        ]);
+
+        
+        
+        // Assign the student role
+        $student->assignRole('student');
+        return response()->json([
+            'status' => 200, 
+            'data' => $student,
+        ]);
     }
 }

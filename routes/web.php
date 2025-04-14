@@ -29,6 +29,8 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::post('/test', [StudentController::class, 'test']);
+
 Route::group(
     [
         'prefix' => LaravelLocalization::setLocale(),
@@ -62,9 +64,12 @@ Route::name('supervisor.')->middleware(['auth'])->prefix('supervisor')->group(fu
 });
 
 
-Route::name('student.')->prefix('student')->group(function(){
+Route::name('student.')->prefix('student')->middleware(['auth:student'])->group(function(){
     Route::get('dashboard',[StudentDashboardController::class, 'stDashboard'])->name('dashboard'); 
     Route::get('appointment', [StudentAppointmentController::class,'stAppointment'])->name('appointment');
+    Route::get('get-availabilities', [StudentAppointmentController::class, 'getAvailabilities'])->name('get-availabilities');
+    Route::post('book-appointment', [StudentAppointmentController::class, 'bookAppointment'])->name('book-appointment');
+    Route::post('cancel-appointment/{appointmentId}', [StudentAppointmentController::class, 'cancelAppointment'])->name('cancel-appointment');
     Route::get('ticket', [StudentTicketController::class,'stTicket'])->name('ticket');
     Route::get('get-ticket-types', [StudentTicketController::class, 'getAllTicketTypes'])->name('get-ticket-types');
     Route::post('ticket/create', [StudentTicketController::class, 'createTicket'])->name('ticket.create');
@@ -83,13 +88,17 @@ Route::post('student/delete/{id}', [StudentController::class, 'delete'])->name('
 
 Route::name('advisor.')->middleware(['auth'])->prefix('advisor')->group(function(){
     Route::get('dashboard', [AdvisorDashboardController::class,'adDashboard'])->name('dashboard');
-    Route::get('appointment', [AdvisorAvailabilityController::class,'index'])->name('appointment');
+    Route::get('appointment', [AdvisorAppointmentController::class,'adAppointment'])->name('appointment');
     Route::get('ticket', [AdvisorTicketController::class,'adTicket'])->name('ticket');
     Route::get('student', [AdvisorStudentsController::class,'adStudents'])->name('student');
     Route::get('profile', [AdvisorProfileController::class, 'profile'])->name('profile');
     Route::put('profile/{id}', [AdvisorProfileController::class, 'edit'])->name('profile.edit');
     Route::post('profile/password', [AdvisorProfileController::class, 'changePassword'])->name('profile.password');
     Route::post('ticket/update-status/{id}', [AdvisorTicketController::class, 'updateTicketStatus'])->name('ticket.update-status');
+    
+    // Appointment Routes
+    Route::get('get-appointments', [AdvisorAppointmentController::class, 'getAppointments'])->name('get-appointments');
+    Route::post('appointment-status/{id}', [AdvisorAppointmentController::class, 'updateStatus'])->name('appointment-status');
     
     // Availability Routes
     Route::prefix('availability')->middleware(['auth'])->group(function() {

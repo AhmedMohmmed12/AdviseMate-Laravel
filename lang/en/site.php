@@ -81,6 +81,7 @@ return [
             'calendar' => 'Appointment Calendar',
             'upcoming' => 'Upcoming',
             'approve' => 'Approve',
+            'reject' => 'Reject',
             'reschedule' => 'Reschedule',
             'course_selection' => 'Course Selection'
         ],

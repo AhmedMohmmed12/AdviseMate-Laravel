@@ -19,9 +19,11 @@ use App\Http\Controllers\ApiController;
 //     return $request->user();
 // });
 
+
 Route::name('api.')->group(function(){
-    Route::get('/get-user', [ApiController::class , 'getUsers']);
+    Route::get('/get-TicketDetails', [ApiController::class , 'getTicketDetails']);
 });
+
 
 Route::name('api.')->group(function(){
     Route::get('/get-student', [ApiController::class , 'getStudent']);
@@ -29,4 +31,8 @@ Route::name('api.')->group(function(){
 
 Route::name('api.')->group(function(){
     Route::get('/get-Appoinment', [ApiController::class , 'getAppoinment']);
+});
+
+Route::name('api.')->group(function(){
+    Route::get('/get-Availability', [ApiController::class , 'getAvailability']);
 });

@@ -224,11 +224,7 @@
                 _token: '{{ csrf_token() }}'
             })
             .then(function(response) {
-                if (typeof toastr !== 'undefined') {
-                    toastr.success(`Appointment ${status === 'accepted' ? 'approved' : 'rejected'} successfully`);
-                } else {
-                    alert(`Appointment ${status === 'accepted' ? 'approved' : 'rejected'} successfully`);
-                }
+                toastr.success(`Appointment ${status === 'accepted' ? 'approved' : 'rejected'} successfully`);
                 
                 // Reload the page to show updated data
                 setTimeout(function() {
@@ -237,12 +233,7 @@
             })
             .catch(function(error) {
                 const errorMessage = error.response?.data?.error || 'Failed to update appointment status';
-                
-                if (typeof toastr !== 'undefined') {
-                    toastr.error(errorMessage);
-                } else {
-                    alert(errorMessage);
-                }
+                toastr.error(errorMessage);
                 console.error('Error:', error);
             });
         }

@@ -206,9 +206,11 @@
                 .then(function(response) {
                     $('#ticket-modal').modal('hide');
                     // Show success message
-                    alert(response.data.message);
-                    // Reload the page to show the new ticket
-                    location.reload();
+                    toastr.success(response.data.message);
+                    // Delay reload for 1 second to show the notification
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
                 })
                 .catch(function(error) {
                     console.error('Error:', error);
@@ -225,7 +227,7 @@
                         errorMsg = error.response.data.message;
                     }
                     
-                    alert('Error: ' + errorMsg);
+                    toastr.error('Error: ' + errorMsg);
                 });
             });
         });

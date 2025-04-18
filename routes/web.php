@@ -43,7 +43,7 @@ Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::name('supervisor.')->middleware(['auth'])->prefix('supervisor')->group(function () {
+Route::name('supervisor.')->middleware(['auth', 'supervisor'])->prefix('supervisor')->group(function () {
     // Public routes (login)
     // Route::get('login', [SupervisorLoginController::class, 'showLoginForm'])->name('login');
     // Route::post('login', [SupervisorLoginController::class, 'login']);
@@ -108,6 +108,25 @@ Route::name('advisor.')->middleware(['auth'])->prefix('advisor')->group(function
         Route::get('/fetch', [AdvisorAvailabilityController::class, 'fetch'])->name('availability.fetch');
     });
 });
+
+// Test email route - for development only
+if (env('APP_ENV') !== 'production') {
+    Route::get('/test-email', function () {
+        $appointment = \App\Models\Appoinment::with(['student', 'advisor'])->first();
+        $ticket = \App\Models\TicketTypeDetails::with(['student', 'ticketType'])->first();
+        $student = \App\Models\Student::first();
+        $advisor = \App\Models\User::role('advisor')->first();
+        
+        return [
+            'appointment_created' => new \App\Mail\AppointmentCreated($appointment),
+            'appointment_status' => new \App\Mail\AppointmentStatusChanged($appointment),
+            'ticket_created' => new \App\Mail\TicketCreated($ticket),
+            'ticket_status' => new \App\Mail\TicketStatusChanged($ticket),
+            'profile_updated' => new \App\Mail\ProfileUpdated($student, 'student'),
+            'password_changed' => new \App\Mail\PasswordChanged($advisor, 'advisor')
+        ];
+    });
+}
 
 });
 

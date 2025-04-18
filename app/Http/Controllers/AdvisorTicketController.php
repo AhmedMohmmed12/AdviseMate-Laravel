@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\TicketTypeDetails;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TicketStatusChanged;
 
 class AdvisorTicketController extends Controller
 {
@@ -38,9 +40,31 @@ class AdvisorTicketController extends Controller
             return response()->json(['success' => false, 'message' => 'Unauthorized action.'], 403);
         }
         
-        $ticket->ticket_status = $request->ticket_status;
-        $ticket->save();
-        
-        return response()->json(['success' => true, 'message' => 'Ticket status updated successfully.']);
+        try {
+            \DB::beginTransaction();
+            
+            $ticket->ticket_status = $request->ticket_status;
+            $ticket->save();
+            
+            // Load relationships for email
+            $ticket->load(['ticketType', 'student']);
+            
+            // Send email to student
+            $student = Student::find($ticket->student_id);
+            if ($student) {
+                Mail::to($student->email)->send(new TicketStatusChanged($ticket));
+            }
+            
+            // Send email to advisor (confirmation)
+            Mail::to(Auth::user()->email)->send(new TicketStatusChanged($ticket));
+            
+            \DB::commit();
+            
+            return response()->json(['success' => true, 'message' => 'Ticket status updated successfully.']);
+            
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Failed to update ticket status: ' . $e->getMessage()], 500);
+        }
     }
 }

@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\TicketType;
 use App\Models\Student;
 use App\Models\TicketTypeDetails;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TicketCreated;
 
 class StudentTicketController extends Controller
 {
@@ -81,18 +84,40 @@ class StudentTicketController extends Controller
             $data['file'] = $filename;
         }
         
-        // Create the ticket and link it to the student and advisor
-        $ticket = new TicketTypeDetails([
-            'ticket_type_id' => $request->ticket_type_id,
-            'student_id' => $student->id,
-            'user_id' => $advisorId,
-            'ticket_status' => 'pending',
-            'ticket_description' => $request->ticket_description,
-            'file' => $data['file'] ?? null,
-        ]);
-        
-        $ticket->save();
-        
-        return response()->json(['success' => true, 'message' => 'Ticket created successfully.']);
+        try {
+            \DB::beginTransaction();
+            
+            // Create the ticket and link it to the student and advisor
+            $ticket = new TicketTypeDetails([
+                'ticket_type_id' => $request->ticket_type_id,
+                'student_id' => $student->id,
+                'user_id' => $advisorId,
+                'ticket_status' => 'pending',
+                'ticket_description' => $request->ticket_description,
+                'file' => $data['file'] ?? null,
+            ]);
+            
+            $ticket->save();
+            
+            // Load relationships for email
+            $ticket->load(['ticketType', 'student']);
+            
+            // Send email to student
+            Mail::to($student->email)->send(new TicketCreated($ticket));
+            
+            // Send email to advisor
+            $advisor = User::find($advisorId);
+            if ($advisor) {
+                Mail::to($advisor->email)->send(new TicketCreated($ticket));
+            }
+            
+            \DB::commit();
+            
+            return response()->json(['success' => true, 'message' => 'Ticket created successfully.']);
+            
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Failed to create ticket: ' . $e->getMessage()], 500);
+        }
     }
 }

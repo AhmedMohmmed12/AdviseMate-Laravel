@@ -20,19 +20,32 @@ use App\Http\Controllers\ApiController;
 // });
 
 
-Route::name('api.')->group(function(){
-    Route::get('/get-TicketDetails', [ApiController::class , 'getTicketDetails']);
-});
+// RouteRoute::
 
+Route::post('/login', [ApiController::class , 'login']);
 
-Route::name('api.')->group(function(){
-    Route::get('/get-student', [ApiController::class , 'getStudent']);
-});
+Route::middleware('auth:sanctum')->group(function (){
+    // ::name('api.')->group(function(){
+        Route::get('/get-TicketDetails', [ApiController::class , 'getTicketDetails']);
+    // });
+    
+    // 
+    // Route::name('api.')->group(function(){
+        Route::get('/get-student', [ApiController::class , 'getStudent']);
+        
+        Route::put('/student/{id}', [ApiController::class , 'editStudent']);
+    // });
+    // 
+    // Route::name('api.')->group(function(){
+        Route::get('/get-Appoinment', [ApiController::class , 'getAppoinment']);
+    // });
+    
+    // Route::name('api.')->group(function(){
+        Route::get('/get-Availability', [ApiController::class , 'getAvailability']);
 
-Route::name('api.')->group(function(){
-    Route::get('/get-Appoinment', [ApiController::class , 'getAppoinment']);
-});
+        Route::post('/logout', [ApiController::class , 'logout']);
+        Route::post('/test', [ApiController::class , 'test']);
 
-Route::name('api.')->group(function(){
-    Route::get('/get-Availability', [ApiController::class , 'getAvailability']);
-});
+    // });
+    });
+

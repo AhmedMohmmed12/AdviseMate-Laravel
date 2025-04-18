@@ -16,6 +16,7 @@ class TicketTypeDetails extends Model
         'ticket_status',
         'ticket_description',
         'file'
+        
     ];
 
     public function ticketType()

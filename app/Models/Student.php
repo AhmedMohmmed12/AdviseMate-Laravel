@@ -23,7 +23,7 @@ class Student extends Authenticatable
         'password',
         'status',
         'user_id'
-    ];
+    ];  
 
     /**
      * The attributes that should be hidden for serialization.

@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\Appoinment;
 use App\Models\TicketTypeDetails;
 use App\Models\Availability;
+use Illuminate\Support\Facades\Auth;
 
 class ApiController extends Controller
 {
@@ -34,22 +35,110 @@ class ApiController extends Controller
 
 
 public function getTicketDetails(){
-  $ticketDetails = TicketTypeDetails::select(['ticket_description', 'ticket_status', 'ticket_type_id', 'student_id'])->get();
+
+  $ticketDetails = TicketTypeDetails::select(['ticket_description', 'ticket_status', 'ticket_type_id', 'student_id','created_at'])->with(['ticketType' => function ($q){
+    return $q->select(['id','ticket_type']);
+  }])->get();
   return response()->json([ 
       'status' => '200',
       'data' => $ticketDetails
   ]);
+
 }
 
 
+public function editStudent($id , Request $request)
+{
+  $student = Student::findOrFail($id);
+
+  $this->validate($request, [
+    'Fname' => 'required|min:3',
+    'LName' => 'required|min:3',
+    'phoneNumber' => 'required|unique:students,phoneNumber|min:10|max:13'
+  ]);
+
+  $student->update($request->all()
+);
+  return response()->json([
+    'status' => '200',
+    'message' => 'Student updated successfully',
+    'data' => $student
+  ]);
+}
+
 
 public function getAvailability(){
-  $availability = Availability::select(['start_time', 'end_time','user_id'])->get();
+  $availability = Availability::select(['start_time', 'end_time','user_id','is_booked'])->get();
   return response()->json([ 
       'status' => '200',
       'data' => $availability
   ]);
 }
 
+public function login( Request $request){
+  $request->validate([
+    'email' => 'required|email',
+    'password' => 'required'
+  ]); // end validate
+
+  $credentials = $request->only('email', 'password');
+
+  if (!Auth::guard('student')->attempt($credentials)) {
+    return response()->json([
+      'status' => '401',
+      'message' => 'Login failed'
+    ]); 
+  }
+  $s = Student::select(['id','Fname','email','password'])->where ('email', $request->email)->first();
+  $token = $s->createToken('student')->plainTextToken;
+  return response()->json([
+    'status' => '200',
+    'message' => 'Login successfully',
+    'token' => $token,
+    'stdents_informations' => $s
+  ]);
+
 }
 
+
+
+  public function logout(Request $request){
+    $request->user()->currentAccessToken()->delete();
+    return response()->json([
+      'status' => '200',
+      'message' => 'Logout successful'
+    ]);
+  }
+
+
+
+
+  public function test(Request $request)
+  {
+      $this->validate($request, [
+          'fName' => 'required|min:3',
+          'email' => 'email|unique:students',
+          'mobileNumber' => 'required|unique:students,phoneNumber|min:10|max:13',
+          'password' => 'required|min:6|confirmed'
+      ]);
+      
+      $student = Student::create([
+          'Fname' => $request->fName,
+          'LName' => $request->lName,
+          'phoneNumber' => $request->mobileNumber,
+          'gender' => $request->gender,
+          'email' => $request->email,
+          'password' => Hash::make($request->password),
+          'status' => $request->status
+      ]);
+
+      
+      
+      // Assign the student role
+      $student->assignRole('student');
+      return response()->json([
+          'status' => 200, 
+          'data' => $student,
+      ]);
+  }
+}

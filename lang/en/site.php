@@ -73,7 +73,13 @@ return [
             'course_advising' => 'Course Advising',
             'quick_actions' => 'Quick Actions',
             'view_tickets' => 'View All Tickets',
-            'view_appointments' => 'View All Appointments'
+            'view_appointments' => 'View All Appointments',
+            'no_recent_tickets' => 'No recent tickets',
+            'no_appointments_today' => 'No appointments today',
+            'ticket' => 'Ticket',
+            'pending' => 'Pending',
+            'completed' => 'Completed',
+            'rejected' => 'Rejected',
         ],
         'appointments' => [
             'title' => 'Manage Appointments',

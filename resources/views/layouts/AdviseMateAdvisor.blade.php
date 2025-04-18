@@ -80,7 +80,7 @@
                             <i class="fas fa-user-circle mr-2"></i>{{ __('site.sidebar.profile') }}
                         </a>
                     @endif
-                    <form action="{{ route('supervisor.logout') }}" method="POST">
+                    <form action="{{ auth()->user()->hasRole('advisor') ? route('logout') : route('supervisor.logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="submenu-item btn btn-link w-100 text-left">
                             <i class="fas fa-sign-out-alt mr-2"></i>{{ __('site.sidebar.logout') }}

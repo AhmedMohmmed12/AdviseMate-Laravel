@@ -18,11 +18,9 @@
                 
                 <div class="stat-card">
                     <h3><i class="fas fa-exclamation-triangle text-danger"></i> {{ __('site.supervisor.dashboard.issues') }}</h3>
-                    <div class="stat-number">12</div>
+                    <div class="stat-number">{{ \App\Models\TicketTypeDetails::count() }}</div>
                 </div>
             </div>
-            
-            <!-- Additional dashboard content can go here -->
-            
+                        
         </main>
 @endsection

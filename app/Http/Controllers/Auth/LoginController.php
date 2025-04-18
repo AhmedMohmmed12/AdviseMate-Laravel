@@ -55,7 +55,7 @@ class LoginController extends Controller
         // Determine which guard to use based on role
         $guard = $request->role === 'student' ? 'student' : 'web';
 
-        if (Auth::guard($guard)->attempt($this->credentials($request))) {
+        if (Auth::guard($guard)->attempt($this->credentials($request), $request->filled('remember'))) {
             $user = Auth::guard($guard)->user();
 
             // Check if student is active

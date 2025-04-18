@@ -77,7 +77,10 @@ return [
             'course_advising' => 'إرشاد المقررات',
             'quick_actions' => 'إجراءات سريعة',
             'view_tickets' => 'عرض جميع التذاكر',
-            'view_appointments' => 'عرض جميع المواعيد'
+            'view_appointments' => 'عرض جميع المواعيد',
+            'no_recent_tickets' => 'لا توجد تذاكر حديثة',
+            'no_appointments_today' => 'لا توجد مواعيد اليوم',
+            'ticket' => 'تذكرة'
         ],
         'appointments' => [
             'title' => 'إدارة المواعيد',

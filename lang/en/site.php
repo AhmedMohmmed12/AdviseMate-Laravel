@@ -184,6 +184,7 @@ return [
             'table' => [
                 'name' => 'Name',
                 'email' => 'Email',
+                'program' =>'Program',
                 'mobileNumber' => 'Mobile Number',
                 'gender' => 'Gender',
                 'role' => 'Role',

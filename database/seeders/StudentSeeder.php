@@ -21,6 +21,7 @@ class StudentSeeder extends Seeder
                 'LName'  => "mohammed" ,
                 'email' => "ahmed@gmail.com",
                 'gender' => 'male',
+                'program'=> 'Computer Science',
                 'phoneNumber' => '0553201235',
                 'password' => bcrypt('123456')    
             ])->assignRole('student');

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProfileUpdated;
+use App\Mail\PasswordChanged;
 
 class AdvisorProfileController extends Controller
 {
@@ -29,6 +32,9 @@ class AdvisorProfileController extends Controller
         ]);
 
         $user->update($validated);
+        
+        // Send email notification
+        Mail::to($user->email)->send(new ProfileUpdated($user, 'advisor'));
 
         return redirect()->route('advisor.profile')->with('success', __('site.advisor.profile.updated_successfully'));
     }
@@ -42,9 +48,14 @@ class AdvisorProfileController extends Controller
             ],
         ]);
 
-        Auth::user()->update([
+        $user = Auth::user();
+        
+        $user->update([
             'password' => Hash::make($request->new_password)
         ]);
+        
+        // Send email notification
+        Mail::to($user->email)->send(new PasswordChanged($user, 'advisor'));
 
         return back()->with('success', __('site.advisor.profile.password_updated'));
     }

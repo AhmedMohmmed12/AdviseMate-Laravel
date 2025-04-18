@@ -15,7 +15,7 @@ class Appoinment extends Model
     protected $dates = [ "app_date" ];
     
     /**
-     * Get the student associated with the appointment
+     * Get the student that owns the appointment.
      */
     public function student()
     {
@@ -23,7 +23,7 @@ class Appoinment extends Model
     }
     
     /**
-     * Get the advisor associated with the appointment
+     * Get the advisor that owns the appointment.
      */
     public function advisor()
     {

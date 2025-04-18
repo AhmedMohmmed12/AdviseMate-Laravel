@@ -38,7 +38,7 @@
                                 <tr class="ticket-row" data-status="{{ $ticket->ticket_status }}">
                                     <td>
                                         @if($ticket->student)
-                                            {{ $ticket->student->Fname ?? '' }} {{ $ticket->student->LName ?? '' }}
+                                            {{ ucfirst($ticket->student->Fname ?? '') }} {{ ucfirst($ticket->student->LName ?? '') }}
                                         @else
                                             Unknown Student
                                         @endif
@@ -114,7 +114,7 @@
             var row = $(this).closest('tr');
             
             if (!ticketId) {
-                alert('Error: Ticket ID not found');
+                toastr.error('Error: Ticket ID not found');
                 return;
             }
             
@@ -141,7 +141,7 @@
                 // Update row data attribute
                 row.attr('data-status', newStatus);
                 
-                alert(response.data.message);
+                toastr.success(response.data.message);
             })
             .catch(function(error) {
                 console.error('Error:', error);
@@ -151,7 +151,7 @@
                     errorMsg = error.response.data.message;
                 }
                 
-                alert('Error updating ticket status: ' + errorMsg);
+                toastr.error('Error updating ticket status: ' + errorMsg);
             });
         });
     });

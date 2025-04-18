@@ -147,7 +147,7 @@
             console.log('Received data:', data); // Debug output
             
             if (data.error) {
-                alert(data.error);
+                toastr.error(data.error);
                 return;
             }
             
@@ -156,7 +156,7 @@
         })
         .catch(error => {
             console.error('Error fetching availabilities:', error);
-            alert('Failed to load available appointments. Please try again later.');
+            toastr.error('Failed to load available appointments. Please try again later.');
         });
         
         // Cancel selection button
@@ -168,7 +168,7 @@
         // Confirm appointment button
         document.getElementById('confirmAppointment').addEventListener('click', function() {
             if (!selectedAvailabilityId) {
-                alert('No time slot selected');
+                toastr.warning('No time slot selected');
                 return;
             }
             
@@ -185,17 +185,19 @@
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    alert(data.error);
+                    toastr.error(data.error);
                     return;
                 }
                 
                 // Show success and reload the page
-                alert('Appointment booked successfully!');
-                window.location.reload();
+                toastr.success('Appointment booked successfully!');
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1000);
             })
             .catch(error => {
                 console.error('Error booking appointment:', error);
-                alert('Failed to book appointment. Please try again.');
+                toastr.error('Failed to book appointment. Please try again.');
             });
         });
         
@@ -215,17 +217,19 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.error) {
-                            alert(data.error);
+                            toastr.error(data.error);
                             return;
                         }
                         
                         // Show success and reload the page
-                        alert('Appointment cancelled successfully!');
-                        window.location.reload();
+                        toastr.success('Appointment cancelled successfully!');
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
                     })
                     .catch(error => {
                         console.error('Error cancelling appointment:', error);
-                        alert('Failed to cancel appointment. Please try again.');
+                        toastr.error('Failed to cancel appointment. Please try again.');
                     });
                 }
             });

@@ -8,6 +8,9 @@ use App\Models\Appoinment;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppointmentCreated;
+use App\Mail\AppointmentStatusChanged;
 
 class StudentAppointmentController extends Controller
 {
@@ -107,6 +110,18 @@ class StudentAppointmentController extends Controller
             // Mark the availability as booked
             $availability->update(['is_booked' => true]);
             
+            // Load relationships for email
+            $appointment->load(['student', 'advisor']);
+            
+            // Send email to student
+            Mail::to($student->email)->send(new AppointmentCreated($appointment));
+            
+            // Send email to advisor
+            $advisor = User::find($availability->user_id);
+            if ($advisor) {
+                Mail::to($advisor->email)->send(new AppointmentCreated($appointment));
+            }
+            
             \DB::commit();
             
             return response()->json([
@@ -151,6 +166,18 @@ class StudentAppointmentController extends Controller
             
             // Update appointment status to cancelled
             $appointment->update(['status' => 'cancelled']);
+            
+            // Load relationships for email
+            $appointment->load(['student', 'advisor']);
+            
+            // Send email to student
+            Mail::to($student->email)->send(new AppointmentStatusChanged($appointment));
+            
+            // Send email to advisor
+            $advisor = User::find($appointment->user_id);
+            if ($advisor) {
+                Mail::to($advisor->email)->send(new AppointmentStatusChanged($appointment));
+            }
             
             \DB::commit();
             

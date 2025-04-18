@@ -109,6 +109,7 @@
                                     <tr>
                                         <th>{{ __('site.supervisor.users.table.name') }}</th>
                                         <th>{{ __('site.supervisor.users.table.email') }}</th>
+                                        <th>{{ __('site.supervisor.users.table.program') }}</th>
                                         <th>{{ __('site.supervisor.users.table.mobileNumber') }}</th>
                                         <th>{{ __('site.supervisor.users.table.gender') }}</th>
                                         <th>{{ __('site.supervisor.users.table.role') }}</th>
@@ -121,6 +122,7 @@
                                     <tr>
                                         <td>{{$user->fName}} {{ $user->lName }}</td>
                                         <td>{{$user->email}}</td>
+                                        <td></td>
                                         <td>{{$user->mobileNumber}}</td>
                                         <td>{{ucfirst($user->gender)}}</td>
                                         <td><span class="badge bg-primary">{{ucfirst($user->getRoleNames()->first())}}</span></td>
@@ -186,7 +188,7 @@
                         </div>
 
                         <!-- Email -->
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label font-weight-bold" style="color: #2c3e50;">
                                     <i class="fas fa-envelope" style="color: #ddad27;"></i> {{ __('site.supervisor.users.form.email') }}
@@ -204,6 +206,8 @@
                                 <input type="number" name="mobileNumber" id="edit_mobileNumber" class="form-control rounded" style="border-color: #ddad27;" placeholder="Enter mobile number">
                             </div>
                         </div>
+
+                        
 
                         <!-- Status Dropdown -->
                         <div class="col-md-6">
@@ -250,6 +254,7 @@
                                     <tr>
                                         <td>{{ucfirst($student->Fname)}} {{ ucfirst($student->LName) }}</td>
                                         <td>{{$student->email}}</td>
+                                        <td>{{$student->program }}</td>
                                         <td>{{$student->phoneNumber}}</td>
                                         <td>{{$student->gender ? 'Male' : 'Female'}}</td>
                                         <td><span class="badge bg-success">Student</span></td>

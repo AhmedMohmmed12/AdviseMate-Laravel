@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProfileUpdated;
+use App\Mail\PasswordChanged;
 
 class StudentProfileController extends Controller
 {
@@ -29,6 +32,9 @@ class StudentProfileController extends Controller
         ]);
 
         $student->update($validated);
+        
+        // Send email notification
+        Mail::to($student->email)->send(new ProfileUpdated($student, 'student'));
 
         return redirect()->route('student.profile')->with('success', __('site.student.profile.updated_successfully'));
     }
@@ -42,9 +48,14 @@ class StudentProfileController extends Controller
             ],
         ]);
 
-        Auth::guard('student')->user()->update([
+        $student = Auth::guard('student')->user();
+        
+        $student->update([
             'password' => Hash::make($request->new_password)
         ]);
+        
+        // Send email notification
+        Mail::to($student->email)->send(new PasswordChanged($student, 'student'));
 
         return back()->with('success', __('site.student.profile.password_updated'));
     }

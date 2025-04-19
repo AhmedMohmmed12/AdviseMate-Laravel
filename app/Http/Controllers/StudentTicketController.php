@@ -52,7 +52,7 @@ class StudentTicketController extends Controller
         return response()->json($ticketTypes);
     }
     
-    public function createTicket(Request $request)
+     function createTicket(Request $request)
     {
         $request->validate([
             'ticket_type_id' => 'required|exists:ticket_type,id',
@@ -102,13 +102,13 @@ class StudentTicketController extends Controller
             // Load relationships for email
             $ticket->load(['ticketType', 'student']);
             
-            // Send email to student
-            Mail::to($student->email)->send(new TicketCreated($ticket));
+            // Send email to student asynchronously
+            Mail::to($student->email)->queue(new TicketCreated($ticket));
             
-            // Send email to advisor
+            // Send email to advisor asynchronously
             $advisor = User::find($advisorId);
             if ($advisor) {
-                Mail::to($advisor->email)->send(new TicketCreated($ticket));
+                Mail::to($advisor->email)->queue(new TicketCreated($ticket));
             }
             
             \DB::commit();

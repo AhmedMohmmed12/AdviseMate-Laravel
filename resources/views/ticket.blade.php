@@ -49,9 +49,9 @@
                                                         @elseif($ticket->ticket_status == 'completed') badge-success
                                                         @else badge-danger @endif">
                                                         @if($ticket->ticket_status == 'pending')
-                                                            Open
+                                                            Pending
                                                         @elseif($ticket->ticket_status == 'completed')
-                                                            Closed
+                                                            Completed
                                                         @else
                                                             Rejected
                                                         @endif

@@ -96,10 +96,14 @@
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'timeGridWeek',
+            initialDate: new Date(),
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            validRange: {
+                start: new Date()
             },
             timeZone: '{{ config('app.timezone') }}',
             slotMinTime: '08:00:00',

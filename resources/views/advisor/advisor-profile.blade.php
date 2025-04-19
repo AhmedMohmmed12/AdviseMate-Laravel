@@ -93,5 +93,29 @@
         this.classList.add('d-none'); // Hide "Cancel" button
         editButton.classList.remove('d-none'); // Show "Edit" button
     });
+
+    // Display success message on page load if session has success message
+    @if(session('success'))
+        toastr.success('{{ session('success') }}');
+    @endif
+
+    // Display error messages if any
+    @if(session('error'))
+        toastr.error('{{ session('error') }}');
+    @endif
+
+    @if($errors->any())
+        @foreach($errors->all() as $error)
+            toastr.error('{{ $error }}');
+        @endforeach
+    @endif
+
+    // Configure toastr options
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "5000"
+    };
 </script>
 @endsection 

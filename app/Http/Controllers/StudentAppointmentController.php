@@ -113,13 +113,13 @@ class StudentAppointmentController extends Controller
             // Load relationships for email
             $appointment->load(['student', 'advisor']);
             
-            // Send email to student
-            Mail::to($student->email)->send(new AppointmentCreated($appointment));
+            // Send email to student asynchronously
+            Mail::to($student->email)->queue(new AppointmentCreated($appointment));
             
-            // Send email to advisor
+            // Send email to advisor asynchronously
             $advisor = User::find($availability->user_id);
             if ($advisor) {
-                Mail::to($advisor->email)->send(new AppointmentCreated($appointment));
+                Mail::to($advisor->email)->queue(new AppointmentCreated($appointment));
             }
             
             \DB::commit();
@@ -170,13 +170,13 @@ class StudentAppointmentController extends Controller
             // Load relationships for email
             $appointment->load(['student', 'advisor']);
             
-            // Send email to student
-            Mail::to($student->email)->send(new AppointmentStatusChanged($appointment));
+            // Send email to student asynchronously
+            Mail::to($student->email)->queue(new AppointmentStatusChanged($appointment));
             
-            // Send email to advisor
+            // Send email to advisor asynchronously
             $advisor = User::find($appointment->user_id);
             if ($advisor) {
-                Mail::to($advisor->email)->send(new AppointmentStatusChanged($appointment));
+                Mail::to($advisor->email)->queue(new AppointmentStatusChanged($appointment));
             }
             
             \DB::commit();

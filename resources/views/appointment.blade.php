@@ -106,10 +106,20 @@
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'timeGridWeek',
+            initialDate: new Date(),
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'timeGridWeek,timeGridDay'
+            },
+            validRange: {
+                start: new Date()
+            },
+            hiddenDays: [5, 6], // Hide Friday and Saturday
+            businessHours: {
+                daysOfWeek: [0, 1, 2, 3, 4], // Sunday to Thursday
+                startTime: '08:00',
+                endTime: '18:00',
             },
             slotMinTime: '08:00:00',
             slotMaxTime: '18:00:00',

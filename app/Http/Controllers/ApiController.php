@@ -47,6 +47,15 @@ public function getTicketDetails(){
 }
 
 
+public function getAvailability(){
+  $availability = Availability::select(['start_time', 'end_time','user_id','is_booked'])->get();
+  return response()->json([ 
+      'status' => '200',
+      'data' => $availability
+  ]);
+}
+
+
 public function editStudent($id , Request $request)
 {
   $student = Student::findOrFail($id);
@@ -67,13 +76,7 @@ public function editStudent($id , Request $request)
 }
 
 
-public function getAvailability(){
-  $availability = Availability::select(['start_time', 'end_time','user_id','is_booked'])->get();
-  return response()->json([ 
-      'status' => '200',
-      'data' => $availability
-  ]);
-}
+
 
 public function login( Request $request){
   $request->validate([
@@ -89,7 +92,8 @@ public function login( Request $request){
       'message' => 'Login failed'
     ]); 
   }
-  $s = Student::select(['id','Fname','email','password'])->where ('email', $request->email)->first();
+  
+  $s = Student::select(['id','email','password'])->where ('email', $request->email)->first();
   $token = $s->createToken('student')->plainTextToken;
   return response()->json([
     'status' => '200',

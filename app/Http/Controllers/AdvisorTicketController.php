@@ -8,6 +8,7 @@ use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketStatusChanged;
+use Spatie\Activitylog\Models\Activity;
 
 class AdvisorTicketController extends Controller
 {
@@ -43,8 +44,23 @@ class AdvisorTicketController extends Controller
         try {
             \DB::beginTransaction();
             
+            $oldStatus = $ticket->ticket_status;
             $ticket->ticket_status = $request->ticket_status;
             $ticket->save();
+            
+            // Log the ticket status update activity
+            activity()
+                ->causedBy(Auth::user())
+                ->performedOn($ticket)
+                ->withProperties([
+                    'ticket_id' => $ticket->id,
+                    'old_status' => $oldStatus,
+                    'new_status' => $request->ticket_status,
+                    'ticket_type' => $ticket->ticketType->ticket_type ?? 'Unknown',
+                    'student_id' => $ticket->student_id,
+                    'advisor_name' => Auth::user()->fName
+                ])
+                ->log('Ticket Status Updated');
             
             // Load relationships for email
             $ticket->load(['ticketType', 'student']);

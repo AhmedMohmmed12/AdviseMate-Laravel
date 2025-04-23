@@ -120,8 +120,9 @@ return [
             'title' => 'Student Tickets',
             'filters' => [
                 'all' => 'All',
-                'open' => 'Open',
-                'closed' => 'Closed'
+                'completed' => 'Completed',
+                'pending' => 'Pending',
+                'rejected' => 'Rejected',
             ],
             'table' => [
                 'student' => 'Student',

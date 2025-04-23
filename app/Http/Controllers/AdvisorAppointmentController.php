@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AppointmentStatusChanged;
 use App\Models\Student;
+use Spatie\Activitylog\Models\Activity;
 
 class AdvisorAppointmentController extends Controller
 {
@@ -95,10 +96,24 @@ class AdvisorAppointmentController extends Controller
         try {
             \DB::beginTransaction();
             
+            $oldStatus = $appointment->status;
             // Update appointment status
             $appointment->update([
                 'status' => $request->status
             ]);
+            
+            // Log the appointment status update activity
+            activity()
+                ->causedBy(Auth::user())
+                ->performedOn($appointment)
+                ->withProperties([
+                    'appointment_id' => $appointment->id,
+                    'advisor_name' => Auth::user()->fName,
+                    'student_id' => $appointment->student_id,
+                    'old_status' => $oldStatus,
+                    'new_status' => $request->status
+                ])
+                ->log('Appointment Status Updated');
             
             // If rejected, make the availability slot available again
             if ($request->status === 'rejected') {

@@ -47,7 +47,7 @@
                             <div class="activity-item">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <strong>{{ ucfirst($ticket->student->Fname ?? 'Student') }}: {{ $ticket->ticketType->type_name ?? trans('site.advisor.dashboard.ticket') }}</strong>
+                                        <strong>{{ ucfirst($ticket->student->Fname ?? 'Student') }}: {{ $ticket->ticketType->ticket_type ?? trans('site.advisor.dashboard.ticket') }}</strong>
                                     </div>
                                     <span class="badge badge-{{ $ticket->ticket_status == 'pending' ? 'warning' : ($ticket->ticket_status == 'completed' ? 'success' : 'danger') }}">
                                         {{ $ticket->ticket_status == 'pending' ? trans('site.advisor.dashboard.pending') : 

@@ -12,8 +12,8 @@
                     <div class="col-md-3">
                         <select class="form-control" id="status-filter">
                             <option value="all">{{trans('site.advisor.tickets.filters.all')}}</option>
-                            <option value="pending">{{trans('site.advisor.tickets.filters.open')}}</option>
-                            <option value="completed">{{trans('site.advisor.tickets.filters.closed')}}</option>
+                            <option value="pending">{{trans('site.advisor.tickets.filters.pending')}}</option>
+                            <option value="completed">{{trans('site.advisor.tickets.filters.completed')}}</option>
                             <option value="rejected">{{trans('site.advisor.tickets.filters.rejected')}}</option>
                         </select>
                     </div>

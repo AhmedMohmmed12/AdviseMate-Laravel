@@ -119,12 +119,18 @@
             businessHours: {
                 daysOfWeek: [0, 1, 2, 3, 4], // Sunday to Thursday
                 startTime: '08:00',
-                endTime: '18:00',
+                endTime: '16:00',
             },
             slotMinTime: '08:00:00',
-            slotMaxTime: '18:00:00',
+            slotMaxTime: '16:00:00',
             allDaySlot: false,
+            nowIndicator: true,
             height: 'auto',
+            slotLabelFormat: {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+            },
             eventClick: function(info) {
                 // Show appointment details form
                 document.getElementById('appointmentDetails').classList.remove('d-none');

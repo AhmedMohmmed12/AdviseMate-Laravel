@@ -104,28 +104,25 @@
             },
             validRange: {
                 start: new Date()
-            },
-            timeZone: '{{ config('app.timezone') }}',
-            slotMinTime: '08:00:00',
-            slotMaxTime: '16:00:00',
-            slotDuration: '01:00:00',
-            height: 'auto',
-            expandRows: true,
-            stickyHeaderDates: true,
-            nowIndicator: true,
+            },  
             hiddenDays: [5, 6], // Hide Friday and Saturday
             businessHours: {
                 daysOfWeek: [0, 1, 2, 3, 4], // Sunday to Thursday
                 startTime: '08:00',
                 endTime: '16:00',
             },
-            // Restrict selectable range to business days
-            selectConstraint: {
-                daysOfWeek: [0, 1, 2, 3, 4] // Sunday to Thursday
-            },
-            // Restrict event dragging to business days
-            eventConstraint: {
-                daysOfWeek: [0, 1, 2, 3, 4] // Sunday to Thursday
+            slotMinTime: '08:00:00',
+            slotMaxTime: '16:00:00',
+            slotDuration: '01:00:00',
+            height: 500,
+            expandRows: true,
+            stickyHeaderDates: true,
+            nowIndicator: true,
+            allDaySlot: false,
+            slotLabelFormat: {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
             },
             events: {
                 url: "{{ route('advisor.availability.fetch') }}",
@@ -139,7 +136,6 @@
                 minute: '2-digit',
                 hour12: true
             },
-            editable: true,
             selectable: true,
             select: function(info) {
                 if (confirm('Create availability from ' + info.startStr + ' to ' + info.endStr + '?')) {

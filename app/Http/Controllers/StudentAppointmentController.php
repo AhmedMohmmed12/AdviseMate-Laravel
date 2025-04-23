@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AppointmentCreated;
 use App\Mail\AppointmentStatusChanged;
+use Spatie\Activitylog\Models\Activity;
 
 class StudentAppointmentController extends Controller
 {
@@ -107,6 +108,19 @@ class StudentAppointmentController extends Controller
                 'status' => 'pending'
             ]);
             
+            // Log the appointment creation activity
+            activity()
+                ->causedBy($student)
+                ->performedOn($appointment)
+                ->withProperties([
+                    'appointment_id' => $appointment->id,
+                    'student_name' => ucfirst($student->Fname) . ' ' . ucfirst($student->LName),
+                    'advisor_id' => $availability->user_id,
+                    'appointment_date' => $availability->start_time,
+                    'status' => 'pending'
+                ])
+                ->log('appointment created');
+            
             // Mark the availability as booked
             $availability->update(['is_booked' => true]);
             
@@ -164,8 +178,22 @@ class StudentAppointmentController extends Controller
                 $availability->update(['is_booked' => false]);
             }
             
+            $oldStatus = $appointment->status;
             // Update appointment status to cancelled
             $appointment->update(['status' => 'cancelled']);
+            
+            // Log the appointment status update activity
+            activity()
+                ->causedBy($student)
+                ->performedOn($appointment)
+                ->withProperties([
+                    'appointment_id' => $appointment->id,
+                    'student_name' => ucfirst($student->Fname) . ' ' . ucfirst($student->LName),
+                    'advisor_id' => $appointment->user_id,
+                    'old_status' => $oldStatus,
+                    'new_status' => 'cancelled'
+                ])
+                ->log('Appointment Status Updated');
             
             // Load relationships for email
             $appointment->load(['student', 'advisor']);

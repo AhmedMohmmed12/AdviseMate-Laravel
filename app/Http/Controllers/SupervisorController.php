@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use app\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\Models\Activity;
 
 
 class SupervisorController extends Controller
@@ -58,5 +59,31 @@ public function changePassword(Request $request)
     public function permission()
     {
         return view('supervisor.permission');
+    }
+    
+    public function activityLog()
+    {
+        $activities = Activity::latest()->paginate(20);
+        return view('supervisor.activitylog', compact('activities'));
+    }
+    
+    public function ticketActivity()
+    {
+        $ticketActivities = Activity::where(function($query) {
+            $query->where('description', 'like', '%Ticket Created%')
+                ->orWhere('description', 'like', '%Ticket Status Updated%');
+        })->latest()->paginate(20);
+        
+        return view('supervisor.activitylog', compact('ticketActivities'));
+    }
+    
+    public function appointmentActivity()
+    {
+        $appointmentActivities = Activity::where(function($query) {
+            $query->where('description', 'like', '%Appointment Created%')
+                ->orWhere('description', 'like', '%Appointment Status Updated%');
+        })->latest()->paginate(20);
+        
+        return view('supervisor.activitylog', compact('appointmentActivities'));
     }
 } 

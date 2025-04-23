@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketCreated;
+use Spatie\Activitylog\Models\Activity;
 
 class StudentTicketController extends Controller
 {
@@ -98,6 +99,19 @@ class StudentTicketController extends Controller
             ]);
             
             $ticket->save();
+            
+            // Log the ticket creation activity
+            activity()
+                ->causedBy($student)
+                ->performedOn($ticket)
+                ->withProperties([
+                    'ticket_id' => $ticket->id,
+                    'ticket_type' => $ticket->ticketType->ticket_type ?? 'Unknown',
+                    'student_name' => ucfirst($student->Fname) . ' ' . ucfirst($student->LName),
+                    'advisor_id' => $advisorId,
+                    'advisor_name' => $advisor->fName
+                ])
+                ->log('Ticket Created');
             
             // Load relationships for email
             $ticket->load(['ticketType', 'student']);

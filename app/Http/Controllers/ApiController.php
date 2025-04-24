@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use App\Models\TicketType;
 use App\Models\Student;
 use App\Models\Appoinment;
 use App\Models\TicketTypeDetails;
@@ -15,15 +17,45 @@ class ApiController extends Controller
     // Controller for API endpoints
 
     // Ensure no misplaced code or missing semicolon above this line
- 
+ // student 
   public function getStudent(){
-    $student=Student::select(['Fname','LName','email','phoneNumber','user_id',])->get();
+    $student=Student::select(['Fname','LName','email','phoneNumber','user_id'])->get();
     return response()->json([
       'status' => '200',
       'data'=> $student
     ]);
   }
 
+
+
+  public function editStudent($id , Request $request)
+  {
+    $student = Student::findOrFail($id);
+  
+    $this->validate($request, [
+      'Fname' => 'required|min:3',
+      'LName' => 'required|min:3',
+      "phoneNumber" => 'required|min:10|max:13|unique:students,phoneNumber,'.$id,
+      'email' => 'required|email|unique:students,email,'.$id,
+      'password'=>"sometimes|confirmed"
+  
+    ]);
+  
+  $data = $request->except($request->password);
+  if($request->password){
+    $data['password'] = Hash::make($request->password);
+  }
+    $student->update($data);
+    return response()->json([
+      'status' => '200',
+      'message' => 'Student updated successfully',
+      'data' => $student
+    ]);
+  }
+// end student
+
+  
+// Appoinment
   public function getAppoinment(){
     $appointment = Appoinment::select(['student_id', 'user_id', 'app_date', 'status'])->get();
     return response()->json([ 
@@ -33,7 +65,41 @@ class ApiController extends Controller
 }
 
 
+public function getAvailability(){
+  $availability = Availability::select(['start_time', 'end_time','user_id','is_booked'])->get();
+  return response()->json([ 
+      'status' => '200',
+      'data' => $availability
+  ]);
+}
 
+
+public function postappointment(Request $request)
+{
+  $this->validate($request, [
+    'student_id' => 'required',
+    'user_id' => 'required',
+    'app_date' => 'required|date',
+    'status' => 'required'
+  ]);
+
+  $appointment = Appoinment::create([
+    'student_id' => $request->student_id,
+    'user_id' => $request->user_id,
+    'app_date' => $request->app_date,
+    'status' => $request->status
+  ]);
+
+  return response()->json([
+    'status' => 200,
+    'data' => $appointment
+  ]);
+
+}
+
+// end Appoinment
+
+//TicketDetails
 public function getTicketDetails(){
 
   $ticketDetails = TicketTypeDetails::select(['ticket_description', 'ticket_status', 'ticket_type_id', 'student_id','created_at'])->with(['ticketType' => function ($q){
@@ -47,33 +113,56 @@ public function getTicketDetails(){
 }
 
 
-public function getAvailability(){
-  $availability = Availability::select(['start_time', 'end_time','user_id','is_booked'])->get();
-  return response()->json([ 
-      'status' => '200',
-      'data' => $availability
-  ]);
-}
 
 
-public function editStudent($id , Request $request)
+public function createTicketDetails(Request $request)
 {
-  $student = Student::findOrFail($id);
+    $validator = Validator::make($request->all(), [
+        'ticket_description' => 'required|string',
+        'ticket_status' => 'required|string',
+        'ticket_type' => 'required|string',
+        'student_id' => 'required|exists:students,id',
+        'user_id' => 'required|exists:users,id',
+        'file' => 'sometimes|file|mimes:jpg,jpeg,png,pdf|max:2048', // Optional file validation
+    ]);//sometimes
 
-  $this->validate($request, [
-    'Fname' => 'required|min:3',
-    'LName' => 'required|min:3',
-    'phoneNumber' => 'required|unique:students,phoneNumber|min:10|max:13'
-  ]);
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 422,
+            'errors' => $validator->errors()
+        ], 422);
+    }
 
-  $student->update($request->all()
-);
-  return response()->json([
-    'status' => '200',
-    'message' => 'Student updated successfully',
-    'data' => $student
-  ]);
+    // Create or get the ticket type
+    $ticketType = TicketType::firstOrCreate([
+        'ticket_type' => $request->ticket_type
+    ]);
+
+    // Create the ticket
+    $ticket = TicketTypeDetails::create([
+        'ticket_description' => $request->ticket_description,
+        'ticket_status' => $request->ticket_status,
+        'ticket_type_id' => $ticketType->id,
+        'student_id' => $request->student_id,
+        'user_id' => $request->user_id,
+    ]);
+
+    return response()->json([
+        'status' => 201,
+        'message' => 'Ticket created successfully',
+        'data' => [
+            'id' => $ticket->id,
+            'ticket_description' => $ticket->ticket_description,
+            'ticket_status' => $ticket->ticket_status,
+            'ticket_type_id' => $ticket->ticket_type_id,
+            'student_id' => $ticket->student_id,
+            'user_id' => $ticket->user_id,
+            'created_at' => $ticket->created_at->toDateTimeString(), // ✅ Here it is!
+        ]
+    ], 201);
 }
+
+// end TicketDetails
 
 
 
@@ -128,7 +217,7 @@ public function login( Request $request){
       
       $student = Student::create([
           'Fname' => $request->fName,
-          'LName' => $request->lName,
+          'LName' => $request->LName,
           'phoneNumber' => $request->mobileNumber,
           'gender' => $request->gender,
           'email' => $request->email,
@@ -145,4 +234,9 @@ public function login( Request $request){
           'data' => $student,
       ]);
   }
+
+
+
+
+
 }

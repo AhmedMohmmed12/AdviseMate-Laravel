@@ -24,23 +24,23 @@ use App\Http\Controllers\ApiController;
 
 Route::post('/login', [ApiController::class , 'login']);
 
-Route::middleware('auth:sanctum')->group(function (){
+Route::middleware('auth:sanctum')->group(function (){   
     // ::name('api.')->group(function(){
         Route::get('/get-TicketDetails', [ApiController::class , 'getTicketDetails']);
+        Route::post('/post-TicketDetails', [ApiController::class , 'createTicketDetails']);
     // });
-    
     // 
     // Route::name('api.')->group(function(){
         Route::get('/get-student', [ApiController::class , 'getStudent']);
         
-        Route::put('/student/{id}', [ApiController::class , 'editStudent']);
+        Route::post('/student/{id}', [ApiController::class , 'editStudent']);
     // });
     // 
     // Route::name('api.')->group(function(){
-        Route::get('/get-Appoinment', [ApiController::class , 'getAppoinment']);
     // });
-    
+    Route::post('/post-Appoinment', [ApiController::class , 'postappointment']);
     // Route::name('api.')->group(function(){
+        Route::get('/get-Appoinment', [ApiController::class , 'getAppoinment']);
         Route::get('/get-Availability', [ApiController::class , 'getAvailability']);
 
         Route::post('/logout', [ApiController::class , 'logout']);

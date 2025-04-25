@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('gender' ,['male' , 'female']);
             $table->enum('status' , ['active' , 'inactive']);
             $table->string('email')->unique();
-            $table->string('Program');
+            $table->enum('Program', ['Computer Science', 'Business', 'Engineering'] )->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger("ticket_type_detail_id")->nullable();

@@ -18,7 +18,7 @@ class Student extends Authenticatable
         'Fname',
         'LName', 
         'email',
-        'program',
+        'Program',
         'phoneNumber',
         'gender',
         'password',

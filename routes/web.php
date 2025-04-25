@@ -61,6 +61,9 @@ Route::name('supervisor.')->middleware(['auth', 'supervisor'])->prefix('supervis
         Route::put('profile/{id}', [SupervisorController::class, 'profileEdit'])->name('profile.edit');
         Route::post('profile/password', [SupervisorController::class, 'changePassword'])->name('profile.password');
         Route::post('logout', [SupervisorLoginController::class, 'logout'])->name('logout');
+        // Advisor-Student Assignment Routes
+        Route::post('assign-student', [SupervisorController::class, 'assignStudent'])->name('assign-student');
+        Route::post('unassign-student', [SupervisorController::class, 'unassignStudent'])->name('unassign-student');
 });
 
 

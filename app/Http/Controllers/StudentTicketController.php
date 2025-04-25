@@ -77,6 +77,8 @@ class StudentTicketController extends Controller
             return response()->json(['success' => false, 'message' => 'No advisor linked to this student.'], 400);
         }
         
+        // Get the advisor before using the variable
+        $advisor = User::find($advisorId);
         if($request->hasFile('file')) {
             $file = $request->file('file');
             $studentID = $student->id;
@@ -120,7 +122,6 @@ class StudentTicketController extends Controller
             Mail::to($student->email)->queue(new TicketCreated($ticket));
             
             // Send email to advisor asynchronously
-            $advisor = User::find($advisorId);
             if ($advisor) {
                 Mail::to($advisor->email)->queue(new TicketCreated($ticket));
             }

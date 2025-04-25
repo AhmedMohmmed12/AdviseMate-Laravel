@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use app\Models\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\Models\Activity;
+use App\Models\Student;
 
 
 class SupervisorController extends Controller
@@ -56,9 +57,151 @@ public function changePassword(Request $request)
     {
         return view('supervisor.profile');
     }
-    public function permission()
+    public function permission(Request $request)
     {
-        return view('supervisor.permission');
+        // Build the student query with advisor relation
+        $query = Student::with('advisor');
+        
+        // Apply filters if provided
+        if ($request->has('advisor_id') && $request->advisor_id) {
+            $query->where('user_id', $request->advisor_id);
+        }
+        
+        if ($request->has('program') && $request->program) {
+            $query->where('program', $request->program);
+        }
+        
+        if ($request->has('status') && $request->status) {
+            if ($request->status === 'assigned') {
+                $query->whereNotNull('user_id');
+            } elseif ($request->status === 'unassigned') {
+                $query->whereNull('user_id');
+            }
+        }
+        
+        // Get all students based on filters
+        $students = $query->get();
+        
+        // Get unassigned students for the assignment dropdown
+        $unassignedStudents = Student::whereNull('user_id')->get();
+        
+        // Get all active advisors
+        $advisors = User::role('advisor')->where('status', 'active')->get();
+        
+        return view('supervisor.permission', compact('students', 'advisors', 'unassignedStudents'));
+    }
+    
+    /**
+     * Get students based on filters
+     */
+    public function getStudents(Request $request)
+    {
+        $query = Student::with('advisor');
+        
+        // Apply filters if provided
+        if ($request->has('advisor_id') && $request->advisor_id) {
+            $query->where('user_id', $request->advisor_id);
+        }
+        
+        if ($request->has('program') && $request->program) {
+            $query->where('program', $request->program);
+        }
+        
+        if ($request->has('status') && $request->status) {
+            if ($request->status === 'assigned') {
+                $query->whereNotNull('user_id');
+            } elseif ($request->status === 'unassigned') {
+                $query->whereNull('user_id');
+            }
+        }
+        
+        $students = $query->get();
+        
+        return response()->json(['students' => $students]);
+    }
+    
+    /**
+     * Get all active advisors
+     */
+    public function getAdvisors()
+    {
+        $advisors = User::role('advisor')->where('status', 'active')->get();
+        
+        return response()->json(['advisors' => $advisors]);
+    }
+    
+    /**
+     * Assign a student to an advisor
+     */
+    public function assignStudent(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required|exists:students,id',
+            'advisor_id' => 'required|exists:users,id',
+        ]);
+        
+        $student = Student::findOrFail($request->student_id);
+        $advisor = User::findOrFail($request->advisor_id);
+        
+        // Make sure the advisor has the advisor role
+        if (!$advisor->hasRole('advisor')) {
+            return back()->with('error', 'Selected user is not an advisor.');
+        }
+        
+        // Update the student's advisor
+        $student->user_id = $advisor->id;
+        $student->save();
+        
+        // Log the activity
+        activity()
+            ->causedBy(Auth::user())
+            ->performedOn($student)
+            ->withProperties([
+                'student_id' => $student->id,
+                'student_name' => $student->Fname . ' ' . $student->LName,
+                'advisor_id' => $advisor->id,
+                'advisor_name' => $advisor->fName . ' ' . $advisor->lName,
+            ])
+            ->log('Student assigned to advisor');
+        
+        return redirect()->route('supervisor.permission')
+            ->with('success', $student->Fname . ' ' . $student->LName . ' has been assigned to ' . $advisor->fName . ' ' . $advisor->lName);
+    }
+    
+    /**
+     * Unassign a student from their advisor
+     */
+    public function unassignStudent(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required|exists:students,id',
+        ]);
+        
+        $student = Student::findOrFail($request->student_id);
+        
+        // Store the old advisor's information for the log
+        $oldAdvisor = $student->advisor;
+        
+        // Remove the advisor association
+        $student->user_id = null;
+        $student->save();
+        
+        // Log the activity
+        if ($oldAdvisor) {
+            activity()
+                ->causedBy(Auth::user())
+                ->performedOn($student)
+                ->withProperties([
+                    'student_id' => $student->id,
+                    'student_name' => $student->Fname . ' ' . $student->LName,
+                    'advisor_id' => $oldAdvisor->id,
+                    'advisor_name' => $oldAdvisor->fName . ' ' . $oldAdvisor->lName,
+                ])
+                ->log('Student unassigned from advisor');
+        }
+        
+        return redirect()->route('supervisor.permission')
+            ->with('success', $student->Fname . ' ' . $student->LName . ' has been unassigned from their advisor.');
     }
     
     public function activityLog()

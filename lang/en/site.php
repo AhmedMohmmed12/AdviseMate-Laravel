@@ -163,7 +163,7 @@ return [
         'users' => [
             'title' => 'User Management',
             'manage_users' => 'Manage Users',
-            'manage_permissions' => 'Manage Permissions',
+            'manage_advisor' => 'Manage Advisor',
             'add_user' => 'Add User',
             'create_new' => 'Create New User',
             'added_successfully' => 'User added successfully',

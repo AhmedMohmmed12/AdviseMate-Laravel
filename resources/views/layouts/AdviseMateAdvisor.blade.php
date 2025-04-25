@@ -56,7 +56,7 @@
                     <i class="fas fa-users mr-2"></i>{{ trans('site.supervisor.users.manage_users') }}
                 </a>
                 <a href="{{ route('supervisor.permission') }}" class="submenu-item {{ request()->routeIs('supervisor.permission') ? 'active' : '' }}">
-                    <i class="fas fa-key mr-2"></i>{{ trans('site.supervisor.users.manage_permissions') }}
+                    <i class="fas fa-key mr-2"></i>{{ trans('site.supervisor.users.manage_advisor') }}
                 </a>
             </div>
             <a href="{{ route('supervisor.activity-log') }}" class="{{ request()->routeIs('supervisor.activity-log') ? 'active' : '' }}">

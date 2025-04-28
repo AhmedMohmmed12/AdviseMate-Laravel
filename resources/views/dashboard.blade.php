@@ -1,65 +1,120 @@
 @extends('layouts.AdviseMate')
 @section('title', 'Dashboard')
 @section('content')
-<main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4 content">
+<main class="col-12 col-md-9 col-lg-10 px-3 py-4 content">
     <div class="mt-4 mb-4">
-        <!-- Main Content -->
-        <div class="main-content">
-            <h1 class="header">Welcome Back, Student!</h1>
-            <div class="dashboard-grid">
-                <!-- Upcoming Appointments Card -->
-                <div class="dashboard-card">
-                    <h2 class="card-title"><i class="fas fa-calendar-alt"></i> Upcoming Appointments</h2>
-                    <ul class="appointment-list">
-                        <li class="appointment-item">
-                            <strong>Advisor Meeting</strong><br>
-                            <span class="text-muted">Tomorrow 2:00 PM</span>
-                        </li>
-                        <li class="appointment-item">
-                            <strong>Course Selection</strong><br>
-                            <span class="text-muted">Friday 10:30 AM</span>
-                        </li>
-                    </ul>
+        <h2>Welcome Back, {{ ucfirst(Auth::guard('student')->user()->Fname) }}!</h2>
+    </div>
+    
+    <!-- Stats Row -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-check"></i>
                 </div>
-
-                <!-- Recent Tickets Card -->
-                <div class="dashboard-card">
-                    <h2 class="card-title"><i class="fas fa-ticket-alt"></i> Recent Tickets</h2>
-                    <ul class="appointment-list">
-                        <li class="appointment-item">
-                            <strong>Registration Issue</strong>
-                            <span class="status-indicator status-open">Open</span>
-                        </li>
-                        <li class="appointment-item">
-                            <strong>Course deletion</strong>
-                            <span class="status-indicator status-closed">Closed</span>
-                        </li>
-                    </ul>
+                <h3>Upcoming Appointments</h3>
+                <div class="number">{{ $upcomingAppointments }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-ticket-alt"></i>
                 </div>
-
-                <!-- Quick Actions Card -->
-                <div class="dashboard-card">
-                    <h2 class="card-title"><i class="fas fa-bolt"></i> Quick Actions</h2>
-                    <div class="quick-actions">
-                        <button class="action-button">
-                            <i class="fas fa-plus"></i> New Ticket
-                        </button>
-                        <button class="action-button">
-                            <i class="fas fa-calendar-plus"></i> Schedule Meeting
-                        </button>
-                    </div>
+                <h3>Active Tickets</h3>
+                <div class="number">{{ $activeTickets }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-user-tie"></i>
                 </div>
-
-                <!-- Calendar Card -->
-                <div class="dashboard-card">
-                    <h2 class="card-title"><i class="fas fa-calendar"></i> Academic Calendar</h2>
-                    <div class="calendar-placeholder">
-                        Interactive Calendar (Coming Soon)
-                    </div>
+                <h3>My Advisor</h3>
+                <div class="advisor-info">
+                    @if($advisor)
+                        <strong>{{ ucfirst($advisor->fName ?? '') }} {{ ucfirst($advisor->lName ?? '') }}</strong>
+                        <div class="text-muted d-flex align-items-center justify-content-center">
+                            <a href="mailto:{{ $advisor->email ?? '' }}" class="text-muted mr-3" title="Email">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            {{ $advisor->email ?? '' }}
+                        </div>
+                        <div class="text-muted d-flex align-items-center justify-content-center">
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $advisor->mobileNumber ?? '') }}" class="text-muted mr-3" target="_blank" title="WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            {{ $advisor->mobileNumber ?? '' }}
+                        </div>
+                    @else
+                        <span class="text-muted">No advisor assigned</span>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-    </main>
+    
+    <!-- Activity Row -->
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="activity-card">
+                <h3><i class="fas fa-calendar-alt mr-2"></i>Upcoming Appointments</h3>
+                @if(count($recentAppointments) > 0)
+                    @foreach($recentAppointments as $appointment)
+                    <div class="activity-item">
+                        <div>
+                            <strong>{{ $appointment->advisor->fName ?? 'Advisor' }} Meeting</strong>
+                            <div>{{ \Carbon\Carbon::parse($appointment->app_date)->format('l g:i A') }}</div>
+                        </div>
+                    </div>
+                    @endforeach
+                @else
+                    <div class="activity-item">
+                        <div>No upcoming appointments</div>
+                    </div>
+                @endif
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="activity-card">
+                <h3><i class="fas fa-ticket-alt mr-2"></i>Recent Tickets</h3>
+                @if(count($recentTickets) > 0)
+                    @foreach($recentTickets as $ticket)
+                    <div class="activity-item">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>{{ $ticket->ticketType->ticket_type ?? 'Ticket' }}</strong>
+                            </div>
+                            <span class="badge badge-{{ $ticket->ticket_status == 'pending' ? 'warning' : ($ticket->ticket_status == 'completed' ? 'success' : 'danger') }}">
+                                {{ ucfirst($ticket->ticket_status) }}
+                            </span>
+                        </div>
+                    </div>
+                    @endforeach
+                @else
+                    <div class="activity-item">
+                        <div>No recent tickets</div>
+                    </div>
+                @endif
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="activity-card">
+                <h3><i class="fas fa-bolt mr-2"></i>Quick Actions</h3>
+                <div class="text-center mb-3">
+                    <a href="{{ route('student.ticket') }}" class="btn btn-action btn-block">
+                        <i class="fas fa-ticket-alt mr-2"></i>Create New Ticket
+                    </a>
+                </div>
+                <div class="text-center">
+                    <a href="{{ route('student.appointment') }}" class="btn btn-action btn-block">
+                        <i class="fas fa-calendar-plus mr-2"></i>Schedule Meeting
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
+</main>
+
 @endsection

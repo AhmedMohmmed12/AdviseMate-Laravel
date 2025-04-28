@@ -164,8 +164,10 @@
                     
                     if (selectedId >= 4 && selectedId <= 7) {
                         $('#extra-field').show();
+                        $('#extra-input').prop('required', true);
                     } else {
                         $('#extra-field').hide();
+                        $('#extra-input').prop('required', false);
                     }
                     
                     $('#ticket-modal').modal('show');

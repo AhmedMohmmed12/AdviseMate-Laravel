@@ -88,6 +88,8 @@ Route::name('student.')->prefix('student')->middleware(['auth:student'])->group(
 Route::post('student/store', [StudentController::class, 'store'])->name('student.store');
 Route::put('student/edit/{id}', [StudentController::class, 'edit'])->name('student.edit');
 Route::post('student/delete/{id}', [StudentController::class, 'delete'])->name('student.delete');
+Route::post('student/import', [StudentController::class, 'import'])->name('student.import');
+Route::get('student/sample-template', [StudentController::class, 'sampleTemplate'])->name('student.sample-template');
 
 Route::name('advisor.')->middleware(['auth'])->prefix('advisor')->group(function(){
     Route::get('dashboard', [AdvisorDashboardController::class,'adDashboard'])->name('dashboard');
@@ -112,7 +114,6 @@ Route::name('advisor.')->middleware(['auth'])->prefix('advisor')->group(function
     });
 });
 
-// Test email route - for development only
 if (env('APP_ENV') !== 'production') {
     Route::get('/test-email', function () {
         $appointment = \App\Models\Appoinment::with(['student', 'advisor'])->first();

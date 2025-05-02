@@ -102,7 +102,7 @@ public function postappointment(Request $request)
 //TicketDetails
 public function getTicketDetails(){
 
-  $ticketDetails = TicketTypeDetails::select(['ticket_description', 'ticket_status', 'ticket_type_id', 'student_id','created_at'])->with(['ticketType' => function ($q){
+  $ticketDetails = TicketTypeDetails::select(['ticket_description', 'ticket_status', 'ticket_type_id', 'student_id','file','created_at'])->with(['ticketType' => function ($q){
     return $q->select(['id','ticket_type']);
   }])->get();
   return response()->json([ 

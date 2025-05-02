@@ -117,14 +117,31 @@ public function getTicketDetails(){
 
 public function createTicketDetails(Request $request)
 {
-    $validator = Validator::make($request->all(), [
+    // Get the highest ticket type ID to determine the last 3 types
+    $highestTypeId = TicketType::max('id');
+    
+    // Basic validation rules
+    $validationRules = [
         'ticket_description' => 'required|string',
         'ticket_status' => 'required|string',
         'ticket_type' => 'required|string',
         'student_id' => 'required|exists:students,id',
         'user_id' => 'required|exists:users,id',
-        'file' => 'sometimes|file|mimes:jpg,jpeg,png,pdf|max:2048', // Optional file validation
-    ]);//sometimes
+    ];
+    
+    // Get or create the ticket type
+    $ticketType = TicketType::firstOrCreate([
+        'ticket_type' => $request->ticket_type
+    ]);
+    
+    // Make file required for the last 3 ticket types
+    if ($ticketType->id > ($highestTypeId - 3)) {
+        $validationRules['file'] = 'required|file|mimes:jpg,jpeg,png,pdf|max:2048';
+    } else {
+        $validationRules['file'] = 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048';
+    }
+    
+    $validator = Validator::make($request->all(), $validationRules);
 
     if ($validator->fails()) {
         return response()->json([
@@ -133,10 +150,16 @@ public function createTicketDetails(Request $request)
         ], 422);
     }
 
-    // Create or get the ticket type
-    $ticketType = TicketType::firstOrCreate([
-        'ticket_type' => $request->ticket_type
-    ]);
+    $data = $request->except(['file']);
+
+    // Handle file upload if present
+    if ($request->hasFile('file')) {
+        $file = $request->file('file');
+        $studentID = $request->student_id;
+        $filename = time() . '_' . $studentID . '_' . rand(1, 9999) . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('uploads'), $filename);
+        $data['file'] = $filename;
+    }
 
     // Create the ticket
     $ticket = TicketTypeDetails::create([
@@ -145,6 +168,7 @@ public function createTicketDetails(Request $request)
         'ticket_type_id' => $ticketType->id,
         'student_id' => $request->student_id,
         'user_id' => $request->user_id,
+        'file' => $data['file'] ?? null,
     ]);
 
     return response()->json([
@@ -157,7 +181,8 @@ public function createTicketDetails(Request $request)
             'ticket_type_id' => $ticket->ticket_type_id,
             'student_id' => $ticket->student_id,
             'user_id' => $ticket->user_id,
-            'created_at' => $ticket->created_at->toDateTimeString(), // ✅ Here it is!
+            'file' => $ticket->file,
+            'created_at' => $ticket->created_at->toDateTimeString(),
         ]
     ], 201);
 }

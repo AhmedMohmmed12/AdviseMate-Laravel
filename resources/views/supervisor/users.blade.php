@@ -29,7 +29,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0"><i class="fa-solid fa-users"></i> {{ __('site.supervisor.users.title') }}</h5>
-                        <div class="d-flex gap-3">
+                        <div class="d-flex" style="gap: 10px;">
                             <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#importModal">
                                 <i class="fa-solid fa-file-import"></i> Import Students
                             </button>
@@ -158,8 +158,8 @@
                                         <td></td>
                                         <td>{{$user->mobileNumber}}</td>
                                         <td>{{ucfirst($user->gender)}}</td>
-                                        <td><span class="badge bg-primary">{{ucfirst($user->getRoleNames()->first())}}</span></td>
-                                        <td><span class="badge bg-{{ $user->status == 'active'?'success':'danger'}}">{{ucfirst($user->status)}}</span></td>
+                                        <td><span class="badge bg-primary text-white">{{ucfirst($user->getRoleNames()->first())}}</span></td>
+                                        <td><span class="badge bg-{{ $user->status == 'active'?'success':'danger'}} text-white">{{ucfirst($user->status)}}</span></td>
                                         <td>
                                             <!-- Buttons Container -->
                                             <div class="d-flex gap-2 align-items-center">
@@ -290,8 +290,8 @@
                                         <td>{{$student->Program }}</td>
                                         <td>{{$student->phoneNumber}}</td>
                                         <td>{{$student->gender ? 'Male' : 'Female'}}</td>
-                                        <td><span class="badge bg-success">Student</span></td>
-                                        <td><span class="badge bg-{{ $student->status == 'active'?'success':'danger'}}">{{ucfirst($student->status ?? 'active')}}</span></td>
+                                        <td><span class="badge bg-success text-white">Student</span></td>
+                                        <td><span class="badge bg-{{ $student->status == 'active'?'success':'danger'}} text-white">{{ucfirst($student->status ?? 'active')}}</span></td>
                                         <td>
                                             <!-- Buttons Container -->
                                             <div class="d-flex gap-2 align-items-center">

@@ -2,6 +2,30 @@
 @section('title','Advisor-Student Assignment')
 @section('content')
 
+        <style>
+            .avatar-circle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            .badge-pill {
+                font-weight: 500;
+                font-size: 0.75rem;
+            }
+            .table th {
+                font-weight: 600;
+                color: #495057;
+            }
+            .font-weight-medium {
+                font-weight: 500;
+            }
+        </style>
+        
         <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4 content">
             
             <div class="advisor-student-container">
@@ -64,82 +88,101 @@
                 </div>
                 
                 <!-- Students Table -->
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped student-assignment-table">
-                        <thead>
-                            <tr>
-                                <th>Student ID</th>
-                                <th>Student Name</th>
-                                <th>Program</th>
-                                <th>Current Advisor</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($students as $student)
-                                <tr>
-                                    <td>#STU-{{ $student->id }}</td>
-                                    <td>{{ ucfirst($student->Fname) }} {{ ucfirst($student->LName) }}</td>
-                                    <td>{{ $student->Program }}</td>
-                                    <td>
-                                        @if($student->advisor)
-                                            {{ ucfirst($student->advisor->fName) }} {{ ucfirst($student->advisor->lName) }}
-                                        @else
-                                            <span class="text-muted">Unassigned</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <span class="badge {{ $student->advisor ? 'bg-success' : 'bg-warning' }}">
-                                            {{ $student->advisor ? 'Assigned' : 'Unassigned' }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        @if($student->advisor)
-                                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#unassignStudentModal{{ $student->id }}">
-                                                <i class="fas fa-unlink mr-1"></i> Unassign
-                                            </button>
-                                            
-                                            <!-- Unassign Modal for this student -->
-                                            <div class="modal fade" id="unassignStudentModal{{ $student->id }}" tabindex="-1" role="dialog" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Unassign Student</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Student Assignments</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="border-top-0">Student ID</th>
+                                        <th class="border-top-0">Student Name</th>
+                                        <th class="border-top-0">Program</th>
+                                        <th class="border-top-0">Current Advisor</th>
+                                        <th class="border-top-0">Status</th>
+                                        <th class="border-top-0 text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($students as $student)
+                                        <tr>
+                                            <td class="align-middle">#STU-{{ $student->id }}</td>
+                                            <td class="align-middle font-weight-medium">{{ ucfirst($student->Fname) }} {{ ucfirst($student->LName) }}</td>
+                                            <td class="align-middle">{{ $student->Program }}</td>
+                                            <td class="align-middle">
+                                                @if($student->advisor)
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar-circle bg-primary text-white mr-2">
+                                                            {{ substr(ucfirst($student->advisor->fName), 0, 1) }}{{ substr(ucfirst($student->advisor->lName), 0, 1) }}
                                                         </div>
-                                                        <form action="{{ route('supervisor.unassign-student') }}" method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="student_id" value="{{ $student->id }}">
-                                                            <div class="modal-body">
-                                                                <p>Are you sure you want to unassign this student from their current advisor?</p>
-                                                                <p><strong>Student: </strong>{{ ucfirst($student->Fname) }} {{ ucfirst($student->LName) }}</p>
-                                                                <p><strong>Current Advisor: </strong>{{ ucfirst($student->advisor->fName) }} {{ ucfirst($student->advisor->lName) }}</p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                                <button type="submit" class="btn btn-danger">Unassign</button>
-                                                            </div>
-                                                        </form>
+                                                        <span>{{ ucfirst($student->advisor->fName) }} {{ ucfirst($student->advisor->lName) }}</span>
                                                     </div>
+                                                @else
+                                                    <span class="text-muted">Unassigned</span>
+                                                @endif
+                                            </td>
+                                            <td class="align-middle">
+                                                @if($student->advisor)
+                                                    <span class="badge badge-pill badge-success px-3 py-2">Assigned</span>
+                                                @else
+                                                    <span class="badge badge-pill badge-warning px-3 py-2">Unassigned</span>
+                                                @endif
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                @if($student->advisor)
+                                                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill" data-toggle="modal" data-target="#unassignStudentModal{{ $student->id }}">
+                                                        <i class="fas fa-unlink mr-1"></i> Unassign
+                                                    </button>
+                                                    
+                                                    <!-- Unassign Modal for this student -->
+                                                    <div class="modal fade" id="unassignStudentModal{{ $student->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Unassign Student</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <form action="{{ route('supervisor.unassign-student') }}" method="POST">
+                                                                    @csrf
+                                                                    <input type="hidden" name="student_id" value="{{ $student->id }}">
+                                                                    <div class="modal-body">
+                                                                        <p>Are you sure you want to unassign this student from their current advisor?</p>
+                                                                        <p><strong>Student: </strong>{{ ucfirst($student->Fname) }} {{ ucfirst($student->LName) }}</p>
+                                                                        <p><strong>Current Advisor: </strong>{{ ucfirst($student->advisor->fName) }} {{ ucfirst($student->advisor->lName) }}</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                                        <button type="submit" class="btn btn-danger">Unassign</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <button class="btn btn-sm btn-outline-secondary rounded-pill" disabled>
+                                                        <i class="fas fa-user-slash mr-1"></i> Unassigned
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center py-4">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <i class="fas fa-users text-muted mb-2" style="font-size: 2rem;"></i>
+                                                    <p class="mb-0">No students found matching your criteria</p>
                                                 </div>
-                                            </div>
-                                        @else
-                                            <button class="btn btn-sm btn-secondary" disabled>
-                                                <i class="fas fa-user-slash mr-1"></i> Unassigned
-                                            </button>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center">No students found</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>

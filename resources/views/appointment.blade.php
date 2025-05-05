@@ -25,6 +25,13 @@
         background-color: #ffc107;
         color: #212529;
     }
+    .nav-tabs .nav-item .nav-link {
+        color: #495057;
+    }
+    .nav-tabs .nav-item .nav-link.active {
+        font-weight: bold;
+        color: #007bff;
+    }
 </style>
 @endsection
 
@@ -66,29 +73,72 @@
                             <h5 class="mb-0"><i class="fas fa-list mr-2"></i> My Appointments</h5>
                         </div>
                         <div class="card-body">
-                            @if(isset($appointments) && count($appointments) > 0)
-                                <ul class="list-group list-group-flush">
-                                    @foreach($appointments as $appointment)
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <h6 class="mb-0">Meeting with {{ $appointment->advisor->fName ?? $appointment->advisor->lName ?? 'Advisor' }}</h6>
-                                                <small class="text-muted">{{ $appointment->app_date->format('F j, Y - g:i A') }}</small>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <span class="badge badge-{{ $appointment->status == 'pending' ? 'pending' : ($appointment->status == 'accepted' ? 'upcoming' : ($appointment->status == 'completed' ? 'completed' : 'cancelled')) }} mr-2">
-                                                    {{ ucfirst($appointment->status) }}
-                                                </span>
-                                                @if($appointment->status == 'pending' || $appointment->status == 'accepted')
-                                                @endif
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <div class="alert alert-info">
-                                    You don't have any appointments scheduled yet.
+                            <ul class="nav nav-tabs mb-3" id="appointmentTabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="current-tab" data-toggle="tab" href="#current" role="tab">
+                                        Current Appointments
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab">
+                                        <i class="fas fa-history mr-1"></i> History (30+ Days)
+                                    </a>
+                                </li>
+                            </ul>
+                            
+                            <div class="tab-content" id="appointmentTabContent">
+                                <!-- Current Appointments Tab -->
+                                <div class="tab-pane fade show active" id="current" role="tabpanel">
+                                    @if(isset($currentAppointments) && count($currentAppointments) > 0)
+                                        <ul class="list-group list-group-flush">
+                                            @foreach($currentAppointments as $appointment)
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-0">Meeting with {{ $appointment->advisor->fName ?? $appointment->advisor->lName ?? 'Advisor' }}</h6>
+                                                        <small class="text-muted">{{ $appointment->app_date->format('F j, Y - g:i A') }}</small>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="badge badge-{{ $appointment->status == 'pending' ? 'pending' : ($appointment->status == 'accepted' ? 'upcoming' : ($appointment->status == 'completed' ? 'completed' : 'cancelled')) }} mr-2">
+                                                            {{ ucfirst($appointment->status) }}
+                                                        </span>
+                                                        @if($appointment->status == 'pending' || $appointment->status == 'accepted')
+                                                        @endif
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <div class="alert alert-info">
+                                            You don't have any current appointments.
+                                        </div>
+                                    @endif
                                 </div>
-                            @endif
+                                
+                                <!-- Historical Appointments Tab -->
+                                <div class="tab-pane fade" id="history" role="tabpanel">
+                                    @if(isset($archivedAppointments) && count($archivedAppointments) > 0)
+                                        <ul class="list-group list-group-flush">
+                                            @foreach($archivedAppointments as $appointment)
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-0">Meeting with {{ $appointment->advisor->fName ?? $appointment->advisor->lName ?? 'Advisor' }}</h6>
+                                                        <small class="text-muted">{{ $appointment->app_date->format('F j, Y - g:i A') }}</small>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="badge badge-{{ $appointment->status == 'pending' ? 'pending' : ($appointment->status == 'accepted' ? 'upcoming' : ($appointment->status == 'completed' ? 'completed' : 'cancelled')) }} mr-2">
+                                                            {{ ucfirst($appointment->status) }}
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <div class="alert alert-info">
+                                            You don't have any historical appointments.
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>

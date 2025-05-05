@@ -22,6 +22,7 @@ class AdvisorAppointmentController extends Controller
             // Get pending appointments for this advisor
             $pendingAppointments = Appoinment::where('user_id', $advisor->id)
                 ->where('status', 'pending')
+                ->where('is_archived', false)
                 ->with(['student'])
                 ->orderBy('app_date', 'asc')
                 ->get();
@@ -30,51 +31,85 @@ class AdvisorAppointmentController extends Controller
             $upcomingAppointments = Appoinment::where('user_id', $advisor->id)
                 ->where('status', 'accepted')
                 ->where('app_date', '>=', Carbon::now())
+                ->where('is_archived', false)
                 ->with(['student'])
                 ->orderBy('app_date', 'asc')
                 ->get();
                 
-            // Debug information - you can remove after fixing
+            // Get archived appointments
+            $archivedAppointments = Appoinment::where('user_id', $advisor->id)
+                ->where('is_archived', true)
+                ->with(['student'])
+                ->orderBy('app_date', 'desc')
+                ->get();
+                
             \Log::info('Advisor ID: ' . $advisor->id);
             \Log::info('Pending appointments: ' . $pendingAppointments->count());
             \Log::info('Upcoming appointments: ' . $upcomingAppointments->count());
+            \Log::info('Archived appointments: ' . $archivedAppointments->count());
             
-            return view('advisor.advisor-appointment', compact('pendingAppointments', 'upcomingAppointments'));
+            return view('advisor.advisor-appointment', compact('pendingAppointments', 'upcomingAppointments', 'archivedAppointments'));
         } catch (\Exception $e) {
-            \Log::error('Error loading advisor appointments: ' . $e->getMessage());
-            return view('advisor.advisor-appointment')->with('error', 'Unable to load appointments. Please try again later.');
+            \Log::error('Error in advisor appointment page: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error loading appointments: ' . $e->getMessage());
         }
     }
-    
+
+    /**
+     * Get appointments for calendar display
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getAppointments()
     {
-        $advisor = Auth::user();
-        
         try {
-            $appointments = Appoinment::where('user_id', $advisor->id)
-                ->whereIn('status', ['pending', 'accepted'])
+            // Get all non-rejected appointments for this advisor
+            $appointments = Appoinment::where('user_id', Auth::id())
+                ->where('status', '!=', 'rejected')
+                ->where('app_date', '>=', Carbon::now()->subDays(30)) // Include recent + future appointments
                 ->with('student')
                 ->get();
                 
-            return response()->json(
-                $appointments->map(function ($appointment) {
-                    return [
-                        'id' => 'appt_' . $appointment->id,
-                        'title' => ($appointment->student ? $appointment->student->Fname . ' ' . $appointment->student->LName : 'Unknown Student'),
-                        'start' => Carbon::parse($appointment->app_date)->format('Y-m-d\TH:i:s'),
-                        'end' => Carbon::parse($appointment->app_date)->addHour()->format('Y-m-d\TH:i:s'),
-                        'color' => $appointment->status === 'pending' ? '#FFC107' : '#2196F3',
-                        'extendedProps' => [
-                            'appointmentId' => $appointment->id,
-                            'studentName' => ($appointment->student ? $appointment->student->Fname . ' ' . $appointment->student->LName : 'Unknown Student'),
-                            'status' => $appointment->status
-                        ]
-                    ];
-                })
-            );
+            $formattedEvents = $appointments->map(function($appointment) {
+                // Calculate end time (assuming 1 hour appointments)
+                $startTime = Carbon::parse($appointment->app_date);
+                $endTime = (clone $startTime)->addHour();
+                
+                // Set colors based on status
+                $color = '#2196F3'; // Default blue
+                if ($appointment->status === 'pending') {
+                    $color = '#FFC107'; // Yellow for pending
+                } else if ($appointment->status === 'accepted') {
+                    $color = '#2196F3'; // Blue for accepted
+                }
+                
+                $studentFullName = 'Unknown';
+                if ($appointment->student) {
+                    $studentFullName = ucfirst($appointment->student->Fname) . ' ' . ucfirst($appointment->student->LName);
+                }
+                
+                return [
+                    'id' => 'appt_' . $appointment->id, // Prefix to distinguish from availability IDs
+                    'title' => $studentFullName,
+                    'start' => $startTime->timezone(config('app.timezone'))->format('Y-m-d\TH:i:s'),
+                    'end' => $endTime->timezone(config('app.timezone'))->format('Y-m-d\TH:i:s'),
+                    'backgroundColor' => $color,
+                    'borderColor' => $color,
+                    'textColor' => '#ffffff',
+                    'extendedProps' => [
+                        'status' => $appointment->status,
+                        'studentName' => $studentFullName,
+                        'appointmentId' => $appointment->id
+                    ]
+                ];
+            });
+            
+            return response()->json($formattedEvents);
         } catch (\Exception $e) {
             \Log::error('Error fetching appointments for calendar: ' . $e->getMessage());
-            return response()->json(['error' => 'Failed to load appointments'], 500);
+            return response()->json([
+                'error' => 'Failed to fetch appointments: ' . $e->getMessage()
+            ], 500);
         }
     }
     

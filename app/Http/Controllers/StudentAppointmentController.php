@@ -19,12 +19,22 @@ class StudentAppointmentController extends Controller
     {
         // Get the student's current appointments
         $studentId = Auth::guard('student')->user()->id;
-        $appointments = Appoinment::where('student_id', $studentId)
+        
+        // Get current (not archived) appointments
+        $currentAppointments = Appoinment::where('student_id', $studentId)
+            ->where('is_archived', false)
+            ->with('advisor')
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        // Get archived appointments
+        $archivedAppointments = Appoinment::where('student_id', $studentId)
+            ->where('is_archived', true)
             ->with('advisor')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('appointment', compact('appointments'));
+        return view('appointment', compact('currentAppointments', 'archivedAppointments'));
     }
     
     public function getAvailabilities()

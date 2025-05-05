@@ -18,13 +18,21 @@ class StudentTicketController extends Controller
         // Get the authenticated student
         $student = Auth::guard('student')->user();
         
-        // Get all tickets for this student with their types
-        $studentTickets = TicketTypeDetails::with('ticketType')
+        // Get current (not archived) tickets for this student with their types
+        $currentTickets = TicketTypeDetails::with('ticketType')
             ->where('student_id', $student->id)
+            ->where('is_archived', false)
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        // Get archived tickets for this student with their types
+        $archivedTickets = TicketTypeDetails::with('ticketType')
+            ->where('student_id', $student->id)
+            ->where('is_archived', true)
             ->orderBy('created_at', 'desc')
             ->get();
         
-        return view('ticket', compact('studentTickets'));
+        return view('ticket', compact('currentTickets', 'archivedTickets'));
     }
 
     // public function ticketTypess(){

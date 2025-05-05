@@ -1,5 +1,16 @@
 @extends('layouts.AdviseMateAdvisor')
 @section('title','Ticket')
+@section('styles')
+<style>
+    .nav-tabs .nav-item .nav-link {
+        color: #495057;
+    }
+    .nav-tabs .nav-item .nav-link.active {
+        font-weight: bold;
+        color: #007bff;
+    }
+</style>
+@endsection
 @section('content')
 
         <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4 content">
@@ -20,76 +31,157 @@
                 </div>
             </div>
             
-            <div class="ticket-table">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>{{trans('site.advisor.tickets.table.student')}}</th>
-                            <th>{{trans('site.advisor.tickets.table.issue')}}</th>
-                            <th>{{trans('site.advisor.tickets.table.description')}}</th>
-                            <th>{{trans('site.advisor.tickets.table.date')}}</th>
-                            <th>{{trans('site.advisor.tickets.table.status')}}</th>
-                            <th>{{trans('site.advisor.tickets.table.actions')}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(isset($tickets) && count($tickets) > 0)
-                            @foreach($tickets as $ticket)
-                                <tr class="ticket-row" data-status="{{ $ticket->ticket_status }}">
-                                    <td>
-                                        @if($ticket->student)
-                                            {{ ucfirst($ticket->student->Fname ?? '') }} {{ ucfirst($ticket->student->LName ?? '') }}
-                                        @else
-                                            Unknown Student
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($ticket->ticketType)
-                                            {{ $ticket->ticketType->ticket_type }}
-                                        @else
-                                            Unknown Type
-                                        @endif
-                                    </td>
-                                    <td>{{ Str::limit($ticket->ticket_description, 50) }}</td>
-                                    <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
-                                    <td>
-                                        <span class="badge 
-                                            @if($ticket->ticket_status == 'pending') badge-warning
-                                            @elseif($ticket->ticket_status == 'completed') badge-success
-                                            @else badge-danger @endif">
-                                            {{ ucfirst($ticket->ticket_status) }}
-                                        </span>
-                                    </td>
-                                    <td class="action-icons">
-                                        <button class="btn btn-sm btn-success update-status" 
-                                            data-ticket-id="{{ $ticket->id }}" 
-                                            data-status="completed" 
-                                            @if($ticket->ticket_status == 'completed') disabled @endif>
-                                            <i class="fas fa-check-circle"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-danger update-status" 
-                                            data-ticket-id="{{ $ticket->id }}" 
-                                            data-status="rejected" 
-                                            @if($ticket->ticket_status == 'rejected') disabled @endif>
-                                            <i class="fas fa-times-circle"></i>
-                                        </button>
-                                        @if($ticket->file)
-                                            <a href="{{ asset('uploads/' . $ticket->file) }}" 
-                                               target="_blank" 
-                                               class="btn btn-sm btn-info">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </a>
-                                        @endif
-                                    </td>
+            <ul class="nav nav-tabs mb-3" id="ticketTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="current-tab" data-toggle="tab" href="#current" role="tab">
+                        Current Tickets
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab">
+                        <i class="fas fa-history mr-1"></i> History (30+ Days)
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="ticketTabContent">
+                <!-- Current Tickets Tab -->
+                <div class="tab-pane fade show active" id="current" role="tabpanel">
+                    <div class="ticket-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>{{trans('site.advisor.tickets.table.student')}}</th>
+                                    <th>{{trans('site.advisor.tickets.table.issue')}}</th>
+                                    <th>{{trans('site.advisor.tickets.table.description')}}</th>
+                                    <th>{{trans('site.advisor.tickets.table.date')}}</th>
+                                    <th>{{trans('site.advisor.tickets.table.status')}}</th>
+                                    <th>{{trans('site.advisor.tickets.table.actions')}}</th>
                                 </tr>
-                            @endforeach
-                        @else
-                            <tr>
-                                <td colspan="6" class="text-center">No tickets found</td>
-                            </tr>
-                        @endif
-                    </tbody>
-                </table>
+                            </thead>
+                            <tbody>
+                                @if(isset($currentTickets) && count($currentTickets) > 0)
+                                    @foreach($currentTickets as $ticket)
+                                        <tr class="ticket-row" data-status="{{ $ticket->ticket_status }}">
+                                            <td>
+                                                @if($ticket->student)
+                                                    {{ ucfirst($ticket->student->Fname ?? '') }} {{ ucfirst($ticket->student->LName ?? '') }}
+                                                @else
+                                                    Unknown Student
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($ticket->ticketType)
+                                                    {{ $ticket->ticketType->ticket_type }}
+                                                @else
+                                                    Unknown Type
+                                                @endif
+                                            </td>
+                                            <td>{{ Str::limit($ticket->ticket_description, 50) }}</td>
+                                            <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
+                                            <td>
+                                                <span class="badge 
+                                                    @if($ticket->ticket_status == 'pending') badge-warning
+                                                    @elseif($ticket->ticket_status == 'completed') badge-success
+                                                    @else badge-danger @endif">
+                                                    {{ ucfirst($ticket->ticket_status) }}
+                                                </span>
+                                            </td>
+                                            <td class="action-icons">
+                                                <button class="btn btn-sm btn-success update-status" 
+                                                    data-ticket-id="{{ $ticket->id }}" 
+                                                    data-status="completed" 
+                                                    @if($ticket->ticket_status == 'completed') disabled @endif>
+                                                    <i class="fas fa-check-circle"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-danger update-status" 
+                                                    data-ticket-id="{{ $ticket->id }}" 
+                                                    data-status="rejected" 
+                                                    @if($ticket->ticket_status == 'rejected') disabled @endif>
+                                                    <i class="fas fa-times-circle"></i>
+                                                </button>
+                                                @if($ticket->file)
+                                                    <a href="{{ asset('uploads/' . $ticket->file) }}" 
+                                                       target="_blank" 
+                                                       class="btn btn-sm btn-info">
+                                                        <i class="fas fa-file-pdf"></i>
+                                                    </a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="6" class="text-center">No current tickets found</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Historical Tickets Tab -->
+                <div class="tab-pane fade" id="history" role="tabpanel">
+                    <div class="ticket-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>{{trans('site.advisor.tickets.table.student')}}</th>
+                                    <th>{{trans('site.advisor.tickets.table.issue')}}</th>
+                                    <th>{{trans('site.advisor.tickets.table.description')}}</th>
+                                    <th>{{trans('site.advisor.tickets.table.date')}}</th>
+                                    <th>{{trans('site.advisor.tickets.table.status')}}</th>
+                                    <th>{{trans('site.advisor.tickets.table.actions')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if(isset($archivedTickets) && count($archivedTickets) > 0)
+                                    @foreach($archivedTickets as $ticket)
+                                        <tr class="ticket-row" data-status="{{ $ticket->ticket_status }}">
+                                            <td>
+                                                @if($ticket->student)
+                                                    {{ ucfirst($ticket->student->Fname ?? '') }} {{ ucfirst($ticket->student->LName ?? '') }}
+                                                @else
+                                                    Unknown Student
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($ticket->ticketType)
+                                                    {{ $ticket->ticketType->ticket_type }}
+                                                @else
+                                                    Unknown Type
+                                                @endif
+                                            </td>
+                                            <td>{{ Str::limit($ticket->ticket_description, 50) }}</td>
+                                            <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
+                                            <td>
+                                                <span class="badge 
+                                                    @if($ticket->ticket_status == 'pending') badge-warning
+                                                    @elseif($ticket->ticket_status == 'completed') badge-success
+                                                    @else badge-danger @endif">
+                                                    {{ ucfirst($ticket->ticket_status) }}
+                                                </span>
+                                            </td>
+                                            <td class="action-icons">
+                                                @if($ticket->file)
+                                                    <a href="{{ asset('uploads/' . $ticket->file) }}" 
+                                                       target="_blank" 
+                                                       class="btn btn-sm btn-info">
+                                                        <i class="fas fa-file-pdf"></i>
+                                                    </a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="6" class="text-center">No historical tickets found</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </main>
 

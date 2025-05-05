@@ -1,5 +1,16 @@
 @extends('layouts.AdviseMateAdvisor')
 @section('title','Appointment')
+@section('styles')
+<style>
+    .nav-tabs .nav-item .nav-link {
+        color: #495057;
+    }
+    .nav-tabs .nav-item .nav-link.active {
+        font-weight: bold;
+        color: #007bff;
+    }
+</style>
+@endsection
 @section('content')
 
 
@@ -14,66 +25,117 @@
         </h2>
         <div class="calendar-container">
             <div class="calendar" id="calendar"></div>
+            <div class="calendar-legend mt-3 d-flex flex-wrap justify-content-center">
+                <div class="legend-item mx-2 mb-2 d-flex align-items-center">
+                    <span class="legend-color" style="background-color: #4CAF50;"></span>
+                    <span class="legend-text">Available Slots</span>
+                </div>
+                <div class="legend-item mx-2 mb-2 d-flex align-items-center">
+                    <span class="legend-color" style="background-color: #FFC107;"></span>
+                    <span class="legend-text">Pending Appointments</span>
+                </div>
+                <div class="legend-item mx-2 mb-2 d-flex align-items-center">
+                    <span class="legend-color" style="background-color: #2196F3;"></span>
+                    <span class="legend-text">Accepted Appointments</span>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="appointment-list mt-4">
-        <h2>
-            <i class="fas fa-list"></i> 
-            {{trans('site.advisor.appointments.upcoming')}}
-        </h2>
+        <ul class="nav nav-tabs mb-4" id="appointmentTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="current-tab" data-toggle="tab" href="#current" role="tab">
+                    Current Appointments
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab">
+                    <i class="fas fa-history mr-1"></i> History (30+ Days)
+                </a>
+            </li>
+        </ul>
         
-        @if(isset($pendingAppointments) && count($pendingAppointments) > 0)
-            <h4 class="mt-4 mb-3">Pending Requests</h4>
-            @foreach($pendingAppointments as $appointment)
-                <div class="appointment-item pending">
-                    <div class="appointment-status">
-                        <span class="badge badge-warning">Pending</span>
+        <div class="tab-content" id="appointmentTabContent">
+            <!-- Current Appointments Tab -->
+            <div class="tab-pane fade show active" id="current" role="tabpanel">
+                @if(isset($pendingAppointments) && count($pendingAppointments) > 0)
+                    <h4 class="mt-4 mb-3">Pending Requests</h4>
+                    @foreach($pendingAppointments as $appointment)
+                        <div class="appointment-item pending">
+                            <div class="appointment-status">
+                                <span class="badge badge-warning">Pending</span>
+                            </div>
+                            <div class="appointment-info">
+                                <strong>{{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</strong>
+                                <p>{{ $appointment->app_date->format('F j, Y - g:i A') }}</p>
+                            </div>
+                            <div class="appointment-actions">
+                                <button class="btn-approve" data-id="{{ $appointment->id }}">
+                                    <i class="fas fa-check"></i>
+                                    {{trans('site.advisor.appointments.approve')}}
+                                </button>
+                                <button class="btn-reject" data-id="{{ $appointment->id }}">
+                                    <i class="fas fa-times"></i>
+                                    {{trans('site.advisor.appointments.reject')}}
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+                
+                @if(isset($upcomingAppointments) && count($upcomingAppointments) > 0)
+                    <h4 class="mt-4 mb-3">Upcoming Appointments</h4>
+                    @foreach($upcomingAppointments as $appointment)
+                        <div class="appointment-item accepted">
+                            <div class="appointment-status">
+                                <span class="badge badge-success">Accepted</span>
+                            </div>
+                            <div class="appointment-info">
+                                <strong>{{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</strong>
+                                <p>{{ $appointment->app_date->format('F j, Y - g:i A') }}</p>
+                            </div>
+                            <div class="appointment-actions">
+                                <button class="btn-contact" onclick="window.location.href='mailto:{{ $appointment->student->email }}'">
+                                    <i class="fas fa-envelope"></i>
+                                    Contact
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+                
+                @if((!isset($pendingAppointments) || count($pendingAppointments) == 0) && (!isset($upcomingAppointments) || count($upcomingAppointments) == 0))
+                    <div class="no-appointments">
+                        <p>You don't have any upcoming appointments.</p>
                     </div>
-                    <div class="appointment-info">
-                        <strong>{{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</strong>
-                        <p>{{ $appointment->app_date->format('F j, Y - g:i A') }}</p>
-                    </div>
-                    <div class="appointment-actions">
-                        <button class="btn-approve" data-id="{{ $appointment->id }}">
-                            <i class="fas fa-check"></i>
-                            {{trans('site.advisor.appointments.approve')}}
-                        </button>
-                        <button class="btn-reject" data-id="{{ $appointment->id }}">
-                            <i class="fas fa-times"></i>
-                            {{trans('site.advisor.appointments.reject')}}
-                        </button>
-                    </div>
-                </div>
-            @endforeach
-        @endif
-        
-        @if(isset($upcomingAppointments) && count($upcomingAppointments) > 0)
-            <h4 class="mt-4 mb-3">Upcoming Appointments</h4>
-            @foreach($upcomingAppointments as $appointment)
-                <div class="appointment-item accepted">
-                    <div class="appointment-status">
-                        <span class="badge badge-success">Accepted</span>
-                    </div>
-                    <div class="appointment-info">
-                        <strong>{{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</strong>
-                        <p>{{ $appointment->app_date->format('F j, Y - g:i A') }}</p>
-                    </div>
-                    <div class="appointment-actions">
-                        <button class="btn-contact" onclick="window.location.href='mailto:{{ $appointment->student->email }}'">
-                            <i class="fas fa-envelope"></i>
-                            Contact
-                        </button>
-                    </div>
-                </div>
-            @endforeach
-        @endif
-        
-        @if((!isset($pendingAppointments) || count($pendingAppointments) == 0) && (!isset($upcomingAppointments) || count($upcomingAppointments) == 0))
-            <div class="no-appointments">
-                <p>You don't have any upcoming appointments.</p>
+                @endif
             </div>
-        @endif
+            
+            <!-- Historical Appointments Tab -->
+            <div class="tab-pane fade" id="history" role="tabpanel">
+                <h4 class="mt-4 mb-3">Historical Appointments (30+ Days)</h4>
+                @if(isset($archivedAppointments) && count($archivedAppointments) > 0)
+                    @foreach($archivedAppointments as $appointment)
+                        <div class="appointment-item archived">
+                            <div class="appointment-status">
+                                <span class="badge badge-{{ $appointment->status == 'accepted' ? 'success' : ($appointment->status == 'rejected' ? 'danger' : 'warning') }}">
+                                    {{ ucfirst($appointment->status) }}
+                                </span>
+                            </div>
+                            <div class="appointment-info">
+                                <strong>{{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</strong>
+                                <p>{{ $appointment->app_date->format('F j, Y - g:i A') }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="no-appointments">
+                        <p>You don't have any historical appointments.</p>
+                    </div>
+                @endif
+            </div>
+        </div>
     </div>
 </main>
 
@@ -124,13 +186,26 @@
                 minute: '2-digit',
                 hour12: true,
             },
-            events: {
-                url: "{{ route('advisor.availability.fetch') }}",
-                method: 'GET',
-                failure: function() {
-                    toastr.error('Failed to load availability slots');
+            eventSources: [
+                {
+                    // Availability slots
+                    url: "{{ route('advisor.availability.fetch') }}",
+                    method: 'GET',
+                    color: '#4CAF50',
+                    failure: function() {
+                        toastr.error('Failed to load availability slots');
+                    }
+                },
+                {
+                    // Existing appointments
+                    url: "{{ route('advisor.get-appointments') }}",
+                    method: 'GET',
+                    color: '#2196F3',
+                    failure: function() {
+                        toastr.error('Failed to load appointments');
+                    }
                 }
-            },
+            ],
             eventTimeFormat: {
                 hour: '2-digit',
                 minute: '2-digit',
@@ -138,6 +213,15 @@
             },
             selectable: true,
             select: function(info) {
+                // Check if the selected start time is in the past
+                const now = new Date();
+                const selectedStart = new Date(info.startStr);
+                
+                if (selectedStart < now) {
+                    toastr.error('Cannot create availability slots in the past');
+                    return;
+                }
+                
                 if (confirm('Create availability from ' + info.startStr + ' to ' + info.endStr + '?')) {
                     axios.post("{{ route('advisor.availability.store') }}", {
                         start_time: info.startStr,
@@ -153,44 +237,63 @@
                 }
             },
             eventDrop: function(info) {
-                axios.put(`/advisor/availability/${info.event.id}`, {
-                    start_time: info.event.startStr,
-                    end_time: info.event.endStr
-                })
-                .then(() => {
-                    toastr.success('Availability slot has been updated');
-                })
-                .catch(error => {
+                // Only allow dragging availability slots (not appointments)
+                if (info.event.source.id === '0') { // First source is availability
+                    axios.put(`/advisor/availability/${info.event.id}`, {
+                        start_time: info.event.startStr,
+                        end_time: info.event.endStr
+                    })
+                    .then(() => {
+                        toastr.success('Availability slot has been updated');
+                    })
+                    .catch(error => {
+                        info.revert();
+                        toastr.error(error.response?.data?.message || 'Failed to update availability slot');
+                    });
+                } else {
                     info.revert();
-                    toastr.error(error.response?.data?.message || 'Failed to update availability slot');
-                });
-            },
-            eventResize: function(info) {
-                axios.put(`/advisor/availability/${info.event.id}`, {
-                    start_time: info.event.startStr,
-                    end_time: info.event.endStr
-                })
-                .then(() => {
-                    toastr.success('Availability duration has been updated');
-                })
-                .catch(error => {
-                    info.revert();
-                    toastr.error(error.response?.data?.message || 'Failed to update availability duration');
-                });
-            },
-            eventClick: function(info) {
-                if (confirm('Are you sure you want to delete this availability slot?')) {
-                    axios.post(`/advisor/availability/${info.event.id}`)
-                        .then(() => {
-                            info.event.remove();
-                            toastr.warning('Availability slot has been deleted');
-                        })
-                        .catch(error => {
-                            toastr.error(error.response?.data?.message || 'Failed to delete availability slot');
-                        });
+                    toastr.error('Cannot drag appointments, only availability slots');
                 }
             },
-            eventColor: '#4CAF50',
+            eventResize: function(info) {
+                // Only allow resizing availability slots (not appointments)
+                if (info.event.source.id === '0') { // First source is availability
+                    axios.put(`/advisor/availability/${info.event.id}`, {
+                        start_time: info.event.startStr,
+                        end_time: info.event.endStr
+                    })
+                    .then(() => {
+                        toastr.success('Availability duration has been updated');
+                    })
+                    .catch(error => {
+                        info.revert();
+                        toastr.error(error.response?.data?.message || 'Failed to update availability duration');
+                    });
+                } else {
+                    info.revert();
+                    toastr.error('Cannot resize appointments, only availability slots');
+                }
+            },
+            eventClick: function(info) {
+                // Only allow deleting availability slots (not appointments)
+                if (info.event.source.id === '0') { // First source is availability
+                    if (confirm('Are you sure you want to delete this availability slot?')) {
+                        axios.post(`/advisor/availability/${info.event.id}`)
+                            .then(() => {
+                                info.event.remove();
+                                toastr.warning('Availability slot has been deleted');
+                            })
+                            .catch(error => {
+                                toastr.error(error.response?.data?.message || 'Failed to delete availability slot');
+                            });
+                    }
+                } else {
+                    // Show appointment info for actual appointments
+                    const studentName = info.event.extendedProps.studentName || 'Unknown';
+                    const status = info.event.extendedProps.status || 'Unknown';
+                    toastr.info(`Appointment with ${studentName}<br>Status: ${status}`);
+                }
+            },
         });
         calendar.render();
 
@@ -252,6 +355,28 @@
 
     .calendar {
         min-height: 600px;
+    }
+    
+    .calendar-legend {
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+    }
+    
+    .legend-item {
+        font-size: 0.9rem;
+        margin-right: 15px;
+    }
+    
+    .legend-color {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+        margin-right: 5px;
+    }
+    
+    .legend-text {
+        color: #555;
     }
 
     /* FullCalendar Customization */

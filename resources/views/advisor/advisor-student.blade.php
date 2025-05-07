@@ -8,34 +8,33 @@
                 </div>
                 
                 <div class="student-filter">
-                    <div class="row">
+                    <form action="{{ route('advisor.student') }}" method="GET" class="row">
                         <div class="col-md-4">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="searchInput" placeholder="{{trans('site.advisor.students.search')}}">
+                                <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="{{trans('site.advisor.students.search')}}">
                                 <div class="input-group-append">
-                                    <button class="btn btn-warning" type="button" id="searchButton">
+                                    <button class="btn btn-warning" type="submit">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3 ml-auto">
-                            <select class="form-control" id="programFilter">
+                            <select class="form-control" name="program" onchange="this.form.submit()">
                                 <option value="">{{trans('site.advisor.students.filters.all_programs')}}</option>
-                                <option value="computer_science">{{trans('site.advisor.students.filters.computer_science')}}</option>
-                                <option value="business">{{trans('site.advisor.students.filters.business')}}</option>
-                                <option value="engineering">{{trans('site.advisor.students.filters.engineering')}}</option>
+                                <option value="Computer Science" {{ request('program') == 'Computer Science' ? 'selected' : '' }}>{{trans('site.advisor.students.filters.computer_science')}}</option>
+                                <option value="Business" {{ request('program') == 'Business' ? 'selected' : '' }}>{{trans('site.advisor.students.filters.business')}}</option>
+                                <option value="Engineering" {{ request('program') == 'Engineering' ? 'selected' : '' }}>{{trans('site.advisor.students.filters.engineering')}}</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <select class="form-control" id="statusFilter">
+                            <select class="form-control" name="status" onchange="this.form.submit()">
                                 <option value="">{{trans('site.advisor.students.filters.all_statuses')}}</option>
-                                <option value="active">{{trans('site.advisor.students.filters.active')}}</option>
-                                <option value="probation">{{trans('site.advisor.students.filters.probation')}}</option>
-                                <option value="graduated">{{trans('site.advisor.students.filters.graduated')}}</option>
+                                <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>{{trans('site.advisor.students.filters.active')}}</option>
+                                <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>{{trans('site.advisor.students.filters.inactive')}}</option>
                             </select>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 
                 <div class="student-table">
@@ -49,7 +48,7 @@
                                 <th>{{trans('site.advisor.students.table.actions')}}</th>
                             </tr>
                         </thead>
-                        <tbody id="studentsTableBody">
+                        <tbody>
                             @foreach($assignedStudents as $student)
                             <tr>
                                 <td>
@@ -61,9 +60,9 @@
                                     </div>
                                 </td>
                                 <td>#STU-{{ $student->id }}</td>
-                                <td>{{ $student->program ?? trans('site.advisor.students.filters.computer_science') }}</td>
+                                <td>{{ $student->Program }}</td>
                                 <td>
-                                    <span class="badge bg-{{ $student->status == 'active'?'success':'danger'}}">
+                                    <span class="badge bg-{{ $student->status == 'active' ? 'success' : 'danger' }}">
                                         {{ trans('site.advisor.students.filters.' . $student->status) }}
                                     </span>
                                 </td>

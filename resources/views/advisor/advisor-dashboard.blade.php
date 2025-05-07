@@ -4,7 +4,7 @@
 
             <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4 content">
                 <div class="mt-4 mb-4">
-                    <h2>{{trans('site.advisor.dashboard.welcome')}}</h2>
+                    <h2>{{trans('site.advisor.dashboard.welcome')}}, {{ ucfirst(Auth::user()->fName) }}!</h2>
                 </div>
                 
                 <!-- Stats Row -->

@@ -13,132 +13,123 @@
 @endsection
 @section('content')
 
-
-<main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4 content">
-
-
-
-    <div class="calendar-card">
-        <h2 class="card-title mb-4">
-            <i class="fas fa-calendar-alt"></i> 
-            {{trans('site.advisor.appointments.calendar')}}
-        </h2>
-        <div class="calendar-container">
-            <div class="calendar" id="calendar"></div>
-            <div class="calendar-legend mt-3 d-flex flex-wrap justify-content-center">
-                <div class="legend-item mx-2 mb-2 d-flex align-items-center">
-                    <span class="legend-color" style="background-color: #4CAF50;"></span>
-                    <span class="legend-text">Available Slots</span>
+<div class="container">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4">
+                <!-- Calendar Card -->
+                <div class="card shadow-sm rounded mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-calendar-alt mr-2"></i> {{ trans('site.advisor.appointments.calendar') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="calendar"></div>
+                        <div class="calendar-legend mt-3 d-flex flex-wrap justify-content-center">
+                            <div class="legend-item mx-2 mb-2 d-flex align-items-center">
+                                <span class="legend-color" style="background-color: #4CAF50;"></span>
+                                <span class="legend-text">Available Slots</span>
+                            </div>
+                            <div class="legend-item mx-2 mb-2 d-flex align-items-center">
+                                <span class="legend-color" style="background-color: #FFC107;"></span>
+                                <span class="legend-text">Pending Appointments</span>
+                            </div>
+                            <div class="legend-item mx-2 mb-2 d-flex align-items-center">
+                                <span class="legend-color" style="background-color: #2196F3;"></span>
+                                <span class="legend-text">Accepted Appointments</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="legend-item mx-2 mb-2 d-flex align-items-center">
-                    <span class="legend-color" style="background-color: #FFC107;"></span>
-                    <span class="legend-text">Pending Appointments</span>
+                <!-- Appointments Card -->
+                <div class="card shadow-sm rounded">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0"><i class="fas fa-list mr-2"></i> My Appointments</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs mb-3" id="appointmentTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="current-tab" data-toggle="tab" href="#current" role="tab">
+                                    Current Appointments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab">
+                                    <i class="fas fa-history mr-1"></i> History (30+ Days)
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="appointmentTabContent">
+                            <!-- Current Appointments Tab -->
+                            <div class="tab-pane fade show active" id="current" role="tabpanel">
+                                @if((isset($pendingAppointments) && count($pendingAppointments) > 0) || (isset($upcomingAppointments) && count($upcomingAppointments) > 0))
+                                    <ul class="list-group list-group-flush mb-3">
+                                        @if(isset($pendingAppointments) && count($pendingAppointments) > 0)
+                                            @foreach($pendingAppointments as $appointment)
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-0">Meeting with {{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</h6>
+                                                        <small class="text-muted">{{ $appointment->app_date->format('F j, Y - g:i A') }}</small>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="badge badge-warning mr-2">Pending</span>
+                                                        <button class="btn btn-success btn-sm mr-1 btn-approve" data-id="{{ $appointment->id }}"><i class="fas fa-check"></i></button>
+                                                        <button class="btn btn-danger btn-sm btn-reject" data-id="{{ $appointment->id }}"><i class="fas fa-times"></i></button>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        @endif
+                                        @if(isset($upcomingAppointments) && count($upcomingAppointments) > 0)
+                                            @foreach($upcomingAppointments as $appointment)
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-0">Meeting with {{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</h6>
+                                                        <small class="text-muted">{{ $appointment->app_date->format('F j, Y - g:i A') }}</small>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="badge badge-success mr-2">Accepted</span>
+                                                        <button class="btn btn-primary btn-sm btn-contact" onclick="window.location.href='mailto:{{ $appointment->student->email }}'"><i class="fas fa-envelope"></i></button>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                @else
+                                    <div class="alert alert-info">
+                                        You don't have any upcoming appointments.
+                                    </div>
+                                @endif
+                            </div>
+                            <!-- Historical Appointments Tab -->
+                            <div class="tab-pane fade" id="history" role="tabpanel">
+                                @if(isset($archivedAppointments) && count($archivedAppointments) > 0)
+                                    <ul class="list-group list-group-flush">
+                                        @foreach($archivedAppointments as $appointment)
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-0">Meeting with {{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</h6>
+                                                    <small class="text-muted">{{ $appointment->app_date->format('F j, Y - g:i A') }}</small>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="badge badge-{{ $appointment->status == 'accepted' ? 'success' : ($appointment->status == 'rejected' ? 'danger' : 'warning') }} mr-2">
+                                                        {{ ucfirst($appointment->status) }}
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <div class="alert alert-info">
+                                        You don't have any historical appointments.
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="legend-item mx-2 mb-2 d-flex align-items-center">
-                    <span class="legend-color" style="background-color: #2196F3;"></span>
-                    <span class="legend-text">Accepted Appointments</span>
-                </div>
-            </div>
+            </main>
         </div>
     </div>
-
-    <div class="appointment-list mt-4">
-        <ul class="nav nav-tabs mb-4" id="appointmentTabs" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="current-tab" data-toggle="tab" href="#current" role="tab">
-                    Current Appointments
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab">
-                    <i class="fas fa-history mr-1"></i> History (30+ Days)
-                </a>
-            </li>
-        </ul>
-        
-        <div class="tab-content" id="appointmentTabContent">
-            <!-- Current Appointments Tab -->
-            <div class="tab-pane fade show active" id="current" role="tabpanel">
-                @if(isset($pendingAppointments) && count($pendingAppointments) > 0)
-                    <h4 class="mt-4 mb-3">Pending Requests</h4>
-                    @foreach($pendingAppointments as $appointment)
-                        <div class="appointment-item pending">
-                            <div class="appointment-status">
-                                <span class="badge badge-warning">Pending</span>
-                            </div>
-                            <div class="appointment-info">
-                                <strong>{{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</strong>
-                                <p>{{ $appointment->app_date->format('F j, Y - g:i A') }}</p>
-                            </div>
-                            <div class="appointment-actions">
-                                <button class="btn-approve" data-id="{{ $appointment->id }}">
-                                    <i class="fas fa-check"></i>
-                                    {{trans('site.advisor.appointments.approve')}}
-                                </button>
-                                <button class="btn-reject" data-id="{{ $appointment->id }}">
-                                    <i class="fas fa-times"></i>
-                                    {{trans('site.advisor.appointments.reject')}}
-                                </button>
-                            </div>
-                        </div>
-                    @endforeach
-                @endif
-                
-                @if(isset($upcomingAppointments) && count($upcomingAppointments) > 0)
-                    <h4 class="mt-4 mb-3">Upcoming Appointments</h4>
-                    @foreach($upcomingAppointments as $appointment)
-                        <div class="appointment-item accepted">
-                            <div class="appointment-status">
-                                <span class="badge badge-success">Accepted</span>
-                            </div>
-                            <div class="appointment-info">
-                                <strong>{{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</strong>
-                                <p>{{ $appointment->app_date->format('F j, Y - g:i A') }}</p>
-                            </div>
-                            <div class="appointment-actions">
-                                <button class="btn-contact" onclick="window.location.href='mailto:{{ $appointment->student->email }}'">
-                                    <i class="fas fa-envelope"></i>
-                                    Contact
-                                </button>
-                            </div>
-                        </div>
-                    @endforeach
-                @endif
-                
-                @if((!isset($pendingAppointments) || count($pendingAppointments) == 0) && (!isset($upcomingAppointments) || count($upcomingAppointments) == 0))
-                    <div class="no-appointments">
-                        <p>You don't have any upcoming appointments.</p>
-                    </div>
-                @endif
-            </div>
-            
-            <!-- Historical Appointments Tab -->
-            <div class="tab-pane fade" id="history" role="tabpanel">
-                <h4 class="mt-4 mb-3">Historical Appointments (30+ Days)</h4>
-                @if(isset($archivedAppointments) && count($archivedAppointments) > 0)
-                    @foreach($archivedAppointments as $appointment)
-                        <div class="appointment-item archived">
-                            <div class="appointment-status">
-                                <span class="badge badge-{{ $appointment->status == 'accepted' ? 'success' : ($appointment->status == 'rejected' ? 'danger' : 'warning') }}">
-                                    {{ ucfirst($appointment->status) }}
-                                </span>
-                            </div>
-                            <div class="appointment-info">
-                                <strong>{{ ucfirst($appointment->student->Fname) }} {{ ucfirst($appointment->student->LName) }}</strong>
-                                <p>{{ $appointment->app_date->format('F j, Y - g:i A') }}</p>
-                            </div>
-                        </div>
-                    @endforeach
-                @else
-                    <div class="no-appointments">
-                        <p>You don't have any historical appointments.</p>
-                    </div>
-                @endif
-            </div>
-        </div>
-    </div>
-</main>
-
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>

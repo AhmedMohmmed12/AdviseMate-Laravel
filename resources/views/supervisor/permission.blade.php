@@ -27,6 +27,27 @@
         </style>
         
         <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4 content">
+            @if(session('success'))
+            <script>
+                toastr.success('{{ session('success') }}');
+            </script>
+            @endif
+            
+            @if(session('error'))
+            <script>
+                toastr.error('{{ session('error') }}');
+            </script>
+            @endif
+
+            <script>
+                // Configure toastr options
+                toastr.options = {
+                    "closeButton": true,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "timeOut": "3000"
+                };
+            </script>
             
             <div class="advisor-student-container">
                 <div class="advisor-student-header d-flex justify-content-between align-items-center mb-4">

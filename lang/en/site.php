@@ -57,7 +57,7 @@ return [
     ],
     'advisor' => [
         'dashboard' => [
-            'welcome' => 'Welcome Back, Advisor!',
+            'welcome' => 'Welcome Back',
             'stats' => [
                 'total_students' => 'Total Students',
                 'pending_tickets' => 'Pending Tickets',

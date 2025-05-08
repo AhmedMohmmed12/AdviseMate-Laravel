@@ -136,6 +136,7 @@ return [
         ],
         'profile' => [
             'personal_info' => 'المعلومات الشخصية',
+            'edit' => 'تعديل',
             'fname' => 'الاسم الأول',
             'lname' => 'اسم العائلة',
             'email' => 'البريد الإلكتروني',
@@ -228,10 +229,41 @@ return [
             'failed' => 'البريد الإلكتروني أو كلمة المرور غير صحيحة'
         ],
         'permission' => [
-            'add_new' => 'إضافة صلاحية جديدة',
-            'edit' => 'تعديل',
-            'delete' => 'حذف',
-            'save' => 'حفظ الصلاحية'
+            'title' => 'إدارة تعيينات المرشد-الطالب',
+            'assign_student' => 'تعيين طالب لمرشد',
+            'filter_options' => 'خيارات التصفية',
+            'advisor' => 'المرشد',
+            'all_advisors' => 'جميع المرشدين',
+            'program' => 'البرنامج',
+            'all_programs' => 'جميع البرامج',
+            'status' => 'الحالة',
+            'all_statuses' => 'جميع الحالات',
+            'assigned' => 'معين',
+            'unassigned' => 'غير معين',
+            'apply_filters' => 'تطبيق التصفية',
+            'clear_filters' => 'مسح التصفية',
+            'student_assignments' => 'تعيينات الطلاب',
+            'student_id' => 'رقم الطالب',
+            'student_name' => 'اسم الطالب',
+            'current_advisor' => 'المرشد الحالي',
+            'actions' => 'الإجراءات',
+            'unassign' => 'إلغاء التعيين',
+            'no_students' => 'لم يتم العثور على طلاب يطابقون معايير البحث',
+            'assign_modal' => [
+                'title' => 'تعيين طالب لمرشد',
+                'select_student' => 'اختر الطالب',
+                'select_advisor' => 'اختر المرشد',
+                'close' => 'إغلاق',
+                'assign' => 'تعيين'
+            ],
+            'unassign_modal' => [
+                'title' => 'إلغاء تعيين الطالب',
+                'confirm_message' => 'هل أنت متأكد من رغبتك في إلغاء تعيين هذا الطالب من المرشد الحالي؟',
+                'student' => 'الطالب',
+                'current_advisor' => 'المرشد الحالي',
+                'cancel' => 'إلغاء',
+                'unassign' => 'إلغاء التعيين'
+            ]
         ]
     ],
     'student' => [

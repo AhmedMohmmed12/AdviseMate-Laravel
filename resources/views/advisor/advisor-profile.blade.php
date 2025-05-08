@@ -10,7 +10,7 @@
                 <div class="col-md-6">
                     <div class="profile-card">
                         <h3>{{ __('site.advisor.profile.personal_info') }}</h3>
-                        <button id="editButton" type="button" class="btn btn-sm btn-secondary mb-3">{{ __('Edit') }}</button>
+                        <button id="editButton" type="button" class="btn btn-sm btn-secondary mb-3">{{ __('site.advisor.profile.edit') }}</button>
                         
                         <form id="profileForm" method="POST" action="{{ route('advisor.profile.edit', Auth::id()) }}">
                             @csrf

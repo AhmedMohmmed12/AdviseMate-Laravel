@@ -19,7 +19,7 @@ class ApiController extends Controller
     // Ensure no misplaced code or missing semicolon above this line
  // student 
   public function getStudent(){
-    $student=Student::select(['Fname','LName','email','phoneNumber','user_id'])->get();
+    $student=Student::select(['Fname','LName','email','phoneNumber','user_id','id'])->get();
     return response()->json([
       'status' => '200',
       'data'=> $student

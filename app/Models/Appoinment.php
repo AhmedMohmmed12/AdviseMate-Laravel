@@ -9,7 +9,7 @@ class Appoinment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["user_id" , "student_id" , "app_date"  , "status"]; 
+    protected $fillable = ["user_id" , "student_id" , "app_date"  , "status" , "is_archived"]; 
 
 
     protected $dates = [ "app_date" ];

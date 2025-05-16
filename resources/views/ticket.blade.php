@@ -1,5 +1,16 @@
 @extends('layouts.AdviseMate')
 @section('title', 'Tickets')
+@section('styles')
+<style>
+    .nav-tabs .nav-item .nav-link {
+        color: #495057;
+    }
+    .nav-tabs .nav-item .nav-link.active {
+        font-weight: bold;
+        color: #007bff;
+    }
+</style>
+@endsection
 @section('content')
 
             <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4">
@@ -20,52 +31,121 @@
                         <h5 class="mb-0">My Tickets</h5>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Description</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if(isset($studentTickets) && count($studentTickets) > 0)
-                                        @foreach($studentTickets as $ticket)
+                        <ul class="nav nav-tabs mb-3" id="ticketTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="current-tab" data-toggle="tab" href="#current" role="tab">
+                                    Current Tickets
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab">
+                                    <i class="fas fa-history mr-1"></i> History (30+ Days)
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content" id="ticketTabContent">
+                            <!-- Current Tickets Tab -->
+                            <div class="tab-pane fade show active" id="current" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    @if($ticket->ticketType)
-                                                        {{ $ticket->ticketType->ticket_type }}
-                                                    @else
-                                                        Unknown Type
-                                                    @endif
-                                                </td>
-                                                <td>{{ Str::limit($ticket->ticket_description, 50) }}</td>
-                                                <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
-                                                <td>
-                                                    <span class="badge 
-                                                        @if($ticket->ticket_status == 'pending') badge-warning
-                                                        @elseif($ticket->ticket_status == 'completed') badge-success
-                                                        @else badge-danger @endif">
-                                                        @if($ticket->ticket_status == 'pending')
-                                                            Pending
-                                                        @elseif($ticket->ticket_status == 'completed')
-                                                            Completed
-                                                        @else
-                                                            Rejected
-                                                        @endif
-                                                    </span>
-                                                </td>
+                                                <th>Type</th>
+                                                <th>Description</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
                                             </tr>
-                                        @endforeach
-                                    @else
-                                        <tr>
-                                            <td colspan="4" class="text-center">No tickets found</td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
+                                        </thead>
+                                        <tbody>
+                                            @if(isset($currentTickets) && count($currentTickets) > 0)
+                                                @foreach($currentTickets as $ticket)
+                                                    <tr>
+                                                        <td>
+                                                            @if($ticket->ticketType)
+                                                                {{ $ticket->ticketType->ticket_type }}
+                                                            @else
+                                                                Unknown Type
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ Str::limit($ticket->ticket_description, 50) }}</td>
+                                                        <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
+                                                        <td>
+                                                            <span class="badge 
+                                                                @if($ticket->ticket_status == 'pending') badge-warning
+                                                                @elseif($ticket->ticket_status == 'completed') badge-success
+                                                                @else badge-danger @endif">
+                                                                @if($ticket->ticket_status == 'pending')
+                                                                    Pending
+                                                                @elseif($ticket->ticket_status == 'completed')
+                                                                    Completed
+                                                                @else
+                                                                    Rejected
+                                                                @endif
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr>
+                                                    <td colspan="4" class="text-center">No current tickets found</td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Historical Tickets Tab -->
+                            <div class="tab-pane fade" id="history" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Type</th>
+                                                <th>Description</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if(isset($archivedTickets) && count($archivedTickets) > 0)
+                                                @foreach($archivedTickets as $ticket)
+                                                    <tr>
+                                                        <td>
+                                                            @if($ticket->ticketType)
+                                                                {{ $ticket->ticketType->ticket_type }}
+                                                            @else
+                                                                Unknown Type
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ Str::limit($ticket->ticket_description, 50) }}</td>
+                                                        <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
+                                                        <td>
+                                                            <span class="badge 
+                                                                @if($ticket->ticket_status == 'pending') badge-warning
+                                                                @elseif($ticket->ticket_status == 'completed') badge-success
+                                                                @else badge-danger @endif">
+                                                                @if($ticket->ticket_status == 'pending')
+                                                                    Pending
+                                                                @elseif($ticket->ticket_status == 'completed')
+                                                                    Completed
+                                                                @else
+                                                                    Rejected
+                                                                @endif
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr>
+                                                    <td colspan="4" class="text-center">No historical tickets found</td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

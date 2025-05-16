@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AdvisorStudentsController extends Controller
 {
-    public function adStudents()
+    public function adStudents(Request $request)
     {
         $advisor = Auth::user();
         
@@ -34,8 +34,31 @@ class AdvisorStudentsController extends Controller
             }
         }
 
-        // Get the advisor's assigned students
-        $assignedStudents = Student::where('user_id', $advisor->id)->get();
+        // Start building the query for assigned students
+        $query = Student::where('user_id', $advisor->id);
+
+        // Apply search filter
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('Fname', 'like', "%{$search}%")
+                  ->orWhere('LName', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        // Apply program filter
+        if ($request->has('program') && !empty($request->program)) {
+            $query->where('Program', $request->program);
+        }
+
+        // Apply status filter
+        if ($request->has('status') && !empty($request->status)) {
+            $query->where('status', $request->status);
+        }
+
+        // Get the filtered students
+        $assignedStudents = $query->get();
 
         return view('advisor.advisor-student', compact('assignedStudents'));
     }

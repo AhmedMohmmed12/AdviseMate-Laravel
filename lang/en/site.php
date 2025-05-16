@@ -57,7 +57,7 @@ return [
     ],
     'advisor' => [
         'dashboard' => [
-            'welcome' => 'Welcome Back, Advisor!',
+            'welcome' => 'Welcome Back',
             'stats' => [
                 'total_students' => 'Total Students',
                 'pending_tickets' => 'Pending Tickets',
@@ -141,6 +141,7 @@ return [
         ],
         'profile' => [
             'personal_info' => 'Personal Information',
+            'edit' => 'Edit',
             'fname' => 'First Name',
             'lname' => 'Last Name',
             'email' => 'Email',
@@ -231,6 +232,43 @@ return [
             'remember_me' => 'Remember Me',
             'submit' => 'Login',
             'failed' => 'Invalid email or password.'
+        ],
+        'permission' => [
+            'title' => 'Manage Advisor-Student Assignments',
+            'assign_student' => 'Assign Student to Advisor',
+            'filter_options' => 'Filter Options',
+            'advisor' => 'Advisor',
+            'all_advisors' => 'All Advisors',
+            'program' => 'Program',
+            'all_programs' => 'All Programs',
+            'status' => 'Status',
+            'all_statuses' => 'All Statuses',
+            'assigned' => 'Assigned',
+            'unassigned' => 'Unassigned',
+            'apply_filters' => 'Apply Filters',
+            'clear_filters' => 'Clear Filters',
+            'student_assignments' => 'Student Assignments',
+            'student_id' => 'Student ID',
+            'student_name' => 'Student Name',
+            'current_advisor' => 'Current Advisor',
+            'actions' => 'Actions',
+            'unassign' => 'Unassign',
+            'no_students' => 'No students found matching your criteria',
+            'assign_modal' => [
+                'title' => 'Assign Student to Advisor',
+                'select_student' => 'Select Student',
+                'select_advisor' => 'Select Advisor',
+                'close' => 'Close',
+                'assign' => 'Assign'
+            ],
+            'unassign_modal' => [
+                'title' => 'Unassign Student',
+                'confirm_message' => 'Are you sure you want to unassign this student from their current advisor?',
+                'student' => 'Student',
+                'current_advisor' => 'Current Advisor',
+                'cancel' => 'Cancel',
+                'unassign' => 'Unassign'
+            ]
         ]
     ],
     'student' => [

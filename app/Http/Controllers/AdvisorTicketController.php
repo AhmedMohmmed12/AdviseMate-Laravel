@@ -16,16 +16,24 @@ class AdvisorTicketController extends Controller
         // Get tickets assigned to the logged-in advisor
         $advisorId = Auth::id();
         
-        // Make sure we're getting the tickets with eager loading
-        $tickets = TicketTypeDetails::with(['ticketType', 'student'])
+        // Get current (not archived) tickets with eager loading
+        $currentTickets = TicketTypeDetails::with(['ticketType', 'student'])
             ->where('user_id', $advisorId)
+            ->where('is_archived', false)
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        // Get archived tickets with eager loading
+        $archivedTickets = TicketTypeDetails::with(['ticketType', 'student'])
+            ->where('user_id', $advisorId)
+            ->where('is_archived', true)
             ->orderBy('created_at', 'desc')
             ->get();
             
         // Debug to make sure we have tickets and are passing them correctly
-        // dd($tickets);
+        // dd($currentTickets, $archivedTickets);
             
-        return view('advisor.advisor-ticket', compact('tickets'));
+        return view('advisor.advisor-ticket', compact('currentTickets', 'archivedTickets'));
     }
     
     public function updateTicketStatus(Request $request, $id)

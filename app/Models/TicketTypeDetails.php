@@ -15,8 +15,8 @@ class TicketTypeDetails extends Model
         'user_id',
         'ticket_status',
         'ticket_description',
-        'file'
-        
+        'file',
+        'is_archived'
     ];
 
     public function ticketType()

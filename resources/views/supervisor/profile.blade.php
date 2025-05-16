@@ -2,6 +2,28 @@
 @section('title','Profile')
 @section('content')
         <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4 content">
+            @if(session('success'))
+            <script>
+                toastr.success('{{ session('success') }}');
+            </script>
+            @endif
+            
+            @if(session('error'))
+            <script>
+                toastr.error('{{ session('error') }}');
+            </script>
+            @endif
+
+            <script>
+                // Configure toastr options
+                toastr.options = {
+                    "closeButton": true,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "timeOut": "3000"
+                };
+            </script>
+
             <div class="mt-4 mb-4">
                 <h2>{{ __('site.supervisor.profile.personal_info') }}</h2>
             </div>

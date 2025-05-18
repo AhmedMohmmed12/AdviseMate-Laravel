@@ -19,7 +19,7 @@ class StudentSeeder extends Seeder
             Student::create([
                 'Fname' => "ahmed",
                 'LName'  => "mohammed" ,
-                'email' => "ahmed@gmail.com",
+                'email' => "ahmedmohmmed200212@gmail.com",
                 'gender' => 'male',
                 'program'=> 'Computer Science',
                 'phoneNumber' => '0553201235',

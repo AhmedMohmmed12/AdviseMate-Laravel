@@ -1,5 +1,5 @@
 @extends('layouts.AdviseMate')
-@section('title', 'Tickets')
+@section('title', __('site.tickets.title'))
 @section('styles')
 <style>
     .nav-tabs .nav-item .nav-link {
@@ -15,12 +15,12 @@
 
             <main class="col-12 col-md-9 col-lg-10 ml-auto px-3 py-4">
                 <div class="mt-4 mb-3">
-                    <h2>Tickets</h2>
+                    <h2>{{ __('site.tickets.title') }}</h2>
                 </div>
                 <div class="card shadow-sm rounded mb-4">
                     <div class="card-body">
                         <select id="ticket-type" class="form-control select2">
-                            <option value="" disabled selected>Select Ticket Type</option>
+                            <option value="" disabled selected>{{ __('site.tickets.create_new') }}</option>
                         </select>
                     </div>
                 </div>
@@ -28,18 +28,18 @@
                 <!-- Student's Tickets Section -->
                 <div class="card shadow-sm rounded">
                     <div class="card-header bg-light">
-                        <h5 class="mb-0">My Tickets</h5>
+                        <h5 class="mb-0">{{ __('site.tickets.title') }}</h5>
                     </div>
                     <div class="card-body">
                         <ul class="nav nav-tabs mb-3" id="ticketTabs" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="current-tab" data-toggle="tab" href="#current" role="tab">
-                                    Current Tickets
+                                    {{ __('site.tickets.title') }}
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab">
-                                    <i class="fas fa-history mr-1"></i> History (30+ Days)
+                                    <i class="fas fa-history mr-1"></i> {{ __('site.tickets.title') }} (30+ Days)
                                 </a>
                             </li>
                         </ul>
@@ -51,10 +51,10 @@
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Type</th>
-                                                <th>Description</th>
-                                                <th>Date</th>
-                                                <th>Status</th>
+                                                <th>{{ __('site.tickets.title') }}</th>
+                                                <th>{{ __('site.advisor.tickets.table.description') }}</th>
+                                                <th>{{ __('site.advisor.tickets.table.date') }}</th>
+                                                <th>{{ __('site.advisor.tickets.table.status') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -65,7 +65,7 @@
                                                             @if($ticket->ticketType)
                                                                 {{ $ticket->ticketType->ticket_type }}
                                                             @else
-                                                                Unknown Type
+                                                                {{ __('site.tickets.title') }}
                                                             @endif
                                                         </td>
                                                         <td>{{ Str::limit($ticket->ticket_description, 50) }}</td>
@@ -75,20 +75,14 @@
                                                                 @if($ticket->ticket_status == 'pending') badge-warning
                                                                 @elseif($ticket->ticket_status == 'completed') badge-success
                                                                 @else badge-danger @endif">
-                                                                @if($ticket->ticket_status == 'pending')
-                                                                    Pending
-                                                                @elseif($ticket->ticket_status == 'completed')
-                                                                    Completed
-                                                                @else
-                                                                    Rejected
-                                                                @endif
+                                                                {{ __('site.status.' . $ticket->ticket_status) }}
                                                             </span>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @else
                                                 <tr>
-                                                    <td colspan="4" class="text-center">No current tickets found</td>
+                                                    <td colspan="4" class="text-center">{{ __('site.advisor.dashboard.no_recent_tickets') }}</td>
                                                 </tr>
                                             @endif
                                         </tbody>
@@ -102,10 +96,10 @@
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Type</th>
-                                                <th>Description</th>
-                                                <th>Date</th>
-                                                <th>Status</th>
+                                                <th>{{ __('site.tickets.title') }}</th>
+                                                <th>{{ __('site.advisor.tickets.table.description') }}</th>
+                                                <th>{{ __('site.advisor.tickets.table.date') }}</th>
+                                                <th>{{ __('site.advisor.tickets.table.status') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -116,7 +110,7 @@
                                                             @if($ticket->ticketType)
                                                                 {{ $ticket->ticketType->ticket_type }}
                                                             @else
-                                                                Unknown Type
+                                                                {{ __('site.tickets.title') }}
                                                             @endif
                                                         </td>
                                                         <td>{{ Str::limit($ticket->ticket_description, 50) }}</td>
@@ -126,20 +120,14 @@
                                                                 @if($ticket->ticket_status == 'pending') badge-warning
                                                                 @elseif($ticket->ticket_status == 'completed') badge-success
                                                                 @else badge-danger @endif">
-                                                                @if($ticket->ticket_status == 'pending')
-                                                                    Pending
-                                                                @elseif($ticket->ticket_status == 'completed')
-                                                                    Completed
-                                                                @else
-                                                                    Rejected
-                                                                @endif
+                                                                {{ __('site.status.' . $ticket->ticket_status) }}
                                                             </span>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @else
                                                 <tr>
-                                                    <td colspan="4" class="text-center">No historical tickets found</td>
+                                                    <td colspan="4" class="text-center">{{ __('site.advisor.dashboard.no_recent_tickets') }}</td>
                                                 </tr>
                                             @endif
                                         </tbody>
@@ -158,7 +146,7 @@
                 <!-- Modal Header -->
                 <div class="modal-header" style="background-color: #ddad27;">
                     <h5 class="modal-title font-weight-bold text-white" id="modal-title">
-                        <i class="fas fa-ticket-alt"></i> New Ticket
+                        <i class="fas fa-ticket-alt"></i> {{ __('site.tickets.new_ticket') }}
                     </h5>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -173,7 +161,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label font-weight-bold" style="color: #2c3e50;">
-                                        <i class="fas fa-tag" style="color: #ddad27;"></i> Ticket Type
+                                        <i class="fas fa-tag" style="color: #ddad27;"></i> {{ __('site.tickets.title') }}
                                     </label>
                                     <input type="text" id="ticket-name" name="ticket-name" class="form-control rounded" style="border-color: #ddad27;" readonly>
                                 </div>
@@ -183,7 +171,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label font-weight-bold" style="color: #2c3e50;">
-                                        <i class="fas fa-comment" style="color: #ddad27;"></i> Description
+                                        <i class="fas fa-comment" style="color: #ddad27;"></i> {{ __('site.advisor.tickets.table.description') }}
                                     </label>
                                     <textarea id="description" name="description" class="form-control rounded" style="border-color: #ddad27;" rows="4" required></textarea>
                                 </div>
@@ -193,11 +181,11 @@
                             <div class="col-md-12">
                                 <div class="form-group" id="extra-field" style="display: none;">
                                     <label class="form-label font-weight-bold" style="color: #2c3e50;">
-                                        <i class="fas fa-file-pdf" style="color: #ddad27;"></i> Attach PDF
+                                        <i class="fas fa-file-pdf" style="color: #ddad27;"></i> {{ __('site.tickets.attach_pdf') }}
                                     </label>
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="extra-input" name="extra-input" accept="application/pdf">
-                                        <label class="custom-file-label" for="extra-input" style="border-color: #ddad27;">Choose file</label>
+                                        <label class="custom-file-label" for="extra-input" style="border-color: #ddad27;">{{ __('site.tickets.choose_file') }}</label>
                                     </div>
                                 </div>
                             </div>
@@ -206,10 +194,10 @@
                         <!-- Action Buttons -->
                         <div class="d-flex justify-content-end mt-3">
                             <button type="submit" class="btn px-4 py-2 shadow-sm rounded" style="background-color: #ddad27; color: white;">
-                                <i class="fas fa-paper-plane"></i> Submit Ticket
+                                <i class="fas fa-paper-plane"></i> {{ __('site.tickets.submit') }}
                             </button>
                             <button type="button" class="btn btn-secondary px-4 py-2 shadow-sm rounded ml-2" data-dismiss="modal">
-                                <i class="fas fa-times"></i> Cancel
+                                <i class="fas fa-times"></i> {{ __('site.tickets.cancel') }}
                             </button>
                         </div>
                     </form>
@@ -238,8 +226,8 @@
                 var selectedId = parseInt($(this).val());
                 var selectedText = $("#ticket-type option:selected").text();
                 
-                if (selectedText !== "Select Ticket Type") {
-                    $('#modal-title').text('New Ticket - ' + selectedText);
+                if (selectedText !== "{{ __('site.tickets.create_new') }}") {
+                    $('#modal-title').text('{{ __('site.tickets.new_ticket') }} - ' + selectedText);
                     $('#ticket-name').val(selectedText);
                     
                     if (selectedId >= 4 && selectedId <= 7) {
@@ -264,7 +252,7 @@
             $('#ticket-modal').on('hidden.bs.modal', function () {
                 $('#ticket-type').val(null).trigger('change');
                 $('#ticket-form')[0].reset();
-                $('.custom-file-label').html('Choose file');
+                $('.custom-file-label').html('{{ __('site.tickets.choose_file') }}');
             });
             
             // Form submission with Axios
@@ -296,7 +284,7 @@
                 })
                 .catch(function(error) {
                     console.error('Error:', error);
-                    let errorMsg = 'An error occurred';
+                    let errorMsg = '{{ __('site.tickets.error') }}';
                     
                     if (error.response && error.response.data && error.response.data.errors) {
                         errorMsg = '';
@@ -309,7 +297,7 @@
                         errorMsg = error.response.data.message;
                     }
                     
-                    toastr.error('Error: ' + errorMsg);
+                    toastr.error('{{ __('site.tickets.error') }}: ' + errorMsg);
                 });
             });
         });

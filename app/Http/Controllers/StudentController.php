@@ -77,7 +77,7 @@ class StudentController extends Controller
                 'phoneNumber' => $row[3] ?? '',
                 'Program' => $row[4] ?? '',
                 'gender' => isset($row[5]) ? ($row[5] == '1' ? 'male' : 'female') : 'male',
-                'password' => Hash::make('password123'), // Default password
+                'password' => Hash::make('123123'), // Default password
                 'status' => 'active' // Default status
             ];
             
@@ -212,8 +212,9 @@ class StudentController extends Controller
             'gender' => $request->gender,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            //'password' => Hash::make('123456'),
             'status' => $request->status,
-            'program' => $request->Program
+            'Program' => $request->Program
         ]);
 
         

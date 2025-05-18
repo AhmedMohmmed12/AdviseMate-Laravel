@@ -3,6 +3,7 @@
 return [
     'home' => 'Welcome',
     'dashboard' => [
+        'title' => 'Dashboard',
         'upcoming_appointments' => 'Upcoming Appointments',
         'advisor_meeting' => 'Advisor Meeting',
         'course_selection' => 'Course Selection',
@@ -19,19 +20,50 @@ return [
         'open' => 'Open',
         'closed' => 'Closed',
         'upcoming' => 'Upcoming',
-        'completed' => 'Completed'
+        'completed' => 'Completed',
+        'pending' => 'Pending',
+        'rejected' => 'Rejected'
     ],
     'tickets' => [
         'title' => 'Tickets',
         'create_new' => 'Create New Ticket',
-        'financial_aid' => 'Financial Aid Question'
+        'financial_aid' => 'Financial Aid Question',
+        'new_ticket' => 'New Ticket',
+        'submit' => 'Submit Ticket',
+        'cancel' => 'Cancel',
+        'attach_pdf' => 'Attach PDF',
+        'choose_file' => 'Choose file',
+        'error' => 'An error occurred',
+        'history' => 'History',
+        'current' => 'Current Tickets',
+        'no_tickets' => 'No tickets found',
+        'type' => 'Ticket Type',
+        'description' => 'Description',
+        'date' => 'Date',
+        'status' => 'Status'
     ],
     'appointments' => [
         'title' => 'Appointments',
         'schedule_new' => 'Schedule New Appointment',
         'advisor_meeting' => 'Advisor Meeting',
         'career_counseling' => 'Career Counseling',
-        'financial_discussion' => 'Financial Aid Discussion'
+        'financial_discussion' => 'Financial Aid Discussion',
+        'my_appointments' => 'My Appointments',
+        'current_appointments' => 'Current Appointments',
+        'history' => 'History',
+        'history_days' => 'History (30+ Days)',
+        'confirm_appointment' => 'Confirm Appointment',
+        'date' => 'Date',
+        'time' => 'Time',
+        'cancel' => 'Cancel',
+        'confirm_booking' => 'Confirm Booking',
+        'meeting_with' => 'Meeting with',
+        'no_current_appointments' => 'You don\'t have any current appointments.',
+        'no_historical_appointments' => 'You don\'t have any historical appointments.',
+        'booking_success' => 'Appointment booked successfully!',
+        'booking_error' => 'Failed to book appointment. Please try again.',
+        'load_error' => 'Failed to load available appointments. Please try again later.',
+        'no_slot_selected' => 'No time slot selected'
     ],
     'sidebar' => [
         'logo' => 'AdvisorMate',

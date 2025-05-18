@@ -37,9 +37,10 @@ class ArchiveOldRecords extends Command
             ->where('is_archived', false)
             ->update(['is_archived' => true]);
 
-        // Archive old tickets
+        // Archive old tickets (excluding pending ones)
         $ticketsCount = TicketTypeDetails::where('created_at', '<', $thirtyDaysAgo)
             ->where('is_archived', false)
+            ->where('ticket_status', '!=', 'pending')
             ->update(['is_archived' => true]);
 
         $this->info("Archived $appointmentsCount appointments and $ticketsCount tickets.");

@@ -4,6 +4,7 @@
 return [
     'home' => 'مرحباً',
     'dashboard' => [
+        'title' => 'لوحة التحكم',
         'upcoming_appointments' => 'المواعيد القادمة',
         'advisor_meeting' => 'اجتماع المرشد',
         'course_selection' => 'اختيار المقرر',
@@ -20,7 +21,9 @@ return [
         'open' => 'مفتوح',
         'closed' => 'مغلق',
         'upcoming' => 'قادم',
-        'completed' => 'مكتمل'
+        'completed' => 'مكتمل',
+        'pending' => 'قيد الانتظار',
+        'rejected' => 'مرفوض'
     ],
     'tickets' => [
         'title' => 'التذاكر',
@@ -28,14 +31,40 @@ return [
         'financial_aid' => 'سؤال عن المساعدة المالية',
         'new_ticket' => 'تذكرة جديدة',
         'submit' => 'إرسال التذكرة',
-        'cancel' => 'إلغاء'
+        'cancel' => 'إلغاء',
+        'attach_pdf' => 'إرفاق ملف PDF',
+        'choose_file' => 'اختر ملف',
+        'error' => 'حدث خطأ',
+        'history' => 'السجل',
+        'current' => 'التذاكر الحالية',
+        'no_tickets' => 'لا توجد تذاكر',
+        'type' => 'نوع التذكرة',
+        'description' => 'الوصف',
+        'date' => 'التاريخ',
+        'status' => 'الحالة'
     ],
     'appointments' => [
         'title' => 'المواعيد',
         'schedule_new' => 'جدولة موعد جديد',
         'advisor_meeting' => 'اجتماع المرشد',
         'career_counseling' => 'الإرشاد المهني',
-        'financial_discussion' => 'مناقشة المساعدة المالية'
+        'financial_discussion' => 'مناقشة المساعدة المالية',
+        'my_appointments' => 'مواعيدي',
+        'current_appointments' => 'المواعيد الحالية',
+        'history' => 'السجل',
+        'history_days' => 'السجل (30+ يوم)',
+        'confirm_appointment' => 'تأكيد الموعد',
+        'date' => 'التاريخ',
+        'time' => 'الوقت',
+        'cancel' => 'إلغاء',
+        'confirm_booking' => 'تأكيد الحجز',
+        'meeting_with' => 'اجتماع مع',
+        'no_current_appointments' => 'ليس لديك مواعيد حالية.',
+        'no_historical_appointments' => 'ليس لديك مواعيد سابقة.',
+        'booking_success' => 'تم حجز الموعد بنجاح!',
+        'booking_error' => 'فشل في حجز الموعد. يرجى المحاولة مرة أخرى.',
+        'load_error' => 'فشل في تحميل المواعيد المتاحة. يرجى المحاولة مرة أخرى لاحقاً.',
+        'no_slot_selected' => 'لم يتم اختيار موعد'
     ],
     'sidebar' => [
         'logo' => 'رفيق الإرشاد',

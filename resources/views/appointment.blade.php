@@ -266,40 +266,6 @@
                 toastr.error('Failed to book appointment. Please try again.');
             });
         });
-        
-        // Cancel appointment buttons
-        document.querySelectorAll('.cancel-appointment').forEach(button => {
-            button.addEventListener('click', function() {
-                const appointmentId = this.getAttribute('data-id');
-                
-                if (confirm('Are you sure you want to cancel this appointment?')) {
-                    fetch(`/student/cancel-appointment/${appointmentId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.error) {
-                            toastr.error(data.error);
-                            return;
-                        }
-                        
-                        // Show success and reload the page
-                        toastr.success('Appointment cancelled successfully!');
-                        setTimeout(function() {
-                            window.location.reload();
-                        }, 1000);
-                    })
-                    .catch(error => {
-                        console.error('Error cancelling appointment:', error);
-                        toastr.error('Failed to cancel appointment. Please try again.');
-                    });
-                }
-            });
-        });
     });
 </script>
 @endsection

@@ -266,8 +266,14 @@
                 }
             },
             eventClick: function(info) {
-                // Only allow deleting availability slots (not appointments)
-                if (info.event.source.id === '0') { // First source is availability
+                // Check if this is an availability slot or an appointment
+                if (info.event.id.toString().startsWith('appt_')) {
+                    // This is an appointment
+                    const studentName = info.event.extendedProps.studentName || 'Unknown';
+                    const status = info.event.extendedProps.status || 'Unknown';
+                    toastr.info(`Appointment with ${studentName}<br>Status: ${status}`);
+                } else {
+                    // This is an availability slot
                     if (confirm('Are you sure you want to delete this availability slot?')) {
                         axios.post(`/advisor/availability/${info.event.id}`)
                             .then(() => {
@@ -278,11 +284,6 @@
                                 toastr.error(error.response?.data?.message || 'Failed to delete availability slot');
                             });
                     }
-                } else {
-                    // Show appointment info for actual appointments
-                    const studentName = info.event.extendedProps.studentName || 'Unknown';
-                    const status = info.event.extendedProps.status || 'Unknown';
-                    toastr.info(`Appointment with ${studentName}<br>Status: ${status}`);
                 }
             },
         });

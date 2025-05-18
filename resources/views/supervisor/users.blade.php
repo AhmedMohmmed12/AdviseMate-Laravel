@@ -462,7 +462,7 @@
                             <input type="file" class="form-control" id="importFile" name="file" accept=".xlsx, .xls, .csv" required>
                         </div>
                         <small class="form-text text-muted mt-2">
-                            Please upload an Excel file (.xlsx, .xls) or CSV file containing student data.
+                            Please upload an CSV file containing student data.
                         </small>
                     </div>
                     

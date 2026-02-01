@@ -22,5 +22,14 @@ class UserSeeser extends Seeder
             'mobileNumber' => '0553201234',
             'password' => bcrypt(123123)    
         ])->assignRole('super_admin');
+
+        User::create([
+            'fName' => "ali",
+            'lName'  => "mohmmed" ,
+            'email' => "advisemate1@gmail.com",
+            'gender' => 'male',
+            'mobileNumber' => '0553201231',
+            'password' => bcrypt(123123)    
+        ])->assignRole('advisor');
     }
 }

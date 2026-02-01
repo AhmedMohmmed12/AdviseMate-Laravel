@@ -96,7 +96,7 @@
                                 <div class="col-md-6" id="programField" style="display: none;">
                                     <div class="form-group">
                                         <label class="form-label">Program</label>
-                                        <select name="Program" class="form-control custom-select" required>
+                                        <select name="Program" class="form-control custom-select" >
                                             <option value="" disabled selected>Select Program</option>
                                             <option value="Computer Science">Computer Science</option>
                                             <option value="Business">Business</option>

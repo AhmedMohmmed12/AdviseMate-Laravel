@@ -77,6 +77,18 @@ class StudentTicketController extends Controller
         if (!$student) {
             return response()->json(['success' => false, 'message' => 'Student not authenticated.'], 401);
         }
+
+        // Check daily ticket limit
+        $todayTickets = TicketTypeDetails::where('student_id', $student->id)
+            ->whereDate('created_at', today())
+            ->count();
+
+        if ($todayTickets >= 3) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'You have reached the daily limit of 3 tickets. Please try again tomorrow.'
+            ], 429);
+        }
         
         // Get advisor ID from student's user_id field
         $advisorId = $student->user_id;
